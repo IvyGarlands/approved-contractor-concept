@@ -74,3 +74,23 @@ const filled = FILLED.has(name);
     </svg>
   )
 }
+
+<style>
+  /**
+   * A default size, because there was not one.
+   *
+   * This SVG carried no width/height and relied entirely on the consumer's
+   * class. Astro scopes that class to the CONSUMING component, so it never
+   * reached this element — an unsized inline SVG then falls back to the CSS
+   * default 300x150 box and renders enormous. Found in the wild in TrustBar,
+   * where the check ticks rendered at roughly 60px.
+   *
+   * Sizing in em means a consumer still controls it, now with font-size, and
+   * a missed override degrades to "slightly wrong" instead of "enormous".
+   */
+  svg {
+    inline-size: 1.15em;
+    block-size: 1.15em;
+    flex-shrink: 0;
+  }
+</style>

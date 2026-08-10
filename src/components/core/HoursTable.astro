@@ -30,7 +30,27 @@ const ORDER = [
   "sunday",
 ] as const;
 
-const dayLabel = new Intl.DateTimeFormat(locale, { weekday: "long" });
+/**
+ * BOTH formatters are pinned to UTC, and that is not a detail.
+ *
+ * The reference dates below are built with Date.UTC, but Intl.DateTimeFormat
+ * renders in the HOST timezone unless told otherwise — and this component runs
+ * at BUILD time, so the host is whatever machine ran `npm run build`.
+ *
+ * On a machine west of Greenwich the two failures compound:
+ *   - every weekday label shifts back one day, because Date.UTC(2024, 0, 1)
+ *     (a Monday) is Sunday 31 December locally;
+ *   - every opening time is re-expressed in local time, so "10:00" renders as
+ *     "2:00 AM" from Los Angeles.
+ *
+ * The result is a table of plausible-looking, completely wrong hours, on the
+ * one section of the page a visitor actually trusts. Pinning to UTC makes the
+ * output deterministic and correct on every build machine.
+ */
+const dayLabel = new Intl.DateTimeFormat(locale, {
+  weekday: "long",
+  timeZone: "UTC",
+});
 // 2024-01-01 was a Monday; used only to render localized weekday names.
 const labelFor = (i: number) =>
   dayLabel.format(new Date(Date.UTC(2024, 0, 1 + i)));
@@ -38,6 +58,7 @@ const labelFor = (i: number) =>
 const timeLabel = new Intl.DateTimeFormat(locale, {
   hour: "numeric",
   minute: "2-digit",
+  timeZone: "UTC",
 });
 const fmt = (hhmm: string) => {
   const [h, m] = hhmm.split(":").map(Number);
@@ -210,7 +231,13 @@ const hoursData = ORDER.map((key) => {
     color: var(--color-ink-strong);
   }
 
-  .hours__today-tag {
+  /* :global because this element is created by the inline script above, at
+     runtime. Astro's scoped CSS compiles to `[data-astro-cid-…]` selectors and
+     stamps that attribute onto elements it rendered — a node built with
+     document.createElement never carries it, so the scoped rule silently never
+     matches and the "Today" tag renders as unstyled text jammed against the
+     weekday name. */
+  :global(.hours__today-tag) {
     display: inline-block;
     margin-inline-start: var(--space-2xs);
     padding-inline: var(--space-3xs);

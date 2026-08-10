@@ -11,13 +11,55 @@
 
 import { defineCollection, z, type SchemaContext } from "astro:content";
 import { glob } from "astro/loaders";
+import { existsSync, readdirSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 import { SITE } from "./config/site";
 
 const langs = SITE.locales as readonly [string, ...string[]];
 const lang = z.enum(langs).default(SITE.defaultLocale);
 
+/**
+ * AN EMPTY COLLECTION IS A NORMAL STATE, NOT A WARNING.
+ *
+ * On this project `projects`, `testimonials` and `people` are all empty and
+ * three of them are empty ON PURPOSE — no before/after pairs, no verbatim
+ * reviews and no named owner were supplied, so those sections must not ship
+ * (CLAUDE.md §11). Astro's glob loader warns on an empty directory, and §7
+ * requires a warning-clean build, which left alone pushes you toward the wrong
+ * fix: deleting the schema, or worse, inventing content to fill it.
+ *
+ * So: glob when there is something to glob, and hand back an empty loader when
+ * there is not. Dropping the first JSON file in switches it back on with no
+ * config change.
+ *
+ * Ported from the engine, which grew this after the Setiba build hit the same
+ * wall for the same reason.
+ */
+/* Resolved from this file's own URL, not from process.cwd(): Astro evaluates
+   the content config inside a Vite module runner where `process` is not yet
+   initialised. */
+const CONTENT_ROOT = fileURLToPath(new URL("./content/", import.meta.url));
+
+const hasContent = (dir: string, pattern: RegExp): boolean => {
+  const base = resolve(CONTENT_ROOT, dir);
+  if (!existsSync(base)) return false;
+  return readdirSync(base, { recursive: true }).some((f) =>
+    pattern.test(String(f))
+  );
+};
+
+const empty = (dir: string) => ({
+  name: `empty:${dir}`,
+  load: async () => {},
+});
+
+const ANY = /\.(md|json|ya?ml)$/;
+
 const src = (dir: string) =>
-  glob({ pattern: "**/*.{md,json,yaml,yml}", base: `./src/content/${dir}` });
+  hasContent(dir, ANY)
+    ? glob({ pattern: "**/*.{md,json,yaml,yml}", base: `./src/content/${dir}` })
+    : empty(dir);
 
 /**
  * Photo fields use Astro's `image()` schema helper, so every referenced file is
@@ -73,26 +115,6 @@ function requireAlt(
 
 /* ---------------------------------------------------------------------- */
 
-const menu = defineCollection({
-  loader: src("menu"),
-  schema: (ctx) =>
-    z
-      .object({
-        lang,
-        /** Section header on the page, e.g. "Antipasti". Drives grouping. */
-        category: z.string(),
-        categoryOrder: z.number().default(0),
-        name: z.string(),
-        description: z.string().optional(),
-        /** String, not number: real menus say "24", "MP", "18 / 32". */
-        price: z.string().optional(),
-        order: z.number().default(0),
-        tags: z.array(z.string()).default([]),
-        featured: z.boolean().default(false),
-        ...photoFields(ctx),
-      })
-      .superRefine(requireAlt),
-});
 
 const services = defineCollection({
   loader: src("services"),
@@ -101,6 +123,13 @@ const services = defineCollection({
       .object({
         lang,
         name: z.string(),
+        /**
+         * An abbreviated name for tight contexts. Added for HeroElevation,
+         * whose callout labels sit in a fixed annotation margin — the same
+         * reason a real drawing says "PAINT & COATING" on the leader and
+         * spells it out in the legend. Falls back to `name`.
+         */
+        short: z.string().optional(),
         summary: z.string(),
         /** Longer body for a detail page or an expanded card. */
         detail: z.string().optional(),
@@ -116,25 +145,6 @@ const services = defineCollection({
       .superRefine(requireAlt),
 });
 
-const events = defineCollection({
-  loader: src("events"),
-  schema: (ctx) =>
-    z
-      .object({
-        lang,
-        title: z.string(),
-        summary: z.string().optional(),
-        date: z.coerce.date().optional(),
-        endDate: z.coerce.date().optional(),
-        /** e.g. "Every Tuesday" — used when there is no single date. */
-        recurring: z.string().optional(),
-        ctaLabel: z.string().optional(),
-        ctaHref: z.string().optional(),
-        order: z.number().default(0),
-        ...photoFields(ctx),
-      })
-      .superRefine(requireAlt),
-});
 
 const projects = defineCollection({
   loader: src("projects"),
@@ -230,31 +240,26 @@ const process = defineCollection({
   }),
 });
 
-const pages = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/pages" }),
-  schema: (ctx) =>
-    z.object({
-      lang,
-      title: z.string(),
-      description: z.string(),
-      /** Omit to keep a page out of the nav. */
-      navLabel: z.string().optional(),
-      navOrder: z.number().optional(),
-      heroPhoto: ctx.image().optional(),
-      heroAlt: z.string().optional(),
-      draft: z.boolean().default(false),
-    }),
-});
 
+/**
+ * Registered collections for THIS project.
+ *
+ * `menu`, `events` and `pages` are gone entirely, schema and all: they belong
+ * to the hospitality family and a contractor has no menu, no event calendar
+ * and no long-form inner pages. The engine keeps all three.
+ *
+ * The three that are registered and empty — `projects`, `testimonials`,
+ * `people` — each warn on build, and that is the point. Those warnings are
+ * this project's open items talking: no before/after pairs, no verbatim
+ * reviews, no named owner. They clear themselves the moment the operator
+ * drops a file in, and until then the build says so out loud every time.
+ */
 export const collections = {
-  menu,
   services,
-  events,
   projects,
   testimonials,
   faq,
   people,
   credentials,
   process,
-  pages,
 };

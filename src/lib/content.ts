@@ -33,40 +33,18 @@ export async function localized<K extends CollectionKey>(
   );
 }
 
-export interface MenuGroup {
-  category: string;
-  categoryOrder: number;
-  items: CollectionEntry<"menu">[];
-}
-
-/**
- * Group menu entries by category, preserving each category's declared order.
+/*
+ * `groupMenu` and its MenuGroup type lived here in the engine and have been
+ * removed from this project along with MenuCards / MenuClassic / MenuLeaders /
+ * EventsFeature and the `menu`, `events` and `pages` collections.
  *
- * All three menu variants consume this, which is what makes switching layouts a
- * one-line change in a page (CLAUDE.md §10).
+ * They belong to the hospitality family. A contractor has no menu, no event
+ * calendar and no long-form inner pages, and keeping them meant three
+ * permanent "no files found" build warnings plus four dead components that
+ * still had to typecheck against collections this project does not register.
+ * The engine copy is untouched — this is a per-project trim, not an engine
+ * change.
  */
-export function groupMenu(entries: CollectionEntry<"menu">[]): MenuGroup[] {
-  const groups = new Map<string, MenuGroup>();
-
-  for (const entry of entries) {
-    const { category, categoryOrder } = entry.data;
-    const group = groups.get(category);
-    if (group) {
-      group.items.push(entry);
-      // A category's order is the lowest any of its items declares.
-      group.categoryOrder = Math.min(group.categoryOrder, categoryOrder);
-    } else {
-      groups.set(category, { category, categoryOrder, items: [entry] });
-    }
-  }
-
-  return [...groups.values()]
-    .sort((a, b) => a.categoryOrder - b.categoryOrder)
-    .map((g) => ({
-      ...g,
-      items: g.items.sort((a, b) => a.data.order - b.data.order),
-    }));
-}
 
 /** Featured entries first, then the rest, capped. */
 export function featuredFirst<T extends { data: { featured?: boolean } }>(

@@ -1,44 +1,300 @@
 ---
 /**
- * Homepage. Compose sections here; never lay out inside a page.
- * See docs/ambush-workflow.md for the per-vertical section recipe.
+ * Homepage — Approved Contractor, Inc. (ambush concept build).
+ *
+ * THE ONE-SENTENCE IDEA
+ * ---------------------
+ * Approved Contractor only builds the one part of a house its owner never
+ * looks at and every neighbour does — so the page is that part, drawn as an
+ * architectural ELEVATION, annotated, and stamped with their own name.
+ *
+ * The idea is structural, not decorative. It decides:
+ *   HERO      a drawn front elevation with the six trades called out on
+ *             leaders, dimensioned across the bottom with the sentence the
+ *             whole page is built on.
+ *   SERVICES  not a card grid — the drawing's LEGEND. Bubble 03 on the facade
+ *             is line 03 in the key, and both derive the number from position
+ *             in the same collection, so they cannot drift apart.
+ *   RECORD    the plan sheet's title block: the mark, the licence, the
+ *             counties, the figures. Ruled like a document because reading
+ *             like a document is the argument.
+ *   TYPE      an expanded grotesque, because every architectural drawing set
+ *             on earth is labelled in one, plus a mono that carries every
+ *             number on the page.
+ *
+ * WHAT IS NOT HERE, AND WHY (CLAUDE.md §11)
+ * ------------------------------------------
+ * Three sections are wired, imported and ready, and render the moment content
+ * exists. They ship as nothing rather than as something invented:
+ *
+ *   BeforeAfter     `projects` is empty. Zero job photographs were supplied.
+ *                   For an exterior contractor this is the single biggest gap
+ *                   on the page — see OPEN ITEMS at the bottom of this file.
+ *   TestimonialGrid `testimonials` is empty. ~800 five-star reviews exist and
+ *                   not one verbatim quote was supplied, so none can ship.
+ *   HoursTable      no published hours, so `showHours` is false and site.ts
+ *                   emits no openingHoursSpecification either.
+ *
+ * There are NO FPO placeholders on this page. That is deliberate: an FPO field
+ * in the hero of a contractor demo reads as an unfinished website, and the
+ * drawn hero exists precisely so the page does not need one.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import HeroSplit from "../components/sections/HeroSplit.astro";
-import CTABand from "../components/sections/CTABand.astro";
+import HeroElevation from "../components/sections/HeroElevation.astro";
+import CredentialSchedule from "../components/sections/CredentialSchedule.astro";
+import ServiceLegend from "../components/sections/ServiceLegend.astro";
+import ProcessSteps from "../components/sections/ProcessSteps.astro";
+import TitleBlock from "../components/sections/TitleBlock.astro";
+import BeforeAfter from "../components/sections/BeforeAfter.astro";
+import TestimonialGrid from "../components/sections/TestimonialGrid.astro";
+import FAQ from "../components/sections/FAQ.astro";
 import LocationContact from "../components/sections/LocationContact.astro";
+import CTABand from "../components/sections/CTABand.astro";
 
 import { SITE } from "../config/site";
+import { localized } from "../lib/content";
 import { useTranslations, localeFromUrl } from "../i18n/ui";
-import heroImg from "../assets/images/fpo-hero-16x9.jpg";
 
 const locale = localeFromUrl(Astro.url);
 const t = useTranslations(locale);
 
-const navLinks = [{ label: "Visit", href: "#contact" }];
+const services = await localized("services", locale);
+const credentials = await localized("credentials", locale);
+const process = await localized("process", locale);
+const faqs = await localized("faq", locale);
+const projects = await localized("projects", locale);
+const reviews = await localized("testimonials", locale);
+
+/**
+ * Service-area list, VERBATIM from the intake. Not expanded, not tidied into
+ * "Southern California", not given a radius we cannot support.
+ */
+const AREAS = [
+  "Greater Los Angeles",
+  "San Diego",
+  "Orange County",
+  "Riverside County",
+  "Ventura County",
+  "San Bernardino",
+];
+
+/**
+ * Client-published scale claims. Rendered exactly as the client states them,
+ * including the hedges — "3,000+" not "over 3,000", "around 800" not "800".
+ *
+ * OPEN ITEM: the operator flagged all three for re-verification before this is
+ * sent. If any cannot be confirmed, DELETE THE ROW. Do not soften it.
+ */
+const FIGURES = [
+  { value: "3,000+", label: "homeowners served" },
+  { value: "~800", label: "five-star reviews" },
+  { value: "10+", label: "years on exteriors" },
+];
+
+const TERMS = ["Free consultations", "Financing available"];
+
+const callLabel = `${t("cta.call")} ${SITE.phone}`;
+const callHref = `tel:${SITE.phoneHref}`;
+
+const navLinks = [
+  { label: "The work", href: "#services" },
+  { label: "How it goes", href: "#process" },
+  { label: "Questions", href: "#faq" },
+  { label: "Contact", href: "#contact" },
+];
+
+/** FAQPage JSON-LD — only ever emitted for Q&As the page visibly renders. */
+const faqSchema = faqs.map((f) => ({
+  question: f.data.question,
+  answer: f.data.answer,
+}));
 ---
 
+{/* SEOHead prefixes SITE.name on the homepage, so `title` must not repeat it. */}
 <BaseLayout
-  title="TODO — page title"
-  description="TODO — 150 character meta description."
+  title="Siding, windows, stucco & roofing in the San Fernando Valley"
+  description="Exterior only: James Hardie siding, Andersen and Pella windows, stucco, exterior paint, roofing and shutters. Canoga Park, CA. Free consultation — (877) 792-9082."
   path="/"
   navLinks={navLinks}
+  faq={faqSchema}
 >
-  <HeroSplit
-    eyebrow="TODO"
-    heading="TODO — the one line that has to land."
-    body="TODO — two sentences in the owner's voice."
-    image={heroImg}
-    alt="TODO — describe this photo"
-    ctaLabel={`${t("cta.call")} ${SITE.phone}`}
-    ctaHref={`tel:${SITE.phoneHref}`}
+  <HeroElevation
+    id="top"
+    eyebrow="Front elevation · exterior only"
+    heading="You're the only one who never sees the outside of your house."
+    body="Siding, windows, stucco, paint, roofing, shutters. Nothing on the inside. The consultation is free and somebody actually walks the house with you."
+    ctaLabel={callLabel}
+    ctaHref={callHref}
+    note="Canoga Park · 6 counties"
+    callouts={services.map((s) => s.data.short ?? s.data.name)}
+    dimension="The part everyone else sees"
+    drawingAlt="Line drawing of the front elevation of a house, with the six exterior trades called out on leader lines: siding on the gable, windows, stucco on the main wall, painting and texture coating on the garage door, roofing on the rake, and shutters beside the front window."
   />
 
-  <LocationContact locale={locale} id="contact" />
+  <CredentialSchedule
+    items={credentials}
+    label="Certified, listed and licensed"
+    tone="sunken"
+  />
+
+  <ServiceLegend
+    id="services"
+    eyebrow="Legend"
+    heading="Six things, all of them outdoors."
+    body="Every item on the drawing above, in order. There is no seventh — no kitchens, no bathrooms, no additions."
+    items={services}
+    note="Not a general remodeler. Exterior envelope only."
+  />
+
+  {
+    /* Renders the moment `src/content/projects/` has a before/after pair.
+       See OPEN ITEMS — this is the highest-value missing section on the page. */
+    projects.length > 0 && (
+      <BeforeAfter
+        eyebrow="Same house"
+        heading="Before, and from the street."
+        items={projects}
+        tone="sunken"
+      />
+    )
+  }
+
+  <ProcessSteps
+    id="process"
+    eyebrow="What happens when you call"
+    heading="Four steps, and you can stop after any of them."
+    steps={process}
+    layout="row"
+    tone="sunken"
+    ctaLabel={callLabel}
+    ctaHref={callHref}
+  />
+
+  <TitleBlock
+    id="record"
+    label="Company record"
+    areasLabel="Areas served"
+    areas={AREAS}
+    figuresLabel="On record"
+    figures={FIGURES}
+    termsLabel="Terms"
+    terms={TERMS}
+    tone="dark"
+  />
+
+  {
+    /* Renders the moment `src/content/testimonials/` has verbatim reviews.
+       Never invent one to fill this (CLAUDE.md §11). */
+    reviews.length > 0 && (
+      <TestimonialGrid
+        locale={locale}
+        eyebrow="From the neighbours"
+        heading="What people said afterwards."
+        items={reviews}
+        columns={3}
+      />
+    )
+  }
+
+  <FAQ
+    id="faq"
+    locale={locale}
+    eyebrow="Before you call"
+    heading="The questions people actually ask."
+    items={faqs}
+  />
+
+  <LocationContact
+    id="contact"
+    locale={locale}
+    eyebrow="Canoga Park"
+    heading="Where the shop is."
+    body="The trucks go out from Eton Avenue. Call and someone will come out and walk the outside of the house with you."
+    showHours={false}
+    tone="sunken"
+    formSubject="Exterior consultation request"
+  />
 
   <CTABand
-    heading="TODO — the closing ask."
-    ctaLabel={`${t("cta.call")} ${SITE.phone}`}
-    ctaHref={`tel:${SITE.phoneHref}`}
+    heading="Have someone look at the outside of your house."
+    body="Free consultation. Tell us what is bothering you about it and we will tell you what is actually failing."
+    ctaLabel={callLabel}
+    ctaHref={callHref}
+    note="Financing available · CA Lic. #952272"
+    align="split"
+    tone="brand"
   />
 </BaseLayout>
+
+{
+  /*
+  ============================================================================
+  OPEN ITEMS — CLOSE THESE BEFORE SENDING
+  ============================================================================
+
+  BLOCKING — the page is honest without them, but weaker:
+
+  1. PHOTOGRAPHS. Zero supplied. `input/photos/` is empty. For an exterior
+     contractor the before/after pair is the product, and its absence is the
+     single biggest gap on this page. To fix: drop matched pairs into
+     src/assets/images/ as job-before.jpg / job-after.jpg, add one JSON entry
+     per job to src/content/projects/ with title, beforePhoto, beforeAlt,
+     photo, alt, location, year. BeforeAfter then renders itself, in place,
+     between the legend and the process. Six pairs is plenty.
+
+  2. REVIEWS. Zero verbatim quotes supplied. The intake says ~800 five-star
+     reviews exist and names two reviewers (Kimberly A., Sue H.) with no text.
+     Six to ten real ones, with first name + last initial, rating and month,
+     into src/content/testimonials/ and the section appears. Never write one.
+
+  3. A NAMED FACE. Nobody is named anywhere — not on their site, not in the
+     intake. In this trade an owner's name and photograph is the highest-trust
+     element available and there is currently no substitute for it on the page.
+     `people` collection + ProviderBios if the operator can get it.
+
+  MUST VERIFY — each is currently on the page as the client publishes it:
+
+  4. CSLB LICENCE #952272 — confirm on the Contractors State License Board
+     public licence check. It appears in the footer, the trust bar, the FAQ,
+     the title block stamp and the closing band. If it is wrong it is wrong in
+     five places.
+
+  5. THE THREE FIGURES in FIGURES above — 3,000+ homeowners, ~800 five-star
+     reviews, 10+ years. If any cannot be confirmed, delete that row from the
+     array rather than softening the wording.
+
+  6. THE SIX CREDENTIALS in src/content/credentials/ — James Hardie Elite,
+     Andersen Certified, Pella partner, Qualified Remodeler Top 500 (2025),
+     Home Improvement Pro 200 (2025), BBB A+. All client-published, none
+     embellished. Confirm the two 2025 awards are current.
+
+  MISSING FACTS — sections are switched off rather than guessed:
+
+  7. HOURS. Not published anywhere. site.ts HOURS is empty, LocationContact
+     has showHours={false}, and no openingHoursSpecification is emitted.
+
+  8. GEO COORDINATES. site.ts `geo` is null so the LocalBusiness schema omits
+     it rather than pin the wrong unit on Eton Avenue. Paste them from the
+     Google Business Profile.
+
+  9. EMAIL. Not published. SITE.email is empty so the contact block omits it.
+
+ 10. SOCIAL / DIRECTORY URLS. The intake says Angi, HomeAdvisor, Houzz and
+     Yelp but supplied no URLs. All four are empty, so nothing wrong lands in
+     `sameAs`.
+
+ 11. FORM_ENDPOINT. Empty, so ContactForm renders its disabled state. Point it
+     at a Formspree or Web3Forms endpoint before the client is asked to test.
+
+  CONSIDERED AND DECLINED:
+
+ 12. SPANISH. The Valley has a large Spanish-speaking homeowner base and
+     bilingual would be a real differentiator here. Declined for this pass
+     because every word of a licensed trade's advertising has to be the
+     operator's own, not a machine translation. One content pass if wanted.
+
+ 13. BONDING AND INSURANCE. Not claimed anywhere on this page, in any wording,
+     because the client claims neither. Do not add it (CLAUDE.md §11).
+  ============================================================================
+  */
+}

@@ -2,17 +2,73 @@
    TOKENS.CSS — THE ONLY FILE THAT DEFINES BRAND PERSONALITY
    ==========================================================================
 
+   PROJECT: Approved Contractor, Inc. — Canoga Park, CA (ambush concept)
+   IDENTITY: "The Elevation" — Plan Paper & Stamp
+
+   THE ONE-SENTENCE IDEA
+   ---------------------
+   Approved Contractor is not a remodeler. They only build the one part of a
+   house nobody who lives there ever looks at, and everybody else does: the
+   face it shows the street. In architecture the drawing of that face is called
+   an ELEVATION. So the page is built as a plan sheet — a drawn elevation with
+   every trade called out on a leader line, annotated in mono, ruled in
+   hairlines, and stamped.
+
+   The stamp is the second half of the idea and it was sitting in their name
+   the whole time. In construction, APPROVED is the word a plan check puts on
+   drawings that pass. "Approved Contractor, Inc." is already a permit stamp;
+   nobody had ever drawn it as one.
+
+   CONSTRAINT — this identity carries a compliance line. The stamp mark holds
+   the business's OWN name and its OWN CSLB number and nothing else. It never
+   says permit, city, inspected, or approved BY anyone. It is a wordmark in a
+   stamp frame, not a municipal seal (CLAUDE.md §11).
+
+   WHAT CHANGED FROM RECIPE 10 (Built Well) AND WHY
+   ------------------------------------------------
+   Nearly all of it. Built Well is warm greige / walnut / sage, Instrument
+   Serif over Manrope, portfolio-led, photography-first. Three problems:
+
+     1. Instrument Serif is spent — it is the Setiba build's display face.
+     2. Warm greige/walnut/sage is an INTERIOR materials palette. It is the
+        colour of a kitchen renovation. This firm does siding, stucco, windows
+        and roofs, outdoors, in hard San Fernando Valley light.
+     3. Built Well is portfolio-led and there is no portfolio. Zero supplied
+        photographs, therefore zero before/after pairs (its whole signature).
+
+   So:
+     ground     light, and COLD. Plan paper, not cream. Breaks a run of three
+                consecutive warm builds and is the right temperature for
+                exterior work under a hard sun.
+     palette    plan paper / graphite / Valley slate / plan-check red. Slate is
+                the client's own blue, matured into the colour of an eave
+                shadow — so the identity has a defensible thread back to what
+                they already own instead of binning it.
+     type       Archivo Variable EXPANDED (wdth 106) over Manrope, with
+                JetBrains Mono carrying every dimension, licence and index
+                number. Every architectural drawing set on earth is labelled in
+                a neutral grotesque — that is the reference, and it is why the
+                display face is not a serif.
+     scale      an EVEN geometric progression, 1.235 at 360px to 1.355 at
+                1440px. Deliberately not flat-then-open: a scale rule is evenly
+                divided, and the scale rule is the motif.
+     tracking   display near-neutral (-0.012em); annotation tracked hard
+                (0.18em / 0.28em). The drama lives in the drawing, not in
+                stretched type.
+     radius     0 on everything that holds content. The page is drawn, not
+                rounded.
+     texture    no grain. A faint blueprint grid instead (§8a), scoped to the
+                hero, which no other build has.
+
    CONTRACT
    --------
    1. This is the ONLY file a reskin touches. If you have to edit a component
       to change how a site LOOKS, the token system has a gap — fix the gap.
    2. Components consume SEMANTIC tokens only (--color-ink, --step-2, --space-l).
-      They must never reference a PRIMITIVE (--brand-700, --gray-050).
+      They must never reference a PRIMITIVE (--b-700, --n-050).
    3. Primitives are the raw palette. Semantics map primitives to jobs.
-      Reskinning = change primitives + remap a handful of semantics.
-   4. Every surface/ink pair below is annotated with its measured WCAG contrast
-      ratio. If you change a primitive, re-measure. AA = 4.5:1 body, 3:1 large
-      (>=24px, or >=18.66px bold) and non-text UI. We hold AA everywhere.
+   4. Every surface/ink pair below is asserted by `npm run check:contrast`.
+      AA = 4.5:1 body, 3:1 large (>=24px, or >=18.66px bold) and non-text.
    5. Anything a component needs that is not here does not exist. Add it here.
 
    FILE MAP
@@ -25,70 +81,86 @@
    §6  Semantic — layout: containers, gutters, measure
    §7  Semantic — radius, border, shadow, z-index
    §8  Semantic — motion: duration, easing, distance, stagger
+   §8a Identity — the plan-sheet motif (rules, ticks, grid, stamp)
    §9  Semantic — image & texture treatment
-   §10 Context blocks — .on-dark / .on-brand inversion
+   §10 Context blocks — .on-dark / .on-brand
    §11 prefers-reduced-motion / prefers-contrast overrides
    ========================================================================== */
 
 /* ==========================================================================
    §1  PRIMITIVES — PALETTE
    --------------------------------------------------------------------------
-   Ramp convention: 000 = lightest, 900 = darkest. Every brand needs:
-     - a NEUTRAL ramp   (paper -> ink; carries 90% of the page)
-     - a BRAND ramp     (the one colour people remember)
-     - an ACCENT ramp   (used at <5% coverage; CTAs, rules, small marks)
-   Replace the hex values per project. Do not rename the steps.
-   Default below = "Heritage Diner" recipe (see docs/design-recipes.md).
+   Ramp convention: 000 = lightest, 900 = darkest.
+
+   NEUTRAL — "plan paper to graphite". Cold. Faintly blue-grey, the colour of
+   a printed plan set, never cream. This is the load-bearing differentiator
+   against both prior builds, which are warm-ground.
+
+   BRAND — "Valley slate". A deep, desaturated blue with grey in it: the
+   colour of the shadow an eave throws on a stucco wall at three in the
+   afternoon. It is the client's existing blue taken down and desaturated
+   until it reads structural instead of corporate.
+
+   ACCENT — "plan-check red". Stamp ink. Held under 5% coverage: the stamp
+   frame, the dimension ticks, the licence serial, one button fill. Cooler and
+   deeper than a brand red so it reads as INK rather than as a second brand.
    ========================================================================== */
 :root {
-  /* Neutral — warm cream paper to near-black ink */
-  --n-000: #fffdf8;
-  --n-050: #faf5ea;
-  --n-100: #f2ebdc;
-  --n-200: #e4dac6;
-  --n-300: #cdc0a8;
-  --n-400: #8b8069;   /* >=3:1 on every light surface — safe for meaningful borders */
-  --n-500: #6b6250;
-  --n-600: #574f40;
-  --n-700: #3b352b;
-  --n-800: #26221b;
-  --n-900: #161310;
+  /* Neutral — plan paper to graphite */
+  --n-000: #fbfcfd;
+  --n-050: #f1f4f6;
+  --n-100: #e5e9ee;
+  --n-200: #d2d8df;
+  --n-300: #a9b2bc;   /* muted ink ON the dark ground */
+  --n-400: #6f7883;   /* >=3:1 on every light surface — meaningful borders */
+  --n-500: #565e69;
+  --n-600: #414952;   /* muted ink on paper */
+  --n-700: #2c323a;
+  --n-800: #1b1f25;   /* body ink; the lift-surface on the dark ground */
+  --n-900: #0e1116;   /* display ink; the dark canvas */
 
-  /* Brand — deep diner red */
-  --b-050: #fdeceb;
-  --b-100: #f9cfcb;
-  --b-300: #d9736a;
-  --b-500: #b03a30;
-  --b-600: #97302a;
-  --b-700: #7a2621;   /* AA on --n-000 at body size */
-  --b-800: #5c1c19;
-  --b-900: #3d1210;
+  /* Brand — Valley slate */
+  --b-050: #eef2f6;
+  --b-100: #d3dde6;
+  --b-300: #8fa6b8;   /* brand ink on the dark ground */
+  --b-500: #4a6a84;
+  --b-600: #3b5568;
+  --b-700: #2e4354;   /* brand ink on paper; brand fill under paper type */
+  --b-800: #22323f;   /* .on-brand canvas */
+  --b-900: #16212a;   /* .on-brand surface — cards RECEDE on a brand band */
 
-  /* Accent — aged brass */
-  --a-100: #f6e6bd;
-  --a-300: #dcbc6a;
-  --a-500: #b8912f;
-  --a-700: #8a6a1c;   /* AA on --n-000 at body size */
-  --a-900: #4d3a0c;
+  /* Accent — plan-check red */
+  --a-100: #f7dcd8;
+  --a-300: #e09a92;   /* accent + focus ring on the dark ground */
+  --a-500: #c8493a;
+  --a-700: #a63428;   /* accent on paper */
+  --a-900: #4d1710;
 
-  /* Feedback — kept neutral-ish so they never fight the brand */
-  --ok-500: #2f6b46;
+  /* Feedback — pulled cold so they never read as a second accent. */
+  --ok-500: #2c6b4a;
   --warn-500: #8a5a12;
-  --err-500: #9a2b23;
+  --err-500: #a63428;
 }
 
 /* ==========================================================================
    §2  PRIMITIVES — TYPEFACE STACKS
    --------------------------------------------------------------------------
-   Families are self-hosted via Fontsource and imported in BaseLayout.astro.
-   NEVER add a runtime CDN font call. Swap the family name here, swap the
-   import there. The fallback stack must be metrically close so the FOUT is
-   not a layout shift.
+   Three families, which exceeds the house default of two. The reason is
+   structural rather than decorative: the mono is the drawing's ANNOTATION
+   voice and carries every dimension, the licence number, the service-area
+   index and the stamp serial. Without it the plan-sheet idea is a colour
+   scheme instead of a language. Imported in BaseLayout.astro; never a runtime
+   CDN call.
+
+   Archivo is loaded with its WIDTH axis (wdth 62-125) because the display
+   voice is set slightly EXPANDED — see --face-display-stretch in §4.
    ========================================================================== */
 :root {
-  --face-display: "Bitter Variable", "Bitter", Georgia, "Times New Roman", serif;
-  --face-body: "Karla Variable", "Karla", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  --face-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --face-display: "Archivo Variable", "Archivo", Helvetica, Arial, sans-serif;
+  --face-body: "Manrope Variable", "Manrope", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", system-ui, sans-serif;
+  --face-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo,
+    monospace;
 }
 
 /* ==========================================================================
@@ -96,23 +168,17 @@
    --------------------------------------------------------------------------
    TOKEN                     CONTROLS
    --color-canvas            page background, the default surface
-   --color-surface           cards, panels, menu blocks sitting on canvas
-   --color-surface-sunken    wells, alternating section bands, form fields
-   --color-surface-inverse   dark sections (footer, CTA bands, dark heroes)
-   --color-ink               body copy on canvas/surface
+   --color-surface           cards, panels sitting on canvas
+   --color-surface-sunken    wells, alternating bands, form fields
+   --color-surface-inverse   dark sections (title block, footer)
+   --color-ink               body copy
    --color-ink-strong        headings, display type
-   --color-ink-muted         captions, meta, labels  (AA at body size, verified)
-   --color-ink-inverse       copy on inverse surfaces
-   --color-ink-inverse-muted meta on inverse surfaces
-   --color-brand             the memorable colour: headings accents, links
-   --color-brand-strong      pressed/hover of brand, brand text on light
-   --color-brand-contrast    ink that sits ON a brand-filled area
-   --color-accent            small marks: rules, dot leaders, prices, icons
-   --color-accent-contrast   ink that sits ON an accent-filled area
-   --color-line              hairlines, table rules, dividers        (3:1)
-   --color-line-strong       input borders, focus-adjacent edges     (3:1)
-   --color-focus             focus ring — must clear 3:1 vs BOTH adjacent
-   --color-overlay-scrim     image darkening behind overlaid type
+   --color-ink-muted         captions, meta, annotation
+   --color-brand             the memorable colour: links, marks, rules
+   --color-accent            stamp ink: ticks, serials, the one primary CTA
+   --color-line              hairlines           (DECORATIVE ONLY)
+   --color-line-strong       input borders, focusable edges   (>=3:1)
+   --color-focus             focus ring — clears 3:1 vs BOTH adjacent
    ========================================================================== */
 :root {
   --color-canvas: var(--n-000);
@@ -120,93 +186,105 @@
   --color-surface-sunken: var(--n-050);
   --color-surface-inverse: var(--n-900);
 
-  --color-ink: var(--n-800);              /* 15.57:1 on canvas — AAA */
-  --color-ink-strong: var(--n-900);       /* 18.20:1 on canvas — AAA */
-  --color-ink-muted: var(--n-600);        /*  7.95:1 on canvas, 7.44:1 on sunken — AAA */
-  --color-ink-inverse: var(--n-050);      /* 17.02:1 on inverse — AAA */
-  --color-ink-inverse-muted: var(--n-300);/* 10.31:1 on inverse — AAA */
+  --color-ink: var(--n-800);              /* 16.11:1 on canvas — AAA */
+  --color-ink-strong: var(--n-900);       /* 18.41:1 on canvas — AAA */
+  --color-ink-muted: var(--n-600);        /*  8.89:1 on canvas, 8.27:1 sunken — AAA */
+  --color-ink-inverse: var(--n-050);      /* 17.12:1 on inverse — AAA */
+  --color-ink-inverse-muted: var(--n-300);/*  8.81:1 on inverse — AAA */
 
-  --color-brand: var(--b-700);            /*  9.71:1 on canvas, 9.08:1 on sunken — AAA */
+  --color-brand: var(--b-700);            /*  9.99:1 on canvas — AAA */
   --color-brand-strong: var(--b-800);
-  --color-brand-contrast: var(--n-000);   /*  9.71:1 on brand fill */
+  --color-brand-contrast: var(--n-000);   /*  9.99:1 on brand fill */
 
-  --color-accent: var(--a-700);           /*  4.97:1 on canvas, 4.64:1 on sunken — AA */
-  --color-accent-contrast: var(--n-000);  /*  4.97:1 on accent fill */
+  --color-accent: var(--a-700);           /*  6.50:1 on canvas, 6.05:1 sunken — AA */
+  --color-accent-contrast: var(--n-000);  /*  6.50:1 on accent fill */
 
-  /* --color-line is DECORATIVE ONLY (1.36:1). WCAG 1.4.11 exempts purely
-     decorative dividers; structure must live in the markup, not the rule.
-     Any border that carries meaning — inputs, buttons, focusable edges,
-     selected states — MUST use --color-line-strong, which clears 3:1. */
+  /* --color-line is DECORATIVE ONLY. It is doing more visual work in this
+     build than in any previous one — the whole page is ruled like a drawing —
+     but a hairline still never carries meaning. Anything meaningful (inputs,
+     buttons, focusable edges, selected states) uses --color-line-strong. */
   --color-line: var(--n-200);
-  --color-line-strong: var(--n-400);      /*  3.83:1 canvas / 3.58:1 sunken — AA non-text */
-  --color-focus: var(--b-700);            /*  9.71:1 on canvas — AA non-text */
+  --color-line-strong: var(--n-400);      /*  4.36:1 canvas / 4.05:1 sunken — AA */
+  --color-focus: var(--b-700);            /*  9.99:1 on canvas — AA non-text */
 
   --color-ok: var(--ok-500);
   --color-warn: var(--warn-500);
   --color-err: var(--err-500);
 
-  --color-overlay-scrim: 22 19 16;        /* RGB channels of --n-900, for rgb() a */
+  --color-overlay-scrim: 14 17 22;        /* RGB channels of --n-900 */
 }
 
 /* ==========================================================================
    §4  SEMANTIC — TYPOGRAPHY
    --------------------------------------------------------------------------
-   Fluid scale, clamp()-based, no JS. Ratio is set per project by editing the
-   min/max ends — the steps stay named the same so components never change.
-   Default: 1.200 minor-third at 360px  ->  1.333 perfect-fourth at 1440px.
-   Type-first recipes (Editorial Venue) push the top end harder; utilitarian
-   recipes (Precision Shop) flatten it. That is a tokens edit, not a rebuild.
+   THE SCALE IS EVEN. 1.235 at 360px, 1.355 at 1440px, applied uniformly from
+   --step-0 up. Most recipes cluster the reading sizes and then blow the top
+   end open; this one deliberately does not, because the motif is a scale rule
+   and a scale rule is divided evenly. --step--1 is set independently, small
+   and tight, because it is the drawing's ANNOTATION size and annotations on a
+   plan sheet are smaller than anything else on the sheet.
+
+   THE DISPLAY VOICE IS EXPANDED, NOT TIGHT. --face-display-stretch pushes
+   Archivo's width axis to 106%. Architectural sheet titles are set wide, and
+   an expanded grotesque is the single clearest signal that this page is
+   quoting a drawing rather than a magazine. Tracking stays near-neutral to
+   pay for it — expanded AND tracked-out is a poster, not a plan.
 
    STEP        TYPICAL USE
-   --step--1   captions, legal, table meta
-   --step-0    body copy — the anchor, do not fluidly shrink below 16px
-   --step-1    lead paragraph, large body
-   --step-2    h4 / section eyebrow-adjacent
-   --step-3    h3 / card titles
+   --step--1   annotation: dimensions, callout labels, legal, table meta
+   --step-0    body copy — the anchor, never below 16px
+   --step-1    lead paragraph
+   --step-2    h4 / card titles
+   --step-3    h3
    --step-4    h2 / section headings
    --step-5    h1 on inner pages
    --step-6    hero display
-   --step-7    oversized editorial display (use once per page, max)
+   --step-7    the stamp, once per page
    ========================================================================== */
 :root {
-  --step--1: clamp(0.833rem, 0.80rem + 0.16vw, 0.9375rem);
-  --step-0:  clamp(1rem, 0.96rem + 0.20vw, 1.125rem);
-  --step-1:  clamp(1.2rem, 1.14rem + 0.30vw, 1.5rem);
-  --step-2:  clamp(1.44rem, 1.34rem + 0.50vw, 2rem);
-  --step-3:  clamp(1.728rem, 1.56rem + 0.83vw, 2.666rem);
-  --step-4:  clamp(2.074rem, 1.80rem + 1.35vw, 3.55rem);
-  --step-5:  clamp(2.488rem, 2.06rem + 2.14vw, 4.73rem);
-  --step-6:  clamp(2.986rem, 2.32rem + 3.33vw, 6.31rem);
-  --step-7:  clamp(3.583rem, 2.57rem + 5.06vw, 8.41rem);
+  --step--1: clamp(0.8125rem, 0.7917rem + 0.09vw, 0.875rem);
+  --step-0:  clamp(1rem, 0.9583rem + 0.19vw, 1.125rem);
+  --step-1:  clamp(1.235rem, 1.1387rem + 0.43vw, 1.524rem);
+  --step-2:  clamp(1.525rem, 1.345rem + 0.80vw, 2.065rem);
+  --step-3:  clamp(1.884rem, 1.5793rem + 1.35vw, 2.798rem);
+  --step-4:  clamp(2.326rem, 1.8377rem + 2.17vw, 3.791rem);
+  --step-5:  clamp(2.873rem, 2.1183rem + 3.35vw, 5.137rem);
+  --step-6:  clamp(3.548rem, 2.4106rem + 5.05vw, 6.96rem);
+  --step-7:  clamp(4.382rem, 3.0093rem + 6.10vw, 8.5rem);
 
-  /* Weights — variable-font axis values. Non-variable faces snap to nearest. */
+  /* Weights — Archivo runs 100-900, Manrope 200-800. */
   --weight-body: 400;
   --weight-medium: 500;
   --weight-strong: 600;
   --weight-display: 700;
 
-  /* Leading — display type must be tighter than body or it reads cheap. */
-  --leading-display: 0.95;
-  --leading-heading: 1.1;
+  /* Width axis. The identity move: the display voice is EXPANDED. */
+  --face-display-stretch: 106%;
+
+  --leading-display: 0.94;
+  --leading-heading: 1.08;
   --leading-snug: 1.35;
-  --leading-body: 1.6;
+  --leading-body: 1.62;
   --leading-loose: 1.75;
 
-  /* Tracking — the single fastest tell of amateur vs. designed type. */
-  --tracking-display: -0.02em;
-  --tracking-heading: -0.01em;
+  /* Tracking. Display near-neutral because the width axis already carries it.
+     Annotation is tracked hard — that is where the drawing's voice lives. */
+  --tracking-display: -0.012em;
+  --tracking-heading: -0.008em;
   --tracking-body: 0em;
-  --tracking-label: 0.08em;   /* eyebrows / small caps labels */
-  --tracking-wide: 0.16em;
+  --tracking-label: 0.18em;   /* eyebrows, callout labels, stamp text */
+  --tracking-wide: 0.28em;    /* mono index numbers, sheet annotation */
+  /* Controls need their OWN tracking. This palette runs --tracking-label
+     unusually wide, and buttons inherited it: "Call (877) 792-9082" grew to
+     435px and swallowed a whole grid column. A button is not a label. */
+  --tracking-control: 0.06em;
 }
 
 /* ==========================================================================
    §5  SEMANTIC — SPACE
    --------------------------------------------------------------------------
-   One scale for everything: gaps, padding, stack rhythm. Fluid so mobile
-   isn't cramped and desktop isn't tight.
-   --section-y is the vertical rhythm of the page and is the #1 lever on
-   "does this feel expensive". Generous = expensive.
+   --section-y is the single biggest lever on "does this feel expensive".
+   Set generous: a plan sheet is mostly white space with a drawing in it.
    ========================================================================== */
 :root {
   --space-3xs: clamp(0.25rem, 0.24rem + 0.05vw, 0.3125rem);
@@ -220,19 +298,15 @@
   --space-3xl: clamp(6rem, 5.76rem + 1.20vw, 7.5rem);
   --space-4xl: clamp(8rem, 7.68rem + 1.60vw, 10rem);
 
-  --section-y: clamp(4rem, 2.86rem + 5.71vw, 8rem);
+  --section-y: clamp(4.5rem, 3.21rem + 6.43vw, 9rem);
   --section-y-tight: clamp(2.5rem, 1.93rem + 2.86vw, 4.5rem);
   --section-y-loose: clamp(6rem, 4.29rem + 8.57vw, 12rem);
 
-  --stack-gap: var(--space-m);   /* default flow spacing inside prose */
+  --stack-gap: var(--space-m);
 }
 
 /* ==========================================================================
    §6  SEMANTIC — LAYOUT
-   --------------------------------------------------------------------------
-   --container-*    max widths for the shared .container primitive
-   --gutter         page edge padding, never less than 20px on mobile
-   --measure        optimal line length for prose (65ch is the target)
    ========================================================================== */
 :root {
   --container-xs: 34rem;
@@ -243,8 +317,8 @@
   --container: var(--container-l);
 
   --gutter: clamp(1.25rem, 0.96rem + 1.43vw, 3rem);
-  --measure: 65ch;
-  --measure-narrow: 48ch;
+  --measure: 64ch;
+  --measure-narrow: 46ch;
 
   --header-h: 4.5rem;
   --header-h-scrolled: 3.75rem;
@@ -253,30 +327,33 @@
 /* ==========================================================================
    §7  SEMANTIC — RADIUS / BORDER / SHADOW / Z-INDEX
    --------------------------------------------------------------------------
-   Radius is a strong personality signal. Heritage/Editorial = 0 or 2px.
-   Bakery/Studio = 12-20px. Set it once here; never hardcode a radius.
-   Shadows are LOW-CONTRAST and LARGE. Tight dark shadows read as Bootstrap.
+   Radius 0 on everything that holds content. A drawing is not rounded. The
+   2px on controls is the single concession, so buttons do not read as raw
+   rectangles cut out of the page.
+
+   Shadows are large and near-invisible. On a plan sheet, depth comes from
+   RULE WEIGHT, not from drop shadows — see §8a.
    ========================================================================== */
 :root {
   --radius-none: 0;
   --radius-s: 2px;
-  --radius-m: 4px;
-  --radius-l: 8px;
+  --radius-m: 2px;
+  --radius-l: 4px;
   --radius-pill: 999px;
-  --radius-image: var(--radius-s);
-  --radius-control: var(--radius-s);
-  --radius-card: var(--radius-m);
+  --radius-image: 0;
+  --radius-control: 2px;
+  --radius-card: 0;
 
   --border-hair: 1px;
   --border-thick: 2px;
-  --border-rule: 3px;      /* editorial section rules */
+  --border-rule: 3px;
 
-  --shadow-s: 0 1px 2px rgb(var(--color-overlay-scrim) / 0.06),
-              0 2px 6px rgb(var(--color-overlay-scrim) / 0.04);
+  --shadow-s: 0 1px 2px rgb(var(--color-overlay-scrim) / 0.05),
+              0 2px 6px rgb(var(--color-overlay-scrim) / 0.035);
   --shadow-m: 0 2px 6px rgb(var(--color-overlay-scrim) / 0.05),
-              0 12px 28px rgb(var(--color-overlay-scrim) / 0.08);
-  --shadow-l: 0 4px 12px rgb(var(--color-overlay-scrim) / 0.06),
-              0 28px 64px rgb(var(--color-overlay-scrim) / 0.12);
+              0 14px 32px rgb(var(--color-overlay-scrim) / 0.07);
+  --shadow-l: 0 4px 12px rgb(var(--color-overlay-scrim) / 0.05),
+              0 32px 72px rgb(var(--color-overlay-scrim) / 0.10);
 
   --z-base: 0;
   --z-raised: 10;
@@ -284,87 +361,122 @@
   --z-header: 200;
   --z-mobilenav: 300;
   --z-lightbox: 400;
-  --z-badge: 500;      /* ambush "concept redesign" badge sits above all */
+  --z-badge: 500;
 }
 
 /* ==========================================================================
    §8  SEMANTIC — MOTION
    --------------------------------------------------------------------------
-   HOUSE RULES (enforced, see CLAUDE.md):
-     - Reveal durations 0.5s–0.8s. Micro-interactions 0.15s–0.25s.
-     - ease-out only for entrances. Never bounce, never spin.
-     - Reveal distance <= 24px. Parallax <= 15%.
-     - Stagger 0.06s–0.12s. Generous, never machine-gun.
-   Change --duration-reveal and --motion-distance to retune a whole site's
-   motion personality: "Studio Light" is fast+far, "Editorial Venue" is
-   slow+near.
+   Measured, not floaty. A drafting arm moves in one plane and stops. Parallax
+   is ZERO on purpose: a drawing does not have depth planes, and faking one
+   would undo the whole conceit.
    ========================================================================== */
 :root {
   --duration-instant: 120ms;
   --duration-fast: 180ms;
   --duration-base: 240ms;
   --duration-slow: 400ms;
-  --duration-reveal: 700ms;
-  --duration-hero: 900ms;
+  --duration-reveal: 640ms;
+  --duration-hero: 860ms;
 
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);      /* the house entrance curve */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out-soft: cubic-bezier(0.33, 1, 0.68, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-linear: linear;
 
-  --motion-distance: 24px;        /* reveal travel */
-  --motion-distance-s: 12px;
-  --motion-stagger: 0.08s;
-  --motion-parallax: 0.12;        /* unitless fraction, hard cap 0.15 */
+  --motion-distance: 16px;
+  --motion-distance-s: 10px;
+  --motion-stagger: 0.10s;
+  --motion-parallax: 0;
   --motion-hero-delay: 0.15s;
 
   /* ---- SIGNATURE TIER -------------------------------------------------
-     Everything above is AMBIENT motion: it must never be noticed. These are
-     for the ONE signature moment per page (CLAUDE.md §4a) — the thing a
-     person would screenshot. Deliberately permitted to break the ambient
-     ceiling, and deliberately scarce: if a second element on the page uses
-     these, the first one stops being special.
+     ONE moment on this page (CLAUDE.md §4a): the hero elevation. The masked
+     line reveal on the headline and the leader lines extending to their
+     callouts are that single moment, not two — they are one gesture, the
+     drawing being annotated.
 
-     --sig-parallax        layered-depth parallax; up to 0.45 because layers
-                           read as depth, not as the whole page sliding
-     --sig-duration        long enough to feel authored, not laggy
-     --sig-stagger-char    per-word / per-line type reveals
-     --sig-mask-*          the wipe used for masked type and image reveals
-     --sig-magnet          cursor-attraction radius/strength for reactive bits
-     --sig-tilt            hover tilt on cards, in degrees                  */
-  --sig-duration: 1100ms;
-  --sig-duration-long: 1600ms;
+     --sig-leader-duration  the leader lines scaling out from the facade
+     --sig-parallax stays 0. See above.                                    */
+  --sig-duration: 1000ms;
+  --sig-duration-long: 1400ms;
   --sig-ease: cubic-bezier(0.16, 1, 0.3, 1);
   --sig-ease-drama: cubic-bezier(0.65, 0, 0.15, 1);
-  --sig-parallax: 0.32;
-  --sig-parallax-max: 0.45;
-  --sig-stagger-char: 0.055s;
-  --sig-mask-duration: 900ms;
+  --sig-parallax: 0;
+  --sig-parallax-max: 0;
+  --sig-stagger-char: 0.07s;
+  --sig-mask-duration: 1000ms;
   --sig-mask-ease: cubic-bezier(0.77, 0, 0.18, 1);
   --sig-magnet-radius: 90px;
-  --sig-magnet-strength: 0.28;
-  --sig-tilt: 6deg;
-  --sig-marquee-duration: 38s;
+  --sig-magnet-strength: 0.24;
+  --sig-tilt: 0deg;
+  --sig-marquee-duration: 42s;
+
+  --sig-leader-duration: 900ms;
+  --sig-leader-stagger: 0.09s;
+}
+
+/* ==========================================================================
+   §8a  IDENTITY — THE PLAN-SHEET MOTIF
+   --------------------------------------------------------------------------
+   The vocabulary of a drawing, expressed as tokens so it stays consistent and
+   so one edit retunes it everywhere.
+
+   RULE WEIGHTS. On a real drawing, line weight is meaning: the object outline
+   is heavy, the dimension line is light, the leader is lighter still. That
+   hierarchy replaces the drop shadows this build does not use.
+
+   TICKS. Architectural dimension lines terminate in a 45-degree slash, not an
+   arrowhead. --dim-tick-size drives every one of them.
+
+   Named --dim-tick-* rather than --tick-*, because the engine has since grown
+   its own --tick-* group (§8b, the calibrated ruler leader generalised out of
+   the Setiba build). They are different devices — a repeating ruler versus a
+   dimension terminator — and sharing a prefix would make the first merge of
+   this build back into the engine silently overwrite one with the other.
+
+   GRID. The faint blueprint ruling behind the hero. Deliberately scoped to
+   ONE section: a grid behind the whole page would stop being a reference and
+   start being a wallpaper.
+
+   STAMP. The mark's frame: a double rule with a gap, the way an inked stamp
+   prints.
+   ========================================================================== */
+:root {
+  --rule-object: 2px;      /* the drawn facade outline */
+  --rule-dimension: 1px;   /* dimension and extension lines */
+  --rule-leader: 1px;      /* callout leaders */
+
+  --dim-tick-size: 7px;        /* the 45-degree dimension slash */
+  --dim-tick-angle: 45deg;
+
+  --grid-minor: 1.5rem;
+  --grid-major: 7.5rem;
+  --grid-minor-opacity: 0.055;
+  --grid-major-opacity: 0.10;
+
+  --stamp-border: 2px;
+  --stamp-gap: 3px;
+  --stamp-inset: 0.7em 1em;
 }
 
 /* ==========================================================================
    §9  SEMANTIC — IMAGE & TEXTURE TREATMENT
    --------------------------------------------------------------------------
-   Photography treatment is a recipe-level decision and lives here so a whole
-   site's photo mood changes in one edit.
-   --image-filter        applied to editorial/gallery imagery
-   --image-filter-hero   hero-only treatment (usually a touch more contrast)
-   --scrim-*             gradient overlays that guarantee text contrast over
-                         photos. NEVER overlay type on a photo without one.
-   --grain-*             optional film grain overlay (Heritage/Nightlife)
-   --ratio-*             locked aspect ratios to prevent layout shift
+   Hard Valley light. Exterior job photography is shot outdoors at midday and
+   should look it: contrast up, saturation held back, a cool cast. This is the
+   opposite of the soft, warm, diffused treatment every interior remodeler
+   uses, and it is the correct treatment for the only photographs this client
+   will ever supply.
+
+   NO GRAIN. The blueprint grid in §8a is the texture.
    ========================================================================== */
 :root {
-  --image-filter: saturate(0.92) contrast(1.04);
-  --image-filter-hero: saturate(0.88) contrast(1.08) brightness(0.96);
-  --image-hover-scale: 1.04;
+  --image-filter: saturate(0.90) contrast(1.10);
+  --image-filter-hero: saturate(0.86) contrast(1.14) brightness(0.97);
+  --image-hover-scale: 1.03;
 
-  --scrim-strength: 0.62;
+  --scrim-strength: 0.68;
   --scrim-bottom: linear-gradient(
     to top,
     rgb(var(--color-overlay-scrim) / var(--scrim-strength)) 0%,
@@ -382,7 +494,7 @@
     rgb(var(--color-overlay-scrim) / 0) 65%
   );
 
-  --grain-opacity: 0.035;
+  --grain-opacity: 0;
   --grain-blend: multiply;
 
   --ratio-hero: 16 / 9;
@@ -396,9 +508,8 @@
 /* ==========================================================================
    §10  CONTEXT BLOCKS
    --------------------------------------------------------------------------
-   Any component placed inside .on-dark or .on-brand automatically re-points
-   its ink/line/focus tokens. This is how one component serves a cream section
-   and a near-black footer with zero variant props and zero contrast bugs.
+   Any component inside .on-dark or .on-brand re-points its ink/line/focus
+   tokens automatically. Wrap the section; never fork the component.
    ========================================================================== */
 .on-dark {
   --color-canvas: var(--color-surface-inverse);
@@ -407,37 +518,36 @@
   --color-ink: var(--color-ink-inverse);
   --color-ink-strong: var(--n-000);
   --color-ink-muted: var(--color-ink-inverse-muted);
-  --color-brand: var(--b-300);            /* 5.83:1 on --n-900 — AA */
+  --color-brand: var(--b-300);            /* 7.49:1 on --n-900 — AAA */
   --color-brand-strong: var(--b-100);
-  --color-brand-contrast: var(--n-900);   /* 5.83:1 on b-300 fill */
-  --color-accent: var(--a-300);           /* 10.09:1 on --n-900 — AAA */
+  --color-brand-contrast: var(--n-900);   /* 7.49:1 on b-300 fill */
+  --color-accent: var(--a-300);           /* 8.29:1 on --n-900 — AAA */
   --color-accent-contrast: var(--n-900);
-  --color-line: rgb(255 255 255 / 0.14);       /* decorative only */
-  --color-line-strong: rgb(255 255 255 / 0.42);/* 3.96:1 on n-800 — AA non-text */
-  --color-focus: var(--a-300);                 /* 8.62:1 on n-800 — AA non-text */
+  --color-line: rgb(255 255 255 / 0.16);       /* decorative only */
+  --color-line-strong: rgb(255 255 255 / 0.42);/* 4.01:1 on n-800 — AA */
+  --color-focus: var(--a-300);                 /* 7.25:1 on n-800 — AA */
   color: var(--color-ink);
   background-color: var(--color-canvas);
 }
 
 .on-brand {
-  /* Cards RECEDE on a brand band — they do not lift. A surface lighter than
-     its canvas costs every ink on it 1-2 points of contrast, which is exactly
-     how the first draft of this block shipped four broken recipes. Depth here
-     comes from --color-line and shadow, not from a lighter fill. */
+  /* Cards RECEDE on a brand band. A surface lighter than its canvas silently
+     costs every ink on it 1-2 points of contrast. Depth comes from rule
+     weight and line, not from a lighter fill. */
   --color-canvas: var(--b-800);
   --color-surface: var(--b-900);
   --color-surface-sunken: var(--b-900);
-  --color-ink: var(--n-050);              /* 11.81:1 on --b-800, 9.08:1 on --b-700 — AAA */
+  --color-ink: var(--n-050);              /* 11.91:1 on --b-800 — AAA */
   --color-ink-strong: var(--n-000);
-  --color-ink-muted: var(--b-100);        /*  9.06:1 on --b-800 — AAA */
+  --color-ink-muted: var(--b-100);        /*  9.56:1 on --b-800 — AAA */
   --color-brand: var(--a-300);
   --color-brand-strong: var(--a-100);
   --color-brand-contrast: var(--b-900);
   --color-accent: var(--a-300);
   --color-accent-contrast: var(--b-900);
-  --color-line: rgb(255 255 255 / 0.18);       /* decorative only */
-  --color-line-strong: rgb(255 255 255 / 0.46);/* 3.29:1 on b-700 — AA non-text */
-  --color-focus: var(--a-100);                 /* 7.98:1 on b-700 — AA non-text */
+  --color-line: rgb(255 255 255 / 0.20);       /* decorative only */
+  --color-line-strong: rgb(255 255 255 / 0.46);/* 4.06:1 on b-800 — AA */
+  --color-focus: var(--a-100);                 /* 10.14:1 on b-800 — AA */
   color: var(--color-ink);
   background-color: var(--color-canvas);
 }
@@ -445,8 +555,11 @@
 /* ==========================================================================
    §11  USER PREFERENCE OVERRIDES
    --------------------------------------------------------------------------
-   Reduced motion is handled at the token level so it applies everywhere at
-   once — CSS transitions, GSAP (which reads these), and scroll behaviour.
+   Reduced motion is handled at the token level so CSS transitions, GSAP
+   (which reads these) and scroll behaviour all fall in line at once. The
+   signature tier collapses to zero with everything else — including the
+   leader lines, which then simply exist, drawn, at rest. That static state is
+   the composition the section was designed around; the motion is the bonus.
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
   :root {
@@ -463,10 +576,6 @@
     --motion-hero-delay: 0s;
     --image-hover-scale: 1;
 
-    /* The signature tier collapses too. A screenshot moment that ignores a
-       vestibular-disorder setting is not a screenshot moment, it is a
-       liability — every signature component has a static composition that
-       still reads as designed with all of this at zero. */
     --sig-duration: 0.01ms;
     --sig-duration-long: 0.01ms;
     --sig-parallax: 0;
@@ -476,6 +585,9 @@
     --sig-magnet-strength: 0;
     --sig-tilt: 0deg;
     --sig-marquee-duration: 0s;
+
+    --sig-leader-duration: 0.01ms;
+    --sig-leader-stagger: 0s;
   }
 }
 
@@ -484,6 +596,8 @@
     --color-ink-muted: var(--n-700);
     --color-line: var(--n-400);
     --color-line-strong: var(--n-600);
-    --scrim-strength: 0.78;
+    --scrim-strength: 0.80;
+    --grid-minor-opacity: 0;
+    --grid-major-opacity: 0.16;
   }
 }

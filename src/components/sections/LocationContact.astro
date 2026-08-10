@@ -66,9 +66,11 @@ const t = useTranslations(locale);
 
       <div class="loc__block" data-reveal>
         <p class="loc__label">{t("location.address")}</p>
+        {/* The explicit {" "} is load-bearing: Astro collapses the newline
+            between two adjacent expressions, which rendered "CA91362". */}
         <address class="loc__address">
           {SITE.address.street}<br />
-          {SITE.address.locality}, {SITE.address.region}
+          {SITE.address.locality}, {SITE.address.region}{" "}
           {SITE.address.postalCode}
         </address>
         <a class="loc__link" href={SITE.mapsUrl} rel="noopener">

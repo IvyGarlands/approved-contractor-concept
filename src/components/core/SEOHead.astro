@@ -108,11 +108,18 @@ const schemas = [
 <meta name="twitter:image" content={ogImage} />
 {SITE.twitterHandle && <meta name="twitter:site" content={SITE.twitterHandle} />}
 
-{/* Icons — generated into /public by the client scaffold. */}
+{/*
+  Icons. These four hrefs were all present and TWO of the files were not —
+  /apple-touch-icon.png and /site.webmanifest 404'd on every page load, and
+  the missing manifest logged a parse error to the console on top of it. Both
+  now exist in /public, built from the stamp mark. Anything added to this list
+  in future has to ship with the file.
+*/}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content={SITE.themeColor} />
 
 {
   schemas.map((s) => (

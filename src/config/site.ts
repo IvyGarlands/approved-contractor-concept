@@ -1,9 +1,15 @@
 /**
  * site.ts — every site-wide fact, in one place.
  *
- * This is the second file (after tokens.css) that a new client project edits.
- * If a phone number, address or endpoint appears anywhere else in the codebase,
- * that is a bug — see CLAUDE.md §3.
+ * AMBUSH CONCEPT BUILD — Approved Contractor, Inc., Canoga Park CA.
+ *
+ * EVERY VALUE BELOW IS EITHER CLIENT-PUBLISHED OR EMPTY. Nothing here is
+ * inferred, rounded or filled in to make a section look complete. Where the
+ * operator has not supplied a fact, the value is "" and the section that would
+ * have used it does not render (CLAUDE.md §11).
+ *
+ * OPEN ITEMS the operator must close before this is sent — see the OPEN ITEMS
+ * block at the bottom of src/pages/index.astro for the full list.
  */
 
 /** Drives the JSON-LD @type and the default recipe set. See CLAUDE.md §10a. */
@@ -61,18 +67,29 @@ export type Weekday =
   | "sunday";
 
 /**
- * Hours live outside the `as const` SITE object on purpose. Inside it, each day
- * narrows to its own literal shape and a closed day loses `.open`/`.close`
- * entirely, which makes every consumer fight the type system for no benefit.
+ * HOURS ARE DELIBERATELY EMPTY.
+ *
+ * Approved Contractor does not publish opening hours anywhere the operator
+ * could find them, and inventing "Mon-Fri 8-5" for a contractor is exactly the
+ * kind of small invented fact that gets a homeowner standing outside a locked
+ * unit on a Saturday.
+ *
+ * Consequences, both intentional:
+ *   - `openingHours()` in lib/schema.ts filters out any day with no open/close,
+ *     so NO openingHoursSpecification is emitted at all. The schema stays valid.
+ *   - The homepage passes showHours={false} to LocationContact, so HoursTable
+ *     never renders.
+ *
+ * Fill this in and flip showHours back on the moment the operator has them.
  */
 export const HOURS: Record<Weekday, DayHours> = {
-  monday: { note: "Closed" },
-  tuesday: { open: "17:00", close: "22:00" },
-  wednesday: { open: "17:00", close: "22:00" },
-  thursday: { open: "17:00", close: "22:00" },
-  friday: { open: "17:00", close: "23:00" },
-  saturday: { open: "16:00", close: "23:00" },
-  sunday: { open: "16:00", close: "21:00" },
+  monday: {},
+  tuesday: {},
+  wednesday: {},
+  thursday: {},
+  friday: {},
+  saturday: {},
+  sunday: {},
 };
 
 export const WEEKDAYS: readonly Weekday[] = [
@@ -88,78 +105,111 @@ export const WEEKDAYS: readonly Weekday[] = [
 export const SITE = {
   /* ---- identity ---------------------------------------------------- */
   name: "Approved Contractor",
-  legalName: "Approved Contractor",
-  /** One line, under 90 chars. Used in the footer and as an OG fallback. */
-  tagline: "Hand-rolled pasta and coal-fired pizza on Federal Hill since 1974.",
+  legalName: "Approved Contractor, Inc.",
+  /**
+   * NOT their published tagline. "We Treat Your Home Like It's Our Own!" is
+   * the most-used line in the trade and organises nothing. This one states the
+   * category boundary instead — a proposal in their voice, replaced by their
+   * own words the moment they engage (CLAUDE.md §11).
+   */
+  tagline:
+    "Siding, windows, stucco and roofing. The part of your house everyone else sees.",
   vertical: "contractor" as Vertical,
 
   /** Production URL. Cloudflare Pages gives you a *.pages.dev to start with. */
   url: "https://ambush-approved-contractor.pages.dev",
 
   /* ---- contact ------------------------------------------------------ */
-  phone: "(401) 555-0142",
+  phone: "(877) 792-9082",
   /** E.164, for the tel: href. Never format this one. */
-  phoneHref: "+14015550142",
-  email: "hello@rosalias.example",
+  phoneHref: "+18777929082",
+  /** Not published by the client. Empty means LocationContact omits the block. */
+  email: "",
 
   address: {
-    street: "218 Atwells Avenue",
-    locality: "Providence",
-    region: "RI",
-    postalCode: "02903",
+    street: "9015 Eton Avenue, Unit D",
+    locality: "Canoga Park",
+    region: "CA",
+    postalCode: "91304",
     country: "US",
   },
 
-  /** Used by the map facade and the LocalBusiness schema. */
-  geo: { lat: 41.8236, lng: -71.4222 },
+  /**
+   * NULL ON PURPOSE. The map facade builds its query from the address string
+   * above, so it is already exact; `geo` is used only by the LocalBusiness
+   * JSON-LD. Rather than eyeball a lat/lng for a specific unit on Eton Avenue
+   * and ship a pin on the wrong building, this stays null and schema.ts's
+   * `if (SITE.geo)` guard drops the property.
+   *
+   * OPEN ITEM: paste the real coordinates from the Google Business Profile.
+   */
+  geo: null as { lat: number; lng: number } | null,
 
-  /** Deep link for the directions button. Place ID beats a coordinate string. */
-  mapsUrl: "https://maps.google.com/?q=218+Atwells+Avenue+Providence+RI",
+  /** Deep link for the directions button. Address query, so Google resolves it. */
+  mapsUrl:
+    "https://maps.google.com/?q=9015+Eton+Avenue+Unit+D+Canoga+Park+CA+91304",
 
   /* ---- hours --------------------------------------------------------
-     Defined as HOURS above. Drives both HoursTable and openingHours in
-     JSON-LD, so the page and the schema can never disagree.               */
+     Defined as HOURS above — empty, deliberately. See the note there.     */
   hours: HOURS,
 
   /* ---- forms ---------------------------------------------------------
-     One value, swapped per client. Formspree: https://formspree.io/f/xxxx
-     Web3Forms: https://api.web3forms.com/submit (+ access_key below).
-     Leave FORM_ENDPOINT empty during a demo build — ContactForm renders a
-     disabled state rather than silently posting into the void.             */
+     Empty during a demo: ContactForm renders a clearly disabled state
+     rather than silently posting into the void.                            */
   FORM_ENDPOINT: "",
-  /** Web3Forms only. Formspree ignores this. */
   FORM_ACCESS_KEY: "",
 
-  /* ---- social -------------------------------------------------------- */
+  /* ---- social --------------------------------------------------------
+     The intake says they are listed on Angi, HomeAdvisor, Houzz and Yelp but
+     supplied no URLs. Guessing a profile URL would put a wrong link in the
+     page AND a wrong `sameAs` in the structured data, so all four stay empty.  */
   social: {
-    instagram: "https://instagram.com/",
-    facebook: "https://facebook.com/",
+    instagram: "",
+    facebook: "",
     yelp: "",
     tripadvisor: "",
   },
 
-  /* ---- i18n ---------------------------------------------------------- */
+  /* ---- i18n ----------------------------------------------------------
+     English only. The Valley has a large Spanish-speaking homeowner base and
+     bilingual would be a genuine differentiator here — but it costs a full
+     content pass and every word of it would have to be the operator's, not a
+     machine translation on a licensed trade's advertising. Flagged in the
+     OPEN ITEMS block rather than half-done.                                 */
   defaultLocale: "en",
-  locales: ["en", "es"] as const,
+  locales: ["en"] as const,
 
   /* ---- SEO defaults --------------------------------------------------- */
-  /** Fallback OG image, 1200x630, lives in /public. */
   ogImage: "/og-default.jpg",
   twitterHandle: "",
 
-  /* ---- ambush mode ----------------------------------------------------
-     When `isConcept` is true, BaseLayout renders the ConceptBadge and emits
-     <meta name="robots" content="noindex,nofollow">. A demo must never be
-     indexed under the real business's name. Scaffolding an ambush project
-     sets this to true; a real client build sets it to false.               */
+  /**
+   * Browser-chrome colour (Android address bar, PWA splash). --b-700, Valley
+   * slate.
+   *
+   * This is the ONE place the palette is allowed to exist outside tokens.css,
+   * and only because `<meta name="theme-color">` and public/site.webmanifest
+   * are both read by the browser OUTSIDE the document's CSS and cannot see a
+   * custom property. Keep this value and the manifest's `theme_color` in step
+   * with --b-700 when the palette changes; nothing else may copy a hex.
+   */
+  themeColor: "#2e4354",
+
+  /* ---- ambush mode ---------------------------------------------------- */
   isConcept: true,
   studioName: "Looking Glass Labs",
   studioUrl: "",
 
-  /* ---- regulated verticals -------------------------------------------
-     Client-supplied, verbatim, or empty. Never authored by us — CLAUDE.md §11.
-     Rendered in the footer when non-empty.                                */
-  licenseNumber: "",
+  /* ---- regulated vertical: CONTRACTOR ---------------------------------
+     California B&P 7030.5 requires the licence number on advertising, so this
+     is not decoration — it belongs on the page.
+     #952272 is the number Approved Contractor publishes on their own site. It
+     ships verbatim and nothing is added to it: no "bonded", no "insured", no
+     "fully licensed" — the client makes none of those claims and we do not
+     originate one (CLAUDE.md §11).
+
+     OPEN ITEM: confirm on the CSLB licence lookup before this is sent.       */
+  licenseNumber: "CA Lic. #952272",
   legalDisclaimer: "",
 } as const;
 

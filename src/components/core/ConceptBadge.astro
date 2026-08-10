@@ -133,12 +133,20 @@ const t = useTranslations(locale);
     height: 1rem;
   }
 
-  /* On the narrowest phones the pill would cover the sticky call bar. */
+  /* On the narrowest phones the pill would cover the sticky call bar.
+     Going full-width was only half the fix — it still sat ON the bar, hiding
+     the primary CTA behind the disclosure notice, which is the worst possible
+     pair of things to stack. The badge has the higher z-index and wins, so it
+     has to be lifted clear of the bar's reserved height instead. */
   @media (max-width: 30em) {
     .concept-badge {
       inset-inline: var(--space-2xs);
       inset-block-end: var(--space-2xs);
       max-width: none;
+    }
+
+    :global(body.has-sticky-call) .concept-badge {
+      inset-block-end: calc(4.5rem + env(safe-area-inset-bottom));
     }
   }
 

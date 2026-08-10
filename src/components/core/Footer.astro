@@ -8,6 +8,7 @@
 import { SITE } from "../../config/site";
 import { useTranslations, localizePath, type Locale } from "../../i18n/ui";
 import type { NavLink } from "./SiteNav.astro";
+import StampMark from "./StampMark.astro";
 
 interface Props {
   locale: Locale;
@@ -19,13 +20,14 @@ const { locale, links = [], tone = "dark" } = Astro.props;
 const t = useTranslations(locale);
 const year = new Date().getFullYear();
 const social = Object.entries(SITE.social).filter(([, url]) => url);
+const legalName = (SITE.legalName || SITE.name).replace(/\.$/, "");
 ---
 
 <footer class:list={["site-footer", tone === "dark" && "on-dark"]}>
   <div class="container container--xl">
     <div class="site-footer__grid">
       <div class="stack stack--s">
-        <p class="site-footer__brand">{SITE.name}</p>
+        <p class="site-footer__brand"><StampMark size="md" /></p>
         {SITE.tagline && <p class="ink-muted measure--narrow">{SITE.tagline}</p>}
       </div>
 
@@ -69,8 +71,10 @@ const social = Object.entries(SITE.social).filter(([, url]) => url);
     </div>
 
     <div class="site-footer__base">
+      {/* The trailing period is stripped before ours is added: a legalName
+          ending in "Inc." otherwise renders "Approved Contractor, Inc..". */}
       <p class="site-footer__fine">
-        © {year} {SITE.legalName || SITE.name}. {t("footer.rights")}
+        © {year} {legalName}. {t("footer.rights")}
       </p>
 
       {

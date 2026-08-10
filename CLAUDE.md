@@ -435,12 +435,36 @@ Append a row on every project, **before invoicing**. Never edit a past row.
 | # | Date | Project | Vertical | Recipe | Hero variant | Display / Body | Colour story | Signature moment | One-sentence idea | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|
 | 001 | 2026-08-09 | _Demo: Rosalia's_ (engine reference build, not a client) | restaurant | Heritage Diner | HeroFullBleed (A) | Bitter / Karla | warm cream + deep red + brass | — (predates §4a) | — | Reference implementation. **This combination is spent — do not reuse for a paying client.** |
+| 002 | 2026-08-09 | Setiba Medical Spa, Westlake Village CA (ambush concept) | medspa | Clinical Calm as the *starting point only* — palette, scale, radius, tracking and ground all replaced. Filed as **"The Measure"** | **HeroMeasure (G)** — new. Type + a full-bleed calibrated scale. **No photography anywhere on the page.** | Instrument Serif / Libre Franklin, + JetBrains Mono carrying every measurement | **Oak & Bone** — dark-first: oak-black ground, bone paper, cypress brand, clay accent. `:root` is the DARK context and a new `.on-light` holds the light one | The measure: a viewport-wide calibrated rule under the headline whose marker travels in from zero and settles at 29% — conspicuously short of "Overdone" | Setiba is the clinic in the Conejo Valley whose work you are not supposed to be able to spot, so the site is a measuring instrument that stops short | No photos, no verbatim reviews, no named providers or medical director supplied → ProviderBios, testimonials, TrustBar, FAQ and Gallery all deliberately **not shipped** (§11). Type scale 1.125→~1.50: nearly flat through reading sizes, then breaks away hard. Radius 0 throughout. |
+| 003 | 2026-08-09 | Approved Contractor, Inc., Canoga Park CA (ambush concept) | contractor | Built Well as the *starting point only* — palette, ground, type pairing, scale, texture and signature all replaced; Field Service's trust architecture mixed in. Filed as **"The Elevation"** | **HeroElevation (H)** — new. A drawn architectural front elevation, six trades called out on leaders, dimensioned across the bottom. **No photography anywhere on the page.** | Archivo Variable **expanded to wdth 106** / Manrope, + JetBrains Mono carrying every dimension, licence and index number | **Plan Paper & Stamp** — light and COLD: plan-paper neutral, graphite ink, Valley slate brand (their own blue, desaturated to an eave shadow), plan-check red accent under 5% | The overall dimension: a hairline with 45° architect ticks spanning the whole facade, annotated **"THE PART EVERYONE ELSE SEES"**. The leaders extend to their callouts, then the drawing gets measured | Approved Contractor only builds the one part of a house its owner never looks at and every neighbour does — so the page is that part, drawn as an elevation, and their own name is the approval stamp on it | Zero photos and zero verbatim reviews supplied → BeforeAfter and TestimonialGrid wired but **not shipped** (§11); no owner named, no hours published, so `geo` is null and no `openingHoursSpecification` is emitted. Scale 1.235→1.355, **evenly stepped** — a scale rule is evenly divided. Display tracking near-neutral because the width axis carries it. Radius 0. Blueprint grid scoped to the hero only. |
+
+**Axes now spent** (check before the next build): warm-cream + red + brass (001); oak-black + bone + cypress + clay (002); cold plan-paper + graphite + slate + plan-check red (003). Bitter/Karla (001); Instrument Serif/Libre Franklin (002); Archivo-expanded/Manrope (003). HeroFullBleed (001); HeroMeasure (002); HeroElevation (003). 002 is still the only dark-ground build — the next dark-first project must move on palette **and** hero. 002 and 003 are both photography-free by necessity; a third would start to look like a house style rather than a response, so the next build should use its photographs.
 
 Patterns merged back into the engine:
 
 | Date | Pattern | From | Now lives at |
 |---|---|---|---|
-| 2026-08-09 | — | — | — |
+| 2026-08-09 | **Rule ticks** — a calibrated hairline leader drawn as a repeating-linear-gradient. Zero requests, reflows to any width. Retunable per recipe. | 002 Setiba | `tokens.css` §8b (`--tick-*`), with `.on-dark` / `.on-brand` overrides |
+| 2026-08-09 | **`ServiceIndex`** — a long capability list set as a ruled index instead of a card grid. Solves both the readability problem (43 items) and the honesty problem (a card needs a description; 43 invented descriptions in a regulated vertical is a §11 breach). | 002 Setiba | `sections/ServiceIndex.astro` + the `treatments` collection |
+| 2026-08-09 | **Empty collections resolve to an empty loader** rather than warning. An empty `testimonials` is the honesty system working, not a defect, and the old behaviour pushed you toward deleting schemas or inventing content to silence it. | 002 Setiba | `content.config.ts` (`hasContent` / `empty`) |
+| 2026-08-09 | **`check:recipes` measures against `.on-light`** when a project defines one. The gate was silently coupled to whatever the host project did with `:root`, so a dark-first build reported 14 false failures in the recipe book. | 002 Setiba | `scripts/check-recipes.mjs` |
+
+Bug fixes found during 002 and merged back — **all four shipped wrong output on every project built before this date:**
+
+| Date | Bug | Symptom | Fixed in |
+|---|---|---|---|
+| 2026-08-09 | `HoursTable` formatters rendered in the **build machine's** timezone | Every weekday label shifted back a day and every time was re-expressed locally. From Los Angeles, `10:00–18:00` rendered as **"2:00 AM – 10:00 AM"** against the wrong day. The reference build was wrong too. One wrong digit kills an ambush. | `core/HoursTable.astro` — both `Intl.DateTimeFormat`s pinned to `timeZone: "UTC"` |
+| 2026-08-09 | `.hours__today-tag` styles never applied | Astro scoped CSS compiles to `[data-astro-cid-…]` selectors; the tag is built with `document.createElement` and never carries the attribute. The "Today" pill rendered as unstyled text jammed against the weekday. | `core/HoursTable.astro` — `:global(.hours__today-tag)` |
+| 2026-08-09 | `LocationContact` address ran region and postcode together | `"Westlake Village, CA91362"` — Astro collapses the newline between two adjacent expressions. | `sections/LocationContact.astro` — explicit `{" "}` |
+| 2026-08-09 | `ConceptBadge` covered the mobile sticky call bar | Under 30em the badge goes full-width at the bottom and has the higher z-index, so the disclosure notice sat directly on top of the primary CTA. | `core/ConceptBadge.astro` — lifted clear of the bar's reserved height |
+
+Generalisation candidates from 002, **deliberately not merged yet:**
+
+| Pattern | Why it is being held |
+|---|---|
+| `core/Wordmark.astro` | Every client wants a real logotype component, but this one's supporting mark (the tick rule with a marker at `--measure-rest`) is Setiba's identity, not a generic one. Merging it means designing the generic version first. |
+| A `brand` slot on `SiteNav` | `SiteNav` still hardcodes `SITE.name` in a `<span>`, which is what forced a component edit in 002. A named slot with a text fallback is the right fix and is additive — but it is an API change to shared infrastructure and has been exercised on exactly one build. |
+| `sections/Creed.astro`, `verticals/medspa/MembershipLadder.astro` | Both are good and both are one build old. Revisit after a second project wants them. |
 
 ---
 

@@ -12,6 +12,7 @@
 import { SITE } from "../../config/site";
 import { useTranslations, localizePath, type Locale } from "../../i18n/ui";
 import MobileNav from "./MobileNav.astro";
+import StampMark from "./StampMark.astro";
 
 export interface NavLink {
   label: string;
@@ -32,8 +33,9 @@ const home = localizePath("/", locale);
 
 <header class="site-header" data-site-header>
   <div class="site-header__inner container container--xl">
+    {/* The wordmark IS the stamp — see core/StampMark.astro for why. */}
     <a class="site-header__brand" href={home}>
-      <span class="site-header__name">{SITE.name}</span>
+      <StampMark size="sm" />
     </a>
 
     <nav class="site-header__nav" aria-label={t("nav.label")}>
@@ -122,7 +124,11 @@ const home = localizePath("/", locale);
   }
 
   .site-header__link {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    /* 44px, not the 43 that padding alone produced. The house budget is an
+       explicit number; being one pixel under it is still under it. */
+    min-height: 2.75rem;
     padding-block: var(--space-2xs);
     font-size: var(--step--1);
     font-weight: var(--weight-strong);

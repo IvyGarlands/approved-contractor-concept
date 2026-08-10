@@ -1,0 +1,168 @@
+---
+/**
+ * ServiceLegend — the key to the drawing.
+ *
+ * On a plan sheet the drawing carries numbered bubbles and a legend elsewhere
+ * on the sheet decodes them. That is exactly the relationship between
+ * HeroElevation and this section: bubble 03 on the facade is line 03 here.
+ *
+ * The numbers are not stored anywhere. Both components derive them from
+ * position in the SAME `services` collection, so the drawing and the key
+ * physically cannot disagree — reorder the collection and both renumber
+ * together. That is the content-collections rule (CLAUDE.md §3) doing real
+ * structural work rather than just holding copy.
+ *
+ * Why a legend rather than the engine's ServicesGrid: a card grid says "here
+ * are six things we sell". A numbered legend says "here are the six things on
+ * that drawing", which is the whole argument this page is making — that this
+ * firm's scope is a closed, finite set and every item in it is on the outside
+ * of the house.
+ */
+import Section from "./Section.astro";
+import SectionHeader from "./SectionHeader.astro";
+import type { CollectionEntry } from "astro:content";
+import type { SectionProps } from "./Section.astro";
+
+interface Props extends SectionProps {
+  eyebrow?: string;
+  heading: string;
+  body?: string;
+  items: CollectionEntry<"services">[];
+  /** Small note under the list — the scope boundary, usually. */
+  note?: string;
+}
+
+const {
+  eyebrow,
+  heading,
+  body,
+  items,
+  note,
+  id = "services",
+  tone,
+  spacing,
+  ...rest
+} = Astro.props;
+---
+
+<Section
+  id={id}
+  tone={tone}
+  spacing={spacing}
+  width="xl"
+  labelledBy={`${id}-heading`}
+  {...rest}
+>
+  <SectionHeader
+    eyebrow={eyebrow}
+    heading={heading}
+    body={body}
+    headingId={`${id}-heading`}
+  />
+
+  <ol class="legend" role="list" data-reveal-stagger>
+    {
+      items.map((item, i) => (
+        <li class="legend__row" data-reveal>
+          <p class="legend__num" aria-hidden="true">
+            {String(i + 1).padStart(2, "0")}
+          </p>
+
+          <h3 class="legend__name">
+            {/* The number is decorative above and read here instead, so a
+                screen reader gets "03. Stucco" rather than "zero three". */}
+            <span class="visually-hidden">{`${i + 1}. `}</span>
+            {item.data.name}
+          </h3>
+
+          <div class="legend__text">
+            <p class="legend__summary">{item.data.summary}</p>
+            {item.data.detail && <p class="legend__detail">{item.data.detail}</p>}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+
+  {note && <p class="annot legend__note" data-reveal>{note}</p>}
+</Section>
+
+<style>
+  .legend {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-block-start: var(--rule-object) solid var(--color-ink-strong);
+  }
+
+  .legend__row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "num name"
+      "num text";
+    column-gap: var(--space-m);
+    row-gap: var(--space-2xs);
+    padding-block: var(--space-m);
+    border-block-end: var(--rule-dimension) solid var(--color-line-strong);
+  }
+
+  .legend__num {
+    grid-area: num;
+    font-family: var(--face-mono);
+    font-size: var(--step-1);
+    font-weight: var(--weight-strong);
+    letter-spacing: var(--tracking-label);
+    line-height: 1;
+    color: var(--color-accent);
+    /* Locks the number column so six rows of digits align as a column of
+       figures rather than drifting with each name's length. */
+    min-inline-size: 3ch;
+  }
+
+  .legend__name {
+    grid-area: name;
+    font-size: var(--step-2);
+    line-height: var(--leading-heading);
+  }
+
+  .legend__text {
+    grid-area: text;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  .legend__summary {
+    font-size: var(--step-1);
+    line-height: var(--leading-snug);
+    color: var(--color-ink);
+    max-width: var(--measure);
+  }
+
+  .legend__detail {
+    color: var(--color-ink-muted);
+    max-width: var(--measure);
+  }
+
+  .legend__note {
+    margin-block-start: var(--space-l);
+    color: var(--color-ink-muted);
+  }
+
+  /* On a wide sheet the legend splits into columns the way a real one does:
+     the item and its description sit side by side against a ruled baseline. */
+  @media (min-width: 60em) {
+    .legend__row {
+      grid-template-columns: auto minmax(14rem, 20rem) minmax(0, 1fr);
+      grid-template-areas: "num name text";
+      align-items: start;
+      column-gap: var(--space-2xl);
+      padding-block: var(--space-l);
+    }
+
+    .legend__num {
+      font-size: var(--step-2);
+    }
+  }
+</style>

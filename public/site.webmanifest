@@ -1,0 +1,13 @@
+{
+  "name": "Approved Contractor, Inc.",
+  "short_name": "Approved Contractor",
+  "description": "Siding, windows, stucco and roofing. The part of your house everyone else sees.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#fbfcfd",
+  "theme_color": "#2e4354",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

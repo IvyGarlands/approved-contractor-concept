@@ -9,8 +9,29 @@
  * The <script> for motion.ts is a plain Astro script: bundled, hashed, and
  * `type="module"` (therefore deferred), so GSAP never blocks render.
  */
-import "@fontsource-variable/bitter";
-import "@fontsource-variable/karla";
+/* Archivo is imported from its WIDTH-axis build, not the standard one: the
+   display voice is set expanded (tokens.css §4, --face-display-stretch).
+   Three families is one over the house limit and the reason is in tokens.css
+   §2 — the mono is the drawing's annotation voice, not decoration. */
+import "@fontsource-variable/archivo/wdth.css";
+import "@fontsource-variable/manrope/wght.css";
+import "@fontsource-variable/jetbrains-mono/wght.css";
+
+/**
+ * The display face is preloaded, and nothing else is (CLAUDE.md §6).
+ *
+ * The two-axis Archivo is 90KB against 35KB for the weight-only build. That
+ * 55KB buys the width axis, which is the identity: the display voice on this
+ * site is EXPANDED, the way an architectural sheet title is set, and there is
+ * no way to fake that with tracking. It is paid for honestly rather than
+ * hidden — this page carries no photography at all, so its total transfer is
+ * roughly a third of a normal build of the same page.
+ *
+ * Preloading it means the h1 — which IS the LCP element here, there being no
+ * hero image — swaps from the fallback in the first paint rather than the
+ * third. `?url` gives the hashed, emitted path so this can never rot.
+ */
+import archivoDisplay from "@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url";
 
 import "../styles/tokens.css";
 import "../styles/base.css";
@@ -73,6 +94,13 @@ const t = useTranslations(locale);
       noindex={noindex}
       faq={faq}
       priceRange={priceRange}
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href={archivoDisplay}
+      crossorigin
     />
     <slot name="head" />
   </head>
