@@ -124,11 +124,6 @@ h4,
 h5,
 h6 {
   font-family: var(--face-display);
-  /* The identity move (tokens.css §4): the display voice is EXPANDED, not
-     tight. Archivo carries a real width axis, so this is one declaration
-     rather than a second font file. Falls back harmlessly on faces without
-     the axis. */
-  font-stretch: var(--face-display-stretch, 100%);
   color: var(--color-ink-strong);
   font-weight: var(--weight-display);
   line-height: var(--leading-heading);
@@ -165,12 +160,18 @@ b {
   font-weight: var(--weight-strong);
 }
 
+/* THERE IS NO --face-mono IN THIS BUILD (tokens.css §2). A monospace is the
+   drafting register builds 002 and 003 already spent, and a licence record
+   card is exactly the thing that would reach for one. Code elements are set in
+   the body face with record tracking instead; nothing on this page is code. */
 code,
 kbd,
 samp,
 pre {
-  font-family: var(--face-mono);
-  font-size: 0.9em;
+  font-family: var(--face-body);
+  font-size: 0.94em;
+  letter-spacing: var(--tracking-record);
+  font-variant-numeric: tabular-nums;
 }
 
 hr {
@@ -194,7 +195,6 @@ hr {
 /* Display type that must break the body scale — hero lines, pull quotes. */
 .display {
   font-family: var(--face-display);
-  font-stretch: var(--face-display-stretch, 100%);
   font-size: var(--step-6);
   font-weight: var(--weight-display);
   line-height: var(--leading-display);
@@ -206,56 +206,55 @@ hr {
   font-size: var(--step-7);
 }
 
-/* ---- the plan-sheet vocabulary (tokens.css §8a) ------------------------
-   Two primitives used across five sections. They live here rather than in a
-   component because more than one section needs them and duplicating either
-   one would mean two places to fix the same drawing.                      */
+/* ---- the stamp-and-record vocabulary (tokens.css §8a) ------------------
+   Two primitives, both excavated from the client's own materials rather than
+   invented. They live here rather than in a component because several sections
+   need them and duplicating either would mean two places to fix one motif.
 
-/* .annot — the drawing's ANNOTATION voice. Mono, tracked hard, uppercase.
-   Every dimension, licence number, service-area index and sheet reference on
-   this site is set in it. This is the third typeface earning its place. */
-.annot {
-  font-family: var(--face-mono);
+   REPLACES the plan-sheet vocabulary of build 003 (.annot and .dim-rule —
+   monospace annotation and 45-degree dimension ticks). Both are deliberately
+   gone: they are the technical-document register the differentiation log
+   flagged as a studio tic across builds 002 and 003.                        */
+
+/* .record — the RECORD voice. Every field label, licence number, bond figure,
+   date and attribution on this page is set in it.
+
+   It is what a monospace would have been, done without one: the body face,
+   tracked to --tracking-record (which is lifted from the letterspacing of
+   "Contractor" in their wordmark), with tabular figures switched on so columns
+   of numbers in the record card line up. Tabular numerals are the ONLY thing a
+   mono was actually needed for here. */
+.record {
+  font-family: var(--face-body);
   font-size: var(--step--1);
   font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-wide);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-record);
   text-transform: uppercase;
   line-height: var(--leading-snug);
   color: var(--color-ink-muted);
-  /* Tracking adds a trailing space after the last glyph; without this the
-     text sits visibly off-centre inside any centred or bordered box. */
-  text-indent: var(--tracking-wide);
+  /* Tracking adds a trailing space after the last glyph; without this the text
+     sits visibly off-centre inside any centred or bordered box. */
+  text-indent: var(--tracking-record);
 }
 
-/* .dim-rule — a dimension line: a hairline terminating in the 45-degree
-   slashes an architect uses instead of arrowheads. Used as a section
-   divider and under the hero callouts. Purely decorative, hence
-   --color-line and aria-hidden at every call site. */
-.dim-rule {
-  position: relative;
+/* .rule — their divider. They ship a 202x3 pixel JPEG of a red line and use it
+   three times on the homepage, with a white counterpart for dark grounds. Same
+   motif at the same proportions, as one element: zero requests, correct in
+   every colour context, and it can be made responsive.
+
+   Decorative, hence aria-hidden at every call site. */
+.rule {
   display: block;
-  block-size: var(--rule-dimension);
+  inline-size: min(var(--rule-length), 100%);
+  block-size: var(--rule-weight);
+  background-color: var(--color-brand);
+  border: 0;
+  margin: 0;
+}
+
+.rule--full {
   inline-size: 100%;
-  background-color: var(--color-line-strong);
-}
-
-.dim-rule::before,
-.dim-rule::after {
-  content: "";
-  position: absolute;
-  inset-block-start: 50%;
-  inline-size: var(--rule-dimension);
-  block-size: calc(var(--dim-tick-size) * 2);
-  background-color: var(--color-line-strong);
-  transform: translateY(-50%) rotate(var(--dim-tick-angle));
-}
-
-.dim-rule::before {
-  inset-inline-start: 0;
-}
-
-.dim-rule::after {
-  inset-inline-end: 0;
 }
 
 /* A dimension broken around a centred label keeps its terminator only at the

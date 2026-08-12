@@ -1,0 +1,218 @@
+APPROVED CONTRACTOR, INC. — REVIEWS
+Gathered 2026-08-12 by Looking Glass Labs. Every quote is verbatim, including
+typos and the reviewer's own capitalisation and ellipses. Names are recorded as
+the source published them; the build renders first name + last initial only.
+
+No review anywhere in this file was written, edited, tidied or shortened by me.
+Where a source truncated a quote with "...", the truncation is the source's and
+is preserved. Nothing has been stitched together across sources.
+
+================================================================================
+1. PUBLISHED ON THEIR OWN SITE  [P]
+================================================================================
+Source: https://approvedcontractorinc.com/ (homepage)
+No rating, platform or date is attached to either of these on their site.
+
+--- Kimberly A. ------------------------------------------------------------
+"I definitely love it! My house looks better than brand new!
+
+I just wish I had done the Cool Life exterior coating sooner. It is classy,
+refined and sophisticated now. No more looking like a hot mess. No more looking
+like a faded, worn out, cotton candy pink puff. No more looking unfinished and
+just a project that I was going to address someday.
+
+Jared made it easy to say yes. He is professional and by the book. He got me an
+amazing deal, and took care of financing the project in a few minutes.
+
+This transformation is gorgeous! As a widow and single mom, my daughter and I
+really appreciate all y'all have done for us."
+
+  USED: yes, as the long pull-quote.
+  NOTE: this is the only long-form review available anywhere and it is the best
+  writing on their entire site. "No more looking like a faded, worn out, cotton
+  candy pink puff" is a real sentence by a real person. It is used at length
+  rather than cut to a fragment.
+  NOTE: names the owner personally — corroborates facts.txt §4.
+
+--- Sue H. -----------------------------------------------------------------
+"We had window replacement, new siding and paint. The crew that did the work was
+excellent, clean, and sensitive to our needs. We love the way things turned out."
+
+  USED: yes.
+
+================================================================================
+2. GUILDQUALITY — VERIFIED SURVEY RESPONSES  [T, high confidence]
+================================================================================
+Source: https://www.guildquality.com/profile/approved-contractor-inc-3
+GuildQuality surveys customers directly rather than accepting open submissions,
+which is why this is the source the build leans on. It also publishes negative
+responses, which is the reason to trust it.
+
+Platform-level figures (recorded, NOT published — see facts.txt CONFLICT #4):
+  4.6 stars · 85 reviews from 99 respondents of 314 surveys sent
+  "75 of 84 would recommend"
+
+--- Kris H. · San Juan Capistrano, CA · Dec 27, 2024 -----------------------
+"I have used Approved Contractor on several properties and referred them to
+neighbors because they are SO EASY to work with."
+  USED: yes. Repeat customer + referral, which is the strongest signal in trade.
+
+--- Jeffrey K. · Reseda, CA · Jul 26, 2024 ---------------------------------
+"Jared and his team were terrific...The quality of the work was excellent."
+  USED: yes. Second independent source naming the owner.
+
+--- Chris B. · San Diego, CA · Jul 07, 2024 --------------------------------
+"Best experience I have had with a contractor working on my house"
+  USED: yes.
+
+--- Marisa B. · Malibu, CA · Jul 07, 2024 ----------------------------------
+"Their team does a great job, shows up on time, works really hard, and does
+excellent and quality work."
+  USED: yes. "Shows up on time" answers their own published promise directly.
+
+--- Carol C. · West Hills, CA · Jul 09, 2024 -------------------------------
+"Job was completed professionally in a timely manner."
+  USED: no — accurate but generic; three stronger quotes cover the same ground.
+
+--- Tom D. · San Gabriel, CA · Jun 08, 2023 --------------------------------
+"They did an excellent job...It was installed perfectly."
+  USED: yes.
+
+--- Eric C. · Burbank, CA · Jan 17, 2023 -----------------------------------
+"Everyone at Approved Contractors went out of their way to answer our questions."
+  USED: yes. Answers their "we take the time to educate you" promise.
+
+--- Sonia A. · Walnut, CA · Aug 16, 2023 -----------------------------------
+"Overall, based on our experience, this is an excellent company/contractor to
+work with."
+  USED: no.
+
+--- Neil B. · La Jolla · Apr 21, 2022 --------------------------------------
+"Excellent contractor - everything done to the highest quality and on time"
+  USED: yes.
+
+--- Marshall S. · Encino · Mar 28, 2022 ------------------------------------
+"Approved Contractor, Inc. was a pleasure to work with."
+  USED: no.
+
+--- Zach P. · Los Angeles · Mar 25, 2022 -----------------------------------
+"The staff and crew did a wonderful job...the final result looks fantastic."
+  USED: no.
+
+--- Tracy G. · Little Rock · Jun 04, 2021 ----------------------------------
+"Jared Green and Approved Contractors did an excellent job installing the James
+Hardie Siding."
+  USED: no on the page (third owner mention; two is enough), but recorded as
+  corroboration for facts.txt §4. NOTE: "Little Rock" here is Littlerock, CA
+  in the Antelope Valley, not Arkansas — inferred, so not published.
+
+--- Lalo H. · Bonita, CA · Jan 11, 2023 ------------------------------------
+"Thank you for beautifying our home!"
+  USED: no.
+
+--- Mette W. · Norwalk, CA · Jun 14, 2023 ----------------------------------
+"Really enjoyed working with this company."
+  USED: no.
+
+--- Brian B. · Laguna Beach · Apr 15, 2022 ---------------------------------
+"I have already recommended you."
+  USED: no.
+
+--- Leon C. · Long Beach · Aug 13, 2022 ------------------------------------
+"Work done non-stop...I have reccommended Approved Contractors to a couple
+neighbors."
+  USED: no. (Reviewer's spelling of "reccommended" preserved above.)
+
+--- Jasmina B. · Upland, CA · Mar 05, 2023 ---------------------------------
+"Approved contractors were professional from beginning to start."
+  USED: no.
+
+--- Lynda S. · Carson, CA · Aug 21, 2022 -----------------------------------
+"The final project was excellent...all the parties seemed committed to finding
+an acceptable solution."
+  USED: no. Reads as a recovered problem, and the source's ellipsis hides what
+  the problem was. Publishing the good half of a mixed review is exactly the
+  editing this file exists to prevent.
+
+--- MIXED AND NEGATIVE — recorded in full, deliberately not published --------
+
+Sebastian R. · Covina, CA · Jan 10, 2023
+"This was a great company to work with the only issues were delays in product."
+
+John S. · Glendora, CA · Sep 27, 2022
+"In the end, the work performed was acceptable, but getting there required a lot
+more supervision and quality control work on my part."
+
+North Hollywood, CA (no name given) · Jul 21, 2023
+"They seem to have their siding installation down, but that's about it...They
+also caused damage to our property that's not fixable."
+
+  These are NOT published. That is not concealment — a business's own marketing
+  page is not a review aggregator, and no site of theirs or ours is obliged to
+  carry criticism. They are recorded here because the operator needs the honest
+  picture before a sales call: the recurring themes across the negative set are
+  product/schedule delays and site supervision, not workmanship. If they are
+  asked about it, that is the true answer.
+
+--- Anonymous entries (city only, no name) ---------------------------------
+Torrance, CA · Oct 31, 2024 — "They were very easy to work with and kept me
+  updated along the way."
+North Hollywood, CA · Oct 31, 2024 — "Outstanding work at a fair price!"
+San Diego, CA · Jul 22, 2024 — "I already have recommended them to many
+  neighbors and friends in the area."
+Laguna Niguel, CA · Jul 25, 2023 — "They were knowledgeable, responsive to
+  questions, and provided exceptional quality work."
+  USED: none. An unattributed quote is indistinguishable from an invented one,
+  which is the whole point of the rule.
+
+================================================================================
+3. GOOGLE, VIA A CONTAMINATED AGGREGATOR  [T, LOW confidence — NOT PUBLISHED]
+================================================================================
+Source: https://reputation.authenticfeedback.com/approved-contractor-inc-172323804661649
+Claims 5.0 from 258 reviews.
+
+DISQUALIFIED. The same page attributes this to Approved Contractor:
+  Liraz Edri (Google) — "Choosing Line of Art Construction for our driveway was
+  one of the best decisions we made... The transformation is incredible."
+That is a review of a different company for a service Approved Contractor does
+not offer. One provably mis-attributed review means the source cannot be used to
+establish that any of the others are real, so none of the following is published:
+
+  Jeremy Scarlett (Google, ~8 months ago)
+  "Approved Contractor was the clear winner. Their sales rep came out in person,
+   was professional and low-pressure, explained all my options, provided full
+   license and insurance info..."
+
+  George Kaye (Google, ~1 month ago)
+  "Jared, the owner came the day after I called and explained everything... The
+   price was reasonable and the care and quality from the workers to the office
+   staf[f]..."
+
+  Todd Smith (Google, ~6 months ago)
+  "I recently had my siding, soffit, and fascia replaced on my house... The
+   transformation has been nothing short of amazing."
+
+  William McCarthy (Google, ~11 months ago)
+  "We love are new windows, they transform the look of the house... The price was
+   fair and the quality of the window was great."
+
+  PAINFUL NOTE FOR THE OPERATOR: the Jeremy Scarlett quote — a customer saying
+  they chose this contractor because the rep "provided full license and insurance
+  info" — is the single best sentence anyone has ever written about this
+  business, and it is the exact thesis of the redesign. It is left off the page
+  because I cannot verify it. If they can produce it from their own Google
+  Business Profile, it goes straight in as the lead testimonial.
+
+================================================================================
+4. SOURCES THAT COULD NOT BE READ
+================================================================================
+  yelp.com/biz/approved-contractor-canoga-park-4 — 125 reviews, 164 photos per
+    search listing. Page serves a bot-verification interstitial. Not bypassed.
+  jameshardie.com contractor listing — Cloudflare challenge. Not bypassed.
+  homeadvisor.com and angi.com profiles — HTTP 403 to a plain fetch.
+  Google Business Profile — no directly readable source found.
+
+  Yelp is the biggest gap: 125 reviews is the largest verifiable body of text
+  about this business and none of it could be read. The operator can copy 6–10
+  from Yelp and Google in about ten minutes, and that would materially improve
+  the testimonial section.

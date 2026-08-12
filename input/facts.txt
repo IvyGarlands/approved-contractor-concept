@@ -1,0 +1,482 @@
+APPROVED CONTRACTOR, INC. — FACT SHEET
+Gathered 2026-08-12 by Looking Glass Labs for a concept redesign.
+Workflow override: the operator supplied nothing. Every line below was gathered
+by me and carries its source. Nothing here is inferred, rounded or filled in.
+
+CONVENTIONS
+  [P] primary source — the business's own site, or a government/official register
+  [T] third-party source
+  [X] EXCLUDED from the build — reason given
+  Conflicts are logged in the CONFLICTS block at the bottom and, per the
+  never-invent rule, the conflicting fact is left off the page.
+
+================================================================================
+1. IDENTITY
+================================================================================
+
+Legal name:      APPROVED CONTRACTOR INC
+  [P] https://www.cslb.ca.gov/OnlineServices/CheckLicenseII/  (licence 952272)
+  Rendered on their own site as "Approved Contractor, Inc."
+  [P] https://approvedcontractorinc.com/about-approved-contractor-inc/
+
+Trading name:    Approved Contractor
+Entity type:     Corporation
+  [P] CSLB licence detail, "Entity: Corporation"
+
+Self-description (verbatim):
+  "Approved Contractor is an award-winning siding, windows, & home exterior
+   contractor serving the Greater Los Angeles & San Diego areas, including
+   Orange County, Riverside County and Ventura County."
+  [P] https://approvedcontractorinc.com/ (homepage h1)
+
+Published tagline (verbatim):
+  "We Treat Your Home Like It's Our Own!"
+  [P] homepage
+  NOTE: not used as the organising idea. It is the single most common line in
+  the trade and it organises nothing. Retained verbatim in one place only.
+
+Header line (verbatim):
+  "As Los Angeles & San Diego's Trusted Siding & Windows Contractor"
+  [P] homepage
+
+Hero headline (verbatim):
+  "A Home Exterior that Withstands the Test of Time"
+  [P] homepage
+
+Mission (verbatim):
+  "Approved Contractor Inc. is on a mission to help Southern California
+   homeowners improve the energy efficiency of their homes by installing new
+   siding, vinyl windows, and texture coating."
+  [P] https://approvedcontractorinc.com/about-approved-contractor-inc/
+
+================================================================================
+2. THE LICENCE — INDEPENDENTLY VERIFIED
+================================================================================
+
+This is the spine of the concept, so it was verified against the state register
+rather than taken from their own site. Lookup performed 2026-08-12.
+
+  [P] https://www.cslb.ca.gov/OnlineServices/CheckLicenseII/  — licence # 952272
+
+  Business name on record:  APPROVED CONTRACTOR INC
+  Address on record:        9015 ETON AVENUE UNIT D, CANOGA PARK, CA 91304
+  Business phone on record: (877) 792-9082
+  Entity:                   Corporation
+  Issue date:               09/14/2010
+  Expire date:              09/30/2028
+  Status (verbatim):        "This license is current and active."
+  Classification:           B - GENERAL BUILDING
+
+  Contractor's Bond:        MERCHANTS BONDING COMPANY (MUTUAL)
+                            Bond number 101362313
+                            Bond amount $25,000
+                            Effective 02/13/2025
+
+  Bond of Qualifying Individual:
+    "The qualifying individual JARED PERRY GREEN certified that he/she owns 10
+     percent or more of the voting stock/membership interest of this company;
+     therefore, the Bond of Qualifying Individual is not required."
+     Effective 09/09/2016
+
+  Workers' Compensation:    STATE COMPENSATION INSURANCE FUND
+                            Policy 1966713
+                            Effective 03/15/2011, expires 03/01/2027
+                            Class code 5107 - Door/Pre-Glazed Window Installation
+
+  Miscellaneous:            "12/14/2015 - CONTRACTOR HIS LETTER SENT"
+
+  No disclosable complaints, civil judgments or arbitrations were listed on the
+  record at the time of lookup.
+
+USAGE NOTE. The bond and workers' comp facts are published on the page BECAUSE
+they were read off the state register, are attributed to it in the markup, and
+are dated. They are not originated claims. The date is shown so the page cannot
+silently go stale — a bond effective date and a policy expiry both move.
+
+California B&P 7030.5 requires the licence number on contractor advertising, so
+carrying it is a legal requirement, not decoration.
+
+================================================================================
+3. CONTACT
+================================================================================
+
+Address:    9015 Eton Avenue, Unit D, Canoga Park, CA 91304
+  [P] CSLB register (authoritative) AND
+  [P] https://approvedcontractorinc.com/contact/
+
+Phone:      (877) 792-9082
+  [P] CSLB register — "Business Phone Number:(877) 792-9082"
+  [P] https://approvedcontractorinc.com/contact/ — "877.792.9082"
+  [P] https://approvedcontractorinc.com/about-approved-contractor-inc/
+  See CONFLICT #1 — the homepage header shows a different number.
+
+Email:      NOT PUBLISHED anywhere I could find. Left empty; the contact
+            section omits the email block rather than guessing an address.
+
+Hours:      NOT PUBLISHED by the business on any page of their own site.
+            [X] Third-party listings show "Mon-Fri 8:00 AM - 8:00 PM,
+                Sat 8:00 AM - 5:00 PM" but I could not reach a primary source,
+                and two aggregators disagreed on Saturday. Omitted entirely:
+                no hours table, and no openingHoursSpecification in the JSON-LD.
+                Inventing "Mon-Fri 8-5" for a contractor is exactly the small
+                invented fact that leaves a homeowner outside a locked unit.
+
+Geo:        NOT ESTABLISHED. `geo` stays null and the property is dropped from
+            the JSON-LD rather than eyeballing a lat/lng for a specific unit.
+            The map facade builds its query from the address string, so it is
+            already exact.
+
+Second location: "Serving Southern California With Two Locations In Los Angeles
+            And San Diego"  [P] https://approvedcontractorinc.com/san-diego/
+            The San Diego page publishes the SAME Canoga Park address and the
+            same phone, so no second address is claimed on the page.
+            [T] BBB lists a San Diego address (5173 Waring Rd #86, San Diego CA
+            92120) and phone (619) 933-8306 — NOT on any primary source.
+            [X] Excluded. See CONFLICT #2.
+
+Facebook:   https://www.facebook.com/ApprovedContractorInc
+  [P] linked from their own site footer
+
+================================================================================
+4. PEOPLE
+================================================================================
+
+Jared Green — Owner and President
+  [P] https://approvedcontractorinc.com/about-approved-contractor-inc/
+      ("Jared Green, Owner and President")
+  [P] CSLB register names the qualifying individual as JARED PERRY GREEN
+  [T] BBB principal contact: "Mr. Jared Green, CEO/President"
+  Corroborated by customers naming him directly in reviews (see reviews.txt:
+  Jeffrey K., Tracy G., and their own site's Kimberly A.).
+  NOTE: the site's own review from Kimberly A. says "Jared made it easy to say
+  yes" — the owner appears to run consultations personally. That is a fact about
+  him doing the job, sourced twice, and it is used on the page.
+
+  [X] No portrait photograph of Jared Green is published on their own site or on
+      any source I could reach. The owner section is therefore typographic. It
+      names him rather than showing him. Flagged as an open item.
+
+Justin Charney — Regional Manager
+  [T] BBB principal contacts only. Not on any primary source.
+  [X] Excluded — one third-party source, unconfirmed, and a named individual is
+      not something to publish on a single unverified source.
+
+  [X] "over 22 years of management experience in the construction industry"
+      appeared in a search-result summary with no reachable primary source.
+      Excluded.
+
+================================================================================
+5. SERVICES  (all verbatim from their own site)
+================================================================================
+
+Their own summary list  [P] homepage:
+  - "Siding replacement & installation"
+  - "Window replacement & installation"
+  - "Home exterior painting & texturing"
+  - "Stucco remediation & application"
+  - "Roofing replacement & installation"
+Plus, from the main navigation  [P]:
+  - Shutters (under Window Replacement)
+
+Siding  [P] https://approvedcontractorinc.com/siding/ and homepage:
+  "New siding installation has a high return on investment, especially when you
+   choose long-lasting, fiber cement siding — like James Hardie."
+  Sub-pages: James Hardie Siding; James Hardie Colors & Styles; Fiber Cement
+  Siding; Fire-Damaged Siding Replacement.
+
+Windows  [P] homepage and nav:
+  "Whether you are looking for vinyl, fiberglass, aluminum or wood, we have many
+   window styles and designs to choose from."
+  Sub-pages: Vinyl Windows; Fiberglass Windows; Shutters; Home Renewal Windows
+  by Andersen; Pella Windows.
+  Anlin Windows & Doors also appears as a partner logo and in project write-ups.
+
+Stucco / Coating  [P] homepage:
+  "When your home needs a makeover, turn to the painting and texture coating
+   experts. We only use the very best — giving your home a long-lasting,
+   attractive exterior that won't chip, crack, flake, or peel."
+
+Texture coating product  [P] https://approvedcontractorinc.com/paint-texture-coating/texture-coating/
+  Product: "Cool Life™ exterior coating", also referenced as "Lifetime Exterior
+  Coating" / "Lifetime Plus Coating".
+  Verbatim claims: "Lifetime warranty on texture coating!"
+                   "Guaranteed against: Peeling, Chipping, Flaking, Cracking"
+                   "A home coated with Cool Life™ exterior coating results in a
+                    lower exterior temperature which means you benefit from
+                    electricity savings"
+  [X] No quantified energy-saving percentage is published. None is stated on the
+      concept page. The warranty line is the manufacturer's/theirs and ships
+      verbatim, attributed, with no embellishment.
+
+Roofing  [P] https://approvedcontractorinc.com/roofing/
+
+CATEGORY BOUNDARY — load-bearing for the concept. They are licensed
+Class B General Building, but everything they advertise is the building
+envelope: siding, windows, stucco, coating, roofing, shutters. There is no
+kitchen, no bathroom, no addition, no interior work anywhere on their site.
+
+================================================================================
+6. CREDENTIALS  (client-published; shipped verbatim, nothing added)
+================================================================================
+
+  - "James Hardie Elite Contractor"  [P] homepage badge alt text
+    also stated as "James Hardie Elite Alliance Contractor"
+    [P] https://approvedcontractorinc.com/san-diego/
+    They link out to their listing at jameshardie.com. I could not load that
+    page (Cloudflare challenge, not bypassed), so this ships as THEIR claim,
+    quoted, not as an independently verified one. See CONFLICT #3 on wording.
+  - "Andersen Certified Contractor"  [P] homepage badge; they link to
+    locations.andersenwindows.com
+  - Pella Windows  [P] nav + partner page
+  - Anlin Windows & Doors  [P] homepage partner badge
+  - Owens Corning  [P] homepage partner badge
+  - "Qualified Remodeler Top 500 (2025)"  [P] homepage badge, links to
+    qualifiedremodeler.com/firm/approved-contractor-inc/?y=2025
+  - "Home Improvement Pro 200 (2025)" (HIP 200)  [P] homepage badge, links to
+    qualifiedremodeler.com/hip-200-company-profile/?hip=285589&r=120&y=2025
+  - BBB A+ rating  [T] https://www.bbb.org/us/ca/san-diego/profile/windows/approved-contractor-inc-1126-172005124
+    IMPORTANT NUANCE: the BBB profile shows rating "A+" AND "NOT a BBB
+    Accredited Business". Their own site says "BBB A+ rating", which is
+    accurate. The page must not upgrade that to "BBB Accredited".
+  - Listed on Angi, HomeAdvisor, Houzz, Yelp  [P] homepage badges
+
+  [X] "#1 Ranked Siding Contractors in Los Angeles, CA" and "voted #1 siding
+      contractor in Los Angeles, CA" for 2021–2024
+      [T] https://www.cladsiding.com/contractors/california/los-angeles/approved-contractor-inc/
+      Excluded. cladsiding.com is a directory scoring contractors with its own
+      proprietary index ("CLAD Siding Rating Index"); "voted" overstates it, the
+      business does not make the claim itself, and a "#1 in Los Angeles" line on
+      a page we built is precisely the kind of superlative that becomes ours.
+
+  [X] No borrowed manufacturer logos are used anywhere in the build. James
+      Hardie, Andersen, Pella, Anlin and Owens Corning marks are licensed to
+      the business for their own use, not to us for a concept on our domain.
+      Every credential is set in type instead.
+
+================================================================================
+7. SCALE AND HISTORY
+================================================================================
+
+In business since:  Licence issued 09/14/2010  [P] CSLB
+                    [T] BBB gives date of incorporation 5/24/2010 and "16 years"
+                    Both point at 2010. The page says "Licensed since 2010",
+                    sourced to the CSLB issue date, which is the checkable one.
+                    Their own site says only "Over 10 years in business" [P] —
+                    true but understated; not repeated, since the register gives
+                    a better fact.
+
+Homeowners served:  "helped over 3,000 homeowners in the greater Los Angeles &
+                    San Diego areas"  [P] about page
+                    "over 3,000 Southern California homeowners"  [P] SD page
+                    Used verbatim and attributed to them, as their claim.
+
+  [X] AGGREGATE RATING AND REVIEW COUNT — DELIBERATELY OMITTED.
+      Sources conflict badly. See CONFLICT #4. No star count, no review total
+      and no aggregateRating appears anywhere on the page or in the JSON-LD.
+      This is the single biggest omission in the build and it is on purpose.
+
+================================================================================
+8. SERVICE AREA  (verbatim)
+================================================================================
+
+Counties  [P] https://approvedcontractorinc.com/about-approved-contractor-inc/areas-we-serve/
+  Los Angeles, San Diego, Orange, Ventura, San Bernardino, Riverside
+
+Cities listed  [P] same page
+  Anaheim, Calabasas, Carlsbad, Chula Vista, Del Mar, El Cajon, Encinitas,
+  Encino, Escondido, Huntington Beach, Irvine, La Jolla, La Mesa, Long Beach,
+  Los Angeles, Oceanside, Ontario, Pasadena, Riverside, San Bernardino,
+  San Diego, San Marcos, Santee, Sherman Oaks, Studio City, Tarzana, Ventura,
+  Vista, West Hills, Woodland Hills
+
+================================================================================
+9. PROCESS  (verbatim, their four steps)
+================================================================================
+  [P] homepage, "Our Simple Process"
+
+1. CONSULTATION — "We understand your time is valuable. We won't just show up on
+   your doorstep — we confirm all of our appointments. We don't do aggressive
+   sales or upsell you on products or services you don't really need."
+2. DESIGN — "Everyone wants to know what the end results will look like. Get a
+   sneak peek with our new technology that shows you a 2D rendering of your
+   actual house when it's finished."
+3. INSTALL — "We take care to protect your home and treat it like it's our own.
+   We don't cut corners — we protect your warranty by complying with strict
+   manufacturer requirements."
+4. ENJOY — "Enjoy the feeling of pulling into your driveway with a new home
+   exterior that will stand the test of time."
+
+================================================================================
+10. THEIR PROMISE  (verbatim, four lines)
+================================================================================
+  [P] homepage, "Our Promise To You"
+
+  - "You won't have to chase us down — we get back to you lightning fast."
+  - "We'll always show up on time. You'll never have to wonder if or when we're
+     coming."
+  - "We take the time to educate you — your project won't start until your
+     questions are answered."
+  - "You'll find us after your project is done. We are a local company and will
+     always be around when you need us."
+
+Also verbatim  [P] homepage, "Treating Every Customer Like They're #1":
+  - Reliable Installation — "We stay on the cutting edge of technology and
+    manufacturer's best practices so you know the job is done right the first
+    time."
+  - No Surprises — "We can't stand it when people over-promise and underdeliver.
+    That's why we don't do gimmicks or pushy upsells — we give you the best
+    price from the start."
+  - Proven Track Record — "Over 10 years in business and nearly 800 5-star
+    reviews from happy customers — we're a local company and will be around when
+    you need us."   [X] the review figure inside this quote is not repeated
+                        elsewhere; see CONFLICT #4.
+
+================================================================================
+11. FINANCING
+================================================================================
+  [P] https://approvedcontractorinc.com/financing-options/
+
+  Partner: "Service Finance" ("Service Finance Company, LLC")
+  Offer verbatim: "1 year no-interest financing with monthly payments for
+                   qualified homeowners" / "12 months no interest with payments"
+  "Financing is available for most exterior remodeling projects, including
+   siding, windows, stucco coating, roofing, and more."
+  "Applying for financing through our partner may involve a credit check."
+  Site-wide announcement bar verbatim: "UPGRADE NOW, PAY LATER - Call Us for
+  Details"  [P] homepage
+
+  No APR, no loan amounts, no term table is published. None is stated on the
+  page. The "may involve a credit check" line is carried, because dropping it
+  while keeping the offer would make our version less honest than theirs.
+
+  DATED: financing terms read 2026-08-12. Promotional finance offers move
+  constantly; this needs re-checking before anything is sent.
+
+================================================================================
+12. PROJECTS  (their own, verbatim titles)
+================================================================================
+  [P] https://approvedcontractorinc.com/featured-projects/  — 12 projects
+
+  Used in the build (photography is theirs — see PHOTOGRAPHY below):
+   - "Upgrading From Stucco to Hardie Siding in Los Angeles, California"
+     Los Angeles CA · James Hardie siding · has a true BEFORE and AFTER pair
+   - "Revitalizing a 107-Year-Old Craftsman with James Hardie Siding in
+     Los Angeles, CA"  · James Hardie ColorPlus Lap Siding, insulation
+   - "Transforming Damaged Stucco into a Durable, Beautiful Exterior in
+     Thousand Oaks, CA"  · stucco remediation, James Hardie siding
+   - "Modern Exterior Transformation with James Hardie® Siding in Rancho Palos
+     Verdes, CA"  · James Hardie Lap Siding, soffit & fascia, exterior painting
+   - "Encino Home Made Energy-Efficient with New Siding, Windows, & Roof"
+   - "Windows, Siding, and Texture Coating Update an Oceanfront Home in
+     La Jolla"  · James Hardie siding, Andersen E Series windows, Lifetime Plus
+     (Cool Life) elastomeric texture coating
+
+  Other projects on the page, not used: fire-resistant siding San Diego
+  (Rancho Peñasquitos); Mt. Baldy; modern two-story new build LA; Agoura Hills
+  vinyl windows; Upland; crumbling stucco San Diego.
+
+  [X] No customer quote is attached to any featured project on their site, so no
+      project on our page carries an attributed quote.
+
+================================================================================
+13. PHOTOGRAPHY
+================================================================================
+
+11 photographs were taken from their own Featured Projects pages into
+input/photos/. These are THEIR OWN job photographs of THEIR OWN completed work —
+hand-held site photos of identifiable Southern California houses, not styled
+studio work.
+
+  la-stucco-to-hardie-before.jpg / -after.jpg   1920x1080  a real matched pair
+  la-craftsman-01.jpg / -02.jpg                 1280x961
+  rancho-palos-verdes-after.jpg                 1103x522
+  rancho-palos-verdes-during.jpg                784x759
+  thousand-oaks-01 / -05 / -08.jpg              640x480 / 1200x1600 / 1600x1200
+  encino-01.jpg                                 2400x1800
+  la-jolla-after.jpg                            1024x768
+
+  [X] NOT TAKEN: the homepage hero house, the service-tile illustrations, the
+      stock smiling-agent portrait, and every manufacturer badge. The hero house
+      in particular is a styled Hardie-lap composition of the kind supplied
+      through a manufacturer's contractor programme, licensed to them and not to
+      us. Their own job photos are defensible to show back to them; borrowed
+      library imagery is not ours to move.
+
+  The concept badge discloses that imagery may be placeholder or recreated and
+  that a finished site would use their own materials.
+
+================================================================================
+14. CONFLICTS
+================================================================================
+
+CONFLICT #1 — PHONE NUMBER
+  Homepage header shows (866) 215-2968.  [P] homepage, tel:866-215-2968
+  Contact page, About page and the CSLB register all show (877) 792-9082.
+  RESOLUTION: the state register is authoritative and agrees with two of their
+  own pages; the 866 number behaves like a call-tracking line. (877) 792-9082 is
+  used. The 866 number is not used anywhere. Worth raising with them — a header
+  number that disagrees with their licence record is a real trust leak.
+
+CONFLICT #2 — SAN DIEGO ADDRESS
+  Their own San Diego page publishes the Canoga Park address and phone.
+  BBB lists 5173 Waring Rd #86, San Diego CA 92120 / (619) 933-8306.
+  Houzz lists Tarzana, CA 91356.
+  RESOLUTION: three sources, three answers, only one of them theirs. Only the
+  Canoga Park address on the CSLB register is used. "Two locations in Los
+  Angeles and San Diego" is quoted as their claim without a second address.
+
+CONFLICT #3 — JAMES HARDIE DESIGNATION WORDING
+  Homepage badge: "james hardie elite contractor".
+  San Diego page: "James Hardie Elite Alliance Contractor".
+  RESOLUTION: both are theirs and they differ only in wording. The shorter form
+  is used, attributed to them. Not independently verified — jameshardie.com is
+  behind a bot challenge which I did not attempt to bypass.
+
+CONFLICT #4 — AGGREGATE RATING AND REVIEW COUNT  (the big one)
+  Their own site:        "Based on over 800+ reviews" and "nearly 800 5-star
+                          reviews"  [P] homepage
+  GuildQuality:          4.6 stars, 85 reviews from 99 respondents of 314
+                          surveys sent; "75 of 84 would recommend"  [T]
+  Houzz:                 4.7 out of 5, 77 reviews  [T]
+  Yelp:                  125 reviews  [T] (count only; page behind bot
+                          verification, not bypassed)
+  authenticfeedback:     5.0, 258 reviews  [T] — and demonstrably contaminated,
+                          see CONFLICT #5
+  RESOLUTION: no aggregate rating, no star count and no review total appears
+  anywhere in the build, and no aggregateRating is emitted in the JSON-LD. The
+  numbers are irreconcilable and every one of them is a different denominator.
+  The page carries individually attributed reviews instead. This is a deliberate
+  and defensible omission: on a page whose entire argument is "check us", an
+  unverifiable "800+ 5-star reviews" is the one thing on it that would not
+  survive being checked.
+
+CONFLICT #5 — CONTAMINATED REVIEW AGGREGATOR
+  reputation.authenticfeedback.com attributes a review to this business that
+  reads "Choosing Line of Art Construction for our driveway..." — a review of a
+  different company, for a service they do not offer.
+  RESOLUTION: the whole source is treated as unreliable. Four Google reviews it
+  surfaced are logged in reviews.txt but NOT published. See reviews.txt §3.
+
+CONFLICT #6 — HOURS
+  No primary source publishes hours. Third-party listings disagree on Saturday.
+  RESOLUTION: omitted entirely. See §3.
+
+================================================================================
+15. OPEN ITEMS  (things only the business can close)
+================================================================================
+
+  1. A portrait of Jared Green. The owner is named on the page but not shown.
+     For a trade whose central fear is "will this person disappear", a face is
+     the highest-value asset missing.
+  2. Real opening hours, so the hours table and openingHoursSpecification can
+     ship.
+  3. An email address.
+  4. Confirmation that the (866) header number is intentional (CONFLICT #1).
+  5. A current, single source of truth for the review count (CONFLICT #4). If
+     they can point at ~800 verified reviews on one platform, the number goes
+     back on the page immediately — it is a good number.
+  6. Whether the Qualified Remodeler Top 500 and HIP 200 listings are current
+     for 2026; the badges say 2025.
+  7. Re-check the Service Finance promotional terms before sending (§11).
+  8. Their own high-resolution logo file, and whether the "Cool Life" coating
+     name may be used in body copy (it is a manufacturer's trademark).

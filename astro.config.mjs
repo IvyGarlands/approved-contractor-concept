@@ -29,15 +29,31 @@ export default defineConfig({
     },
   },
 
-  integrations: [
-    sitemap({
-      i18n: {
-        defaultLocale: SITE.defaultLocale,
-        locales: Object.fromEntries(SITE.locales.map((l) => [l, l])),
-      },
-      filter: (page) => !page.includes("/404"),
-    }),
-  ],
+  /**
+   * NO SITEMAP ON A CONCEPT BUILD. Lock 2 of 4 (the others are robots.txt
+   * Disallow, the six-directive robots meta, and X-Robots-Tag in both
+   * public/_headers and public/vercel.json).
+   *
+   * A sitemap is an active invitation to crawl, and it survives being ignored
+   * elsewhere: robots.txt Disallow stops a crawl but a sitemap URL discovered
+   * some other way still hands over a tidy list of every page. The integration
+   * is gated on the same SITE.isConcept flag that drives the badge, the robots
+   * meta and robots.txt, so the four locks cannot drift apart.
+   *
+   * It switches itself back on the moment isConcept goes false for a real
+   * client — nothing to remember.
+   */
+  integrations: SITE.isConcept
+    ? []
+    : [
+        sitemap({
+          i18n: {
+            defaultLocale: SITE.defaultLocale,
+            locales: Object.fromEntries(SITE.locales.map((l) => [l, l])),
+          },
+          filter: (page) => !page.includes("/404"),
+        }),
+      ],
 
   image: {
     // AVIF first, WebP fallback, original as last resort — handled per-usage by

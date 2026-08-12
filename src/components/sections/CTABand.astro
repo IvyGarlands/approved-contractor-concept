@@ -112,7 +112,18 @@ const {
     color: var(--color-ink-muted);
   }
 
-  @media (min-width: 52em) {
+  /* 60em, not 52em, and the actions column may SHRINK.
+     Both halves of this were bugs, and they compounded: at 900px the split
+     turned on while `flex-shrink: 0` stopped the actions column giving up any
+     width, so a heading plus two large buttons plus a note measured 940px in a
+     900px viewport and pushed a horizontal scrollbar onto the whole document.
+
+     `min-inline-size: 0` is the part that actually matters — without it a flex
+     item refuses to shrink below its max-content size no matter what
+     flex-shrink says, and the .cluster inside never gets the chance to wrap.
+
+     This is engine code, so the same defect is in every build made from it. */
+  @media (min-width: 60em) {
     .cta-band--split {
       flex-direction: row;
       align-items: center;
@@ -121,8 +132,13 @@ const {
     }
 
     .cta-band--split .cta-band__actions {
-      flex-shrink: 0;
+      flex-shrink: 1;
+      min-inline-size: 0;
       align-items: flex-end;
+    }
+
+    .cta-band--split .cta-band__actions .cluster {
+      justify-content: flex-end;
     }
   }
 </style>

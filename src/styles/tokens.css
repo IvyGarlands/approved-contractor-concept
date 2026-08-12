@@ -2,86 +2,112 @@
    TOKENS.CSS — THE ONLY FILE THAT DEFINES BRAND PERSONALITY
    ==========================================================================
 
-   PROJECT: Approved Contractor, Inc. — Canoga Park, CA (ambush concept)
-   IDENTITY: "The Elevation" — Plan Paper & Stamp
+   PROJECT:  Approved Contractor, Inc. — Canoga Park, CA (ambush concept)
+   IDENTITY: "The Stamp" — Stamp & Record
+   SUPERSEDES: the 2026-08-09 "Elevation" build (differentiation log 003)
 
    THE ONE-SENTENCE IDEA
    ---------------------
-   Approved Contractor is not a remodeler. They only build the one part of a
-   house nobody who lives there ever looks at, and everybody else does: the
-   face it shows the street. In architecture the drawing of that face is called
-   an ELEVATION. So the page is built as a plan sheet — a drawn elevation with
-   every trade called out on a leader line, annotated in mono, ruled in
-   hairlines, and stamped.
+   Every contractor in California says they are approved. This is the one where
+   you can actually go and check — so the page is built as the record you check
+   it against, and their own stamp is what lands on it.
 
-   The stamp is the second half of the idea and it was sitting in their name
-   the whole time. In construction, APPROVED is the word a plan check puts on
-   drawings that pass. "Approved Contractor, Inc." is already a permit stamp;
-   nobody had ever drawn it as one.
+   That is not a metaphor we imported. The company is called Approved
+   Contractor, its logo is a rubber stamp reading APPROVED, and the word then
+   never appears again anywhere on their site. Their licence number is set at
+   11px in a footer. The whole identity was already there and unused.
 
-   CONSTRAINT — this identity carries a compliance line. The stamp mark holds
-   the business's OWN name and its OWN CSLB number and nothing else. It never
-   says permit, city, inspected, or approved BY anyone. It is a wordmark in a
-   stamp frame, not a municipal seal (CLAUDE.md §11).
+   And it survives being checked. CSLB licence 952272 was looked up on the state
+   register on 2026-08-12: current and active, Class B, issued 09/14/2010,
+   bonded $25,000, workers' comp in force, qualifying individual Jared Perry
+   Green. Every one of those is on the page with the register named beside it.
 
-   WHAT CHANGED FROM RECIPE 10 (Built Well) AND WHY
-   ------------------------------------------------
-   Nearly all of it. Built Well is warm greige / walnut / sage, Instrument
-   Serif over Manrope, portfolio-led, photography-first. Three problems:
+   WHERE THE PALETTE AND TYPE CAME FROM — see input/brand.md
+   --------------------------------------------------------
+   Nothing here was chosen from a mood board. Their wordmark PNG was drawn to a
+   canvas and its pixels counted. Two colours carry the entire mark:
 
-     1. Instrument Serif is spent — it is the Setiba build's display face.
-     2. Warm greige/walnut/sage is an INTERIOR materials palette. It is the
-        colour of a kitchen renovation. This firm does siding, stucco, windows
-        and roofs, outdoors, in hard San Fernando Valley light.
-     3. Built Well is portfolio-led and there is no portfolio. Zero supplied
-        photographs, therefore zero before/after pairs (its whole signature).
+       #ae0f15   the stamp — ink and frame       22,666 px
+       #231f20   the word "Contractor"            4,353 px
 
-   So:
-     ground     light, and COLD. Plan paper, not cream. Breaks a run of three
-                consecutive warm builds and is the right temperature for
-                exterior work under a hard sun.
-     palette    plan paper / graphite / Valley slate / plan-check red. Slate is
-                the client's own blue, matured into the colour of an eave
-                shadow — so the identity has a defensible thread back to what
-                they already own instead of binning it.
-     type       Archivo Variable EXPANDED (wdth 106) over Manrope, with
-                JetBrains Mono carrying every dimension, licence and index
-                number. Every architectural drawing set on earth is labelled in
-                a neutral grotesque — that is the reference, and it is why the
-                display face is not a serif.
-     scale      an EVEN geometric progression, 1.235 at 360px to 1.355 at
-                1440px. Deliberately not flat-then-open: a scale rule is evenly
-                divided, and the scale rule is the motif.
-     tracking   display near-neutral (-0.012em); annotation tracked hard
-                (0.18em / 0.28em). The drama lives in the drawing, not in
-                stretched type.
-     radius     0 on everything that holds content. The page is drawn, not
-                rounded.
-     texture    no grain. A faint blueprint grid instead (§8a), scoped to the
-                hero, which no other build has.
+   Both ship UNCHANGED as --b-600 and --n-900. Their website uses neither of
+   them: it runs #aa0e00 (a redder red, no blue in it at all) and #464c5a
+   (a cool blue-grey) for all 852 typed elements. The site was built around the
+   logo rather than from it. This build unifies onto the logo.
+
+   Their site slate #464c5a is not binned — it becomes the ACCENT (--a-700),
+   which is the only cool colour on the page and the counterweight to all that
+   red.
+
+   Type follows the two genres already in the mark, which deliberately contrasts
+   a heavy bureaucratic roman against a light, widely-tracked geometric sans:
+
+       Source Serif 4   heavy bracketed roman   ← "APPROVED"
+       Outfit           light geometric sans    ← "Contractor"
+
+   WHAT CHANGED FROM RECIPE 10 (Built Well), AND WHY
+   -------------------------------------------------
+   Built Well is the contractor recipe and almost none of it survived, because
+   the recipe is subordinate to what the client actually owns:
+
+     - Built Well is warm greige / walnut / sage, brand colour held under 5%.
+       Their brand is scarlet and their register is bureaucratic, not
+       architectural. The greige is gone entirely.
+     - Brand colour here is a DOMINANT FIELD, not an accent. A stamp that
+       appears once at 5% coverage is not a stamp. The hero and two structural
+       bands are full-bleed --b-600.
+     - Built Well pairs a quiet serif with a neutral grotesque. The mark demands
+       a much sharper contrast than that.
+
+   Kept from the recipe: only its structural spine — trust architecture,
+   process, credentials, a real projects section.
+
+   TWO STUDIO TICS THIS BUILD IS UNDER ORDERS NOT TO REPEAT
+   --------------------------------------------------------
+   1. The technical-document register. Builds 002 and 003 were one idea in two
+      costumes: hairlines, tick marks, monospace annotation, radius 0. That is
+      especially dangerous here, because a licence record card is exactly the
+      thing that wants a monospace.
+
+      SO: there is NO --face-mono in this build. No ticks. No leaders. No
+      drafting grid. No hairline ornament. The record card is set in Outfit with
+      tabular figures and wide tracking, which reads as a printed record rather
+      than a drawing. Radius is small but PRESENT (§7) — the stamp frame is a
+      rounded rectangle, so the page is allowed corners.
+
+   2. Photography. 002, 003 and 004 all shipped photography-free and the log
+      flagged it as a Phase 0 failure rather than a design decision. This build
+      uses eleven of the client's own job photographs, gathered first-hand.
+      §9 is therefore load-bearing again for the first time in four builds.
+
+   DEPTH MECHANISM
+   ---------------
+   003 got depth from RULE WEIGHT. 004 got it from LARGE SOFT SHADOWS. Neither
+   is available. This build gets depth from FIGURE/GROUND COLOUR — a true-white
+   record sitting on a full-strength scarlet field. Shadows exist but are small
+   and rarely used; there is no hairline hierarchy at all.
 
    CONTRACT
    --------
    1. This is the ONLY file a reskin touches. If you have to edit a component
       to change how a site LOOKS, the token system has a gap — fix the gap.
    2. Components consume SEMANTIC tokens only (--color-ink, --step-2, --space-l).
-      They must never reference a PRIMITIVE (--b-700, --n-050).
-   3. Primitives are the raw palette. Semantics map primitives to jobs.
-   4. Every surface/ink pair below is asserted by `npm run check:contrast`.
+      They must never reference a PRIMITIVE (--b-600, --n-050).
+   3. Every surface/ink pair below is asserted by `npm run check:contrast`.
       AA = 4.5:1 body, 3:1 large (>=24px, or >=18.66px bold) and non-text.
-   5. Anything a component needs that is not here does not exist. Add it here.
+   4. Anything a component needs that is not here does not exist. Add it here.
 
    FILE MAP
    --------
    §1  Primitives — palette ramps
    §2  Primitives — typeface stacks
-   §3  Semantic — color: surfaces, ink, brand, line, state
-   §4  Semantic — typography: families, fluid scale, weight, leading, tracking
+   §3  Semantic — colour: surfaces, ink, brand, accent, line, state
+   §4  Semantic — typography: fluid scale, weight, leading, tracking
    §5  Semantic — space scale + section rhythm
    §6  Semantic — layout: containers, gutters, measure
    §7  Semantic — radius, border, shadow, z-index
-   §8  Semantic — motion: duration, easing, distance, stagger
-   §8a Identity — the plan-sheet motif (rules, ticks, grid, stamp)
+   §8  Semantic — motion: duration, easing, distance, stagger, signature tier
+   §8a Identity — the stamp and the rule
    §9  Semantic — image & texture treatment
    §10 Context blocks — .on-dark / .on-brand
    §11 prefers-reduced-motion / prefers-contrast overrides
@@ -92,146 +118,159 @@
    --------------------------------------------------------------------------
    Ramp convention: 000 = lightest, 900 = darkest.
 
-   NEUTRAL — "plan paper to graphite". Cold. Faintly blue-grey, the colour of
-   a printed plan set, never cream. This is the load-bearing differentiator
-   against both prior builds, which are warm-ground.
+   NEUTRAL — "record paper to stamp black". WARM, with a faint red cast pulled
+   from the brand at very low chroma, so the paper looks like something the
+   stamp was pressed onto rather than a separate material. Anchored at the
+   bottom by --n-900 #231f20, sampled from the client's own wordmark.
 
-   BRAND — "Valley slate". A deep, desaturated blue with grey in it: the
-   colour of the shadow an eave throws on a stucco wall at three in the
-   afternoon. It is the client's existing blue taken down and desaturated
-   until it reads structural instead of corporate.
+     Deliberately NOT cream (spent by 001), NOT cold plan-paper (spent by 003,
+     which is this same client's previous build), NOT manila (spent by 004).
 
-   ACCENT — "plan-check red". Stamp ink. Held under 5% coverage: the stamp
-   frame, the dimension ticks, the licence serial, one button fill. Cooler and
-   deeper than a brand red so it reads as INK rather than as a second brand.
+   BRAND — the stamp ink, #ae0f15, sampled from their logo and unchanged. It is
+   used as a FIELD, not an accent, which is why the ramp is built for legibility
+   at full strength: white on --b-600 is 7.3:1 and --b-600 on paper is 7.0:1, so
+   their real red carries body copy in both directions without being tinted.
+
+   ACCENT — their website's blue-grey #464c5a, demoted from "everything" to a
+   single job. The only cool colour on the page. It marks what has been checked:
+   record-card field labels, the register attribution, the verified marks. Held
+   well under 5%.
    ========================================================================== */
 :root {
-  /* Neutral — plan paper to graphite */
-  --n-000: #fbfcfd;
-  --n-050: #f1f4f6;
-  --n-100: #e5e9ee;
-  --n-200: #d2d8df;
-  --n-300: #a9b2bc;   /* muted ink ON the dark ground */
-  --n-400: #6f7883;   /* >=3:1 on every light surface — meaningful borders */
-  --n-500: #565e69;
-  --n-600: #414952;   /* muted ink on paper */
-  --n-700: #2c323a;
-  --n-800: #1b1f25;   /* body ink; the lift-surface on the dark ground */
-  --n-900: #0e1116;   /* display ink; the dark canvas */
+  /* Neutral — record paper to stamp black */
+  --n-000: #fcfaf9;
+  --n-050: #f5f1ef;
+  --n-100: #ece5e2;
+  --n-200: #ddd4d0;
+  --n-300: #b5aca8;   /* muted ink ON the dark ground */
+  --n-400: #7a7370;   /* >=3:1 on every light surface — meaningful borders */
+  --n-500: #5d5754;
+  --n-600: #4a4b52;   /* muted ink on paper */
+  --n-700: #35353a;
+  --n-800: #2a2628;   /* body ink; the lift-surface on the dark ground */
+  --n-900: #231f20;   /* SAMPLED FROM THEIR WORDMARK. display ink; dark canvas */
 
-  /* Brand — Valley slate */
-  --b-050: #eef2f6;
-  --b-100: #d3dde6;
-  --b-300: #8fa6b8;   /* brand ink on the dark ground */
-  --b-500: #4a6a84;
-  --b-600: #3b5568;
-  --b-700: #2e4354;   /* brand ink on paper; brand fill under paper type */
-  --b-800: #22323f;   /* .on-brand canvas */
-  --b-900: #16212a;   /* .on-brand surface — cards RECEDE on a brand band */
+  /* Brand — the stamp ink */
+  --b-050: #fdeceb;
+  --b-100: #f8ccc9;   /* muted ink on the brand field */
+  --b-300: #ef8f8a;   /* brand ink on the dark ground */
+  --b-500: #d1272c;
+  --b-600: #ae0f15;   /* SAMPLED FROM THEIR WORDMARK. brand ink; .on-brand canvas */
+  --b-700: #8f0c11;   /* .on-brand surface — cards RECEDE on a brand band */
+  --b-800: #6d0d11;
+  --b-900: #4a0a0d;
 
-  /* Accent — plan-check red */
-  --a-100: #f7dcd8;
-  --a-300: #e09a92;   /* accent + focus ring on the dark ground */
-  --a-500: #c8493a;
-  --a-700: #a63428;   /* accent on paper */
-  --a-900: #4d1710;
+  /* Accent — their site's slate, demoted to one job */
+  --a-100: #dfe3ea;
+  --a-300: #9aa4b5;   /* accent + focus ring on the dark ground */
+  --a-500: #5b6474;
+  --a-700: #464c5a;   /* SAMPLED FROM THEIR STYLESHEET. accent on paper */
+  --a-900: #262b34;
 
-  /* Feedback — pulled cold so they never read as a second accent. */
-  --ok-500: #2c6b4a;
-  --warn-500: #8a5a12;
-  --err-500: #a63428;
+  /* Feedback. Pulled deliberately away from the brand red so an error state is
+     never mistaken for a brand mark on a page that is 30% red. */
+  --ok-500: #2f5d3f;
+  --warn-500: #7d5410;
+  --err-500: #8f0c11;
 }
 
 /* ==========================================================================
    §2  PRIMITIVES — TYPEFACE STACKS
    --------------------------------------------------------------------------
-   Three families, which exceeds the house default of two. The reason is
-   structural rather than decorative: the mono is the drawing's ANNOTATION
-   voice and carries every dimension, the licence number, the service-area
-   index and the stamp serial. Without it the plan-sheet idea is a colour
-   scheme instead of a language. Imported in BaseLayout.astro; never a runtime
-   CDN call.
+   TWO families. There is no mono, on purpose — see the header note. Both are
+   imported in BaseLayout.astro and self-hosted; never a runtime CDN call.
 
-   Archivo is loaded with its WIDTH axis (wdth 62-125) because the display
-   voice is set slightly EXPANDED — see --face-display-stretch in §4.
+   Source Serif 4 is a working roman drawn for text, not a display revival, so
+   it holds up at both --step--1 in a record field and --step-7 in the stamp.
+   Its bracketed serifs and squared terminals are the closest thing in the
+   library to the letterforms inside their APPROVED frame.
+
+   Outfit is geometric, low-contrast and has genuine light weights. It is the
+   closest match to the "Contractor" half of the wordmark, which is the part
+   most people would fail to notice had changed — which is the point.
+
+   Fallbacks are metrically close so the swap is not a layout shift.
    ========================================================================== */
 :root {
-  --face-display: "Archivo Variable", "Archivo", Helvetica, Arial, sans-serif;
-  --face-body: "Manrope Variable", "Manrope", -apple-system, BlinkMacSystemFont,
+  --face-display: "Source Serif 4 Variable", "Source Serif 4", Georgia,
+    "Times New Roman", serif;
+  --face-body: "Outfit Variable", "Outfit", -apple-system, BlinkMacSystemFont,
     "Segoe UI", system-ui, sans-serif;
-  --face-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo,
-    monospace;
+  /* --face-mono is deliberately NOT defined. If a component asks for it, that
+     component is reaching for the drafting register this build is not allowed
+     to use. Set record fields in --face-body with --tracking-record instead. */
 }
 
 /* ==========================================================================
-   §3  SEMANTIC — COLOR
+   §3  SEMANTIC — COLOUR
    --------------------------------------------------------------------------
    TOKEN                     CONTROLS
    --color-canvas            page background, the default surface
-   --color-surface           cards, panels sitting on canvas
+   --color-surface           cards, panels, the record sitting on canvas
    --color-surface-sunken    wells, alternating bands, form fields
-   --color-surface-inverse   dark sections (title block, footer)
+   --color-surface-inverse   the one dark section (footer)
    --color-ink               body copy
-   --color-ink-strong        headings, display type
-   --color-ink-muted         captions, meta, annotation
-   --color-brand             the memorable colour: links, marks, rules
-   --color-accent            stamp ink: ticks, serials, the one primary CTA
+   --color-ink-strong        headings, display type, the stamp
+   --color-ink-muted         captions, meta, record values
+   --color-brand             the stamp ink: marks, rules, links, filled bands
+   --color-accent            what has been checked: field labels, verified marks
    --color-line              hairlines           (DECORATIVE ONLY)
    --color-line-strong       input borders, focusable edges   (>=3:1)
-   --color-focus             focus ring — clears 3:1 vs BOTH adjacent
+   --color-focus             focus ring — clears 3:1 vs BOTH adjacent surfaces
    ========================================================================== */
 :root {
   --color-canvas: var(--n-000);
-  --color-surface: #ffffff;
+  --color-surface: #ffffff;         /* the record is TRUE white against warm paper */
   --color-surface-sunken: var(--n-050);
   --color-surface-inverse: var(--n-900);
 
-  --color-ink: var(--n-800);              /* 16.11:1 on canvas — AAA */
-  --color-ink-strong: var(--n-900);       /* 18.41:1 on canvas — AAA */
-  --color-ink-muted: var(--n-600);        /*  8.89:1 on canvas, 8.27:1 sunken — AAA */
-  --color-ink-inverse: var(--n-050);      /* 17.12:1 on inverse — AAA */
-  --color-ink-inverse-muted: var(--n-300);/*  8.81:1 on inverse — AAA */
+  --color-ink: var(--n-800);
+  --color-ink-strong: var(--n-900);
+  --color-ink-muted: var(--n-600);
+  --color-ink-inverse: var(--n-050);
+  --color-ink-inverse-muted: var(--n-300);
 
-  --color-brand: var(--b-700);            /*  9.99:1 on canvas — AAA */
-  --color-brand-strong: var(--b-800);
-  --color-brand-contrast: var(--n-000);   /*  9.99:1 on brand fill */
+  --color-brand: var(--b-600);            /* their red, unchanged, on paper */
+  --color-brand-strong: var(--b-700);
+  --color-brand-contrast: var(--n-000);   /* ink that sits ON a brand fill */
 
-  --color-accent: var(--a-700);           /*  6.50:1 on canvas, 6.05:1 sunken — AA */
-  --color-accent-contrast: var(--n-000);  /*  6.50:1 on accent fill */
+  --color-accent: var(--a-700);
+  --color-accent-contrast: var(--n-000);
 
-  /* --color-line is DECORATIVE ONLY. It is doing more visual work in this
-     build than in any previous one — the whole page is ruled like a drawing —
-     but a hairline still never carries meaning. Anything meaningful (inputs,
-     buttons, focusable edges, selected states) uses --color-line-strong. */
+  /* --color-line is DECORATIVE ONLY, and it does far less work here than in
+     003 — this build has no hairline hierarchy at all. Anything meaningful
+     (inputs, buttons, focusable edges, selected states) uses -strong. */
   --color-line: var(--n-200);
-  --color-line-strong: var(--n-400);      /*  4.36:1 canvas / 4.05:1 sunken — AA */
-  --color-focus: var(--b-700);            /*  9.99:1 on canvas — AA non-text */
+  --color-line-strong: var(--n-400);
+  --color-focus: var(--b-600);
 
   --color-ok: var(--ok-500);
   --color-warn: var(--warn-500);
   --color-err: var(--err-500);
 
-  --color-overlay-scrim: 14 17 22;        /* RGB channels of --n-900 */
+  --color-overlay-scrim: 35 31 32;        /* RGB channels of --n-900 */
 }
 
 /* ==========================================================================
    §4  SEMANTIC — TYPOGRAPHY
    --------------------------------------------------------------------------
-   THE SCALE IS EVEN. 1.235 at 360px, 1.355 at 1440px, applied uniformly from
-   --step-0 up. Most recipes cluster the reading sizes and then blow the top
-   end open; this one deliberately does not, because the motif is a scale rule
-   and a scale rule is divided evenly. --step--1 is set independently, small
-   and tight, because it is the drawing's ANNOTATION size and annotations on a
-   plan sheet are smaller than anything else on the sheet.
+   THE SCALE IS ORDINARY ON PURPOSE, AND THEN IT IS NOT.
 
-   THE DISPLAY VOICE IS EXPANDED, NOT TIGHT. --face-display-stretch pushes
-   Archivo's width axis to 106%. Architectural sheet titles are set wide, and
-   an expanded grotesque is the single clearest signal that this page is
-   quoting a drawing rather than a magazine. Tracking stays near-neutral to
-   pay for it — expanded AND tracked-out is a poster, not a plan.
+   Every previous build in the log has a "concept" scale — flat-then-breaking
+   (002), evenly stepped (003), shifted (004). This one runs a plain ~1.20 →
+   1.25 progression from --step--1 all the way to --step-6, because a record is
+   set at reading sizes and a record that plays with its own type sizes is not a
+   record. All of the drama is spent in one place: --step-7, which jumps clean
+   off the end of the scale at up to 10.5rem and is used EXACTLY ONCE, for the
+   stamp. The restraint below it is what makes that one jump land.
+
+   TRACKING IS WHERE THE WORDMARK IS ECHOED. --tracking-label at 0.14em and
+   --tracking-record at 0.08em both come from the generous letterspacing of
+   "Contractor" in their logo. Display is tightened, because a heavy roman set
+   large closes up.
 
    STEP        TYPICAL USE
-   --step--1   annotation: dimensions, callout labels, legal, table meta
+   --step--1   record fields, captions, legal, attribution
    --step-0    body copy — the anchor, never below 16px
    --step-1    lead paragraph
    --step-2    h4 / card titles
@@ -239,52 +278,55 @@
    --step-4    h2 / section headings
    --step-5    h1 on inner pages
    --step-6    hero display
-   --step-7    the stamp, once per page
+   --step-7    THE STAMP. Once per page. Nothing else may use it.
    ========================================================================== */
 :root {
-  --step--1: clamp(0.8125rem, 0.7917rem + 0.09vw, 0.875rem);
-  --step-0:  clamp(1rem, 0.9583rem + 0.19vw, 1.125rem);
-  --step-1:  clamp(1.235rem, 1.1387rem + 0.43vw, 1.524rem);
-  --step-2:  clamp(1.525rem, 1.345rem + 0.80vw, 2.065rem);
-  --step-3:  clamp(1.884rem, 1.5793rem + 1.35vw, 2.798rem);
-  --step-4:  clamp(2.326rem, 1.8377rem + 2.17vw, 3.791rem);
-  --step-5:  clamp(2.873rem, 2.1183rem + 3.35vw, 5.137rem);
-  --step-6:  clamp(3.548rem, 2.4106rem + 5.05vw, 6.96rem);
-  --step-7:  clamp(4.382rem, 3.0093rem + 6.10vw, 8.5rem);
+  --step--1: clamp(0.8125rem, 0.7708rem + 0.19vw, 0.9375rem);
+  --step-0:  clamp(1.0625rem, 1.0417rem + 0.09vw, 1.125rem);
+  --step-1:  clamp(1.275rem, 1.2333rem + 0.19vw, 1.4rem);
+  --step-2:  clamp(1.53rem, 1.4567rem + 0.33vw, 1.75rem);
+  --step-3:  clamp(1.836rem, 1.7187rem + 0.52vw, 2.188rem);
+  --step-4:  clamp(2.203rem, 2.026rem + 0.79vw, 2.734rem);
+  --step-5:  clamp(2.644rem, 2.386rem + 1.15vw, 3.418rem);
+  --step-6:  clamp(3.172rem, 2.8053rem + 1.63vw, 4.272rem);
+  /* THE STAMP, and nothing else. Tuned so the word APPROVED plus its frame
+     fits the record card's width at every viewport from 320px up — the type
+     cannot reflow, so the clamp is the only thing preventing an overflow. */
+  --step-7:  clamp(2.35rem, 0.0611rem + 10.17vw, 9.25rem);
 
-  /* Weights — Archivo runs 100-900, Manrope 200-800. */
+  /* Source Serif 4 runs 200-900; Outfit runs 100-900. */
+  --weight-light: 300;      /* the "Contractor" voice */
   --weight-body: 400;
   --weight-medium: 500;
   --weight-strong: 600;
   --weight-display: 700;
+  --weight-stamp: 900;      /* the stamp only */
 
-  /* Width axis. The identity move: the display voice is EXPANDED. */
-  --face-display-stretch: 106%;
+  --leading-display: 0.98;
+  --leading-heading: 1.10;
+  --leading-snug: 1.36;
+  --leading-body: 1.65;
+  --leading-loose: 1.78;
 
-  --leading-display: 0.94;
-  --leading-heading: 1.08;
-  --leading-snug: 1.35;
-  --leading-body: 1.62;
-  --leading-loose: 1.75;
-
-  /* Tracking. Display near-neutral because the width axis already carries it.
-     Annotation is tracked hard — that is where the drawing's voice lives. */
-  --tracking-display: -0.012em;
-  --tracking-heading: -0.008em;
+  --tracking-display: -0.02em;   /* a heavy roman closes up when it is large */
+  --tracking-heading: -0.012em;
   --tracking-body: 0em;
-  --tracking-label: 0.18em;   /* eyebrows, callout labels, stamp text */
-  --tracking-wide: 0.28em;    /* mono index numbers, sheet annotation */
-  /* Controls need their OWN tracking. This palette runs --tracking-label
-     unusually wide, and buttons inherited it: "Call (877) 792-9082" grew to
-     435px and swallowed a whole grid column. A button is not a label. */
-  --tracking-control: 0.06em;
+  --tracking-label: 0.14em;      /* echoes "Contractor" in the wordmark */
+  --tracking-record: 0.08em;     /* record card field values */
+  --tracking-stamp: 0.02em;      /* inside the stamp frame */
+  /* Controls need their own, narrower tracking. In 003 the buttons inherited
+     --tracking-label and "Call (877) 792-9082" grew to 435px and swallowed a
+     grid column. A button is not a label. */
+  --tracking-control: 0.04em;
 }
 
 /* ==========================================================================
    §5  SEMANTIC — SPACE
    --------------------------------------------------------------------------
    --section-y is the single biggest lever on "does this feel expensive".
-   Set generous: a plan sheet is mostly white space with a drawing in it.
+   Generous, but slightly tighter than 003: this page alternates full-bleed
+   colour fields, and a colour field carries its own weight without needing as
+   much air around the type inside it.
    ========================================================================== */
 :root {
   --space-3xs: clamp(0.25rem, 0.24rem + 0.05vw, 0.3125rem);
@@ -295,18 +337,21 @@
   --space-l:   clamp(2rem, 1.92rem + 0.40vw, 2.5rem);
   --space-xl:  clamp(3rem, 2.88rem + 0.60vw, 3.75rem);
   --space-2xl: clamp(4rem, 3.84rem + 0.80vw, 5rem);
-  --space-3xl: clamp(6rem, 5.76rem + 1.20vw, 7.5rem);
-  --space-4xl: clamp(8rem, 7.68rem + 1.60vw, 10rem);
+  --space-3xl: clamp(5.5rem, 5.28rem + 1.10vw, 6.875rem);
+  --space-4xl: clamp(7.5rem, 7.2rem + 1.50vw, 9.375rem);
 
-  --section-y: clamp(4.5rem, 3.21rem + 6.43vw, 9rem);
+  --section-y: clamp(4rem, 2.86rem + 5.71vw, 8rem);
   --section-y-tight: clamp(2.5rem, 1.93rem + 2.86vw, 4.5rem);
-  --section-y-loose: clamp(6rem, 4.29rem + 8.57vw, 12rem);
+  --section-y-loose: clamp(5.5rem, 3.93rem + 7.86vw, 11rem);
 
   --stack-gap: var(--space-m);
 }
 
 /* ==========================================================================
    §6  SEMANTIC — LAYOUT
+   --------------------------------------------------------------------------
+   --measure is 62ch. Slightly under the 65ch target because Outfit at
+   --step-0 (17px) sets wider than a neutral grotesque at the same size.
    ========================================================================== */
 :root {
   --container-xs: 34rem;
@@ -317,8 +362,8 @@
   --container: var(--container-l);
 
   --gutter: clamp(1.25rem, 0.96rem + 1.43vw, 3rem);
-  --measure: 64ch;
-  --measure-narrow: 46ch;
+  --measure: 62ch;
+  --measure-narrow: 44ch;
 
   --header-h: 4.5rem;
   --header-h-scrolled: 3.75rem;
@@ -327,33 +372,36 @@
 /* ==========================================================================
    §7  SEMANTIC — RADIUS / BORDER / SHADOW / Z-INDEX
    --------------------------------------------------------------------------
-   Radius 0 on everything that holds content. A drawing is not rounded. The
-   2px on controls is the single concession, so buttons do not read as raw
-   rectangles cut out of the page.
+   RADIUS IS PRESENT, AND THAT IS DELIBERATE. Builds 002, 003 and 004 all ran
+   radius 0, which had become a house tic. Here it is justified rather than
+   merely different: the client's stamp frame IS a rounded rectangle, so the
+   page is entitled to corners and the stamp's own radius is the largest one in
+   the system.
 
-   Shadows are large and near-invisible. On a plan sheet, depth comes from
-   RULE WEIGHT, not from drop shadows — see §8a.
+   SHADOWS ARE SMALL AND RARE. Depth on this page comes from figure/ground —
+   a true-white record on a scarlet field — because 003 already spent rule
+   weight and 004 already spent large soft shadows.
    ========================================================================== */
 :root {
   --radius-none: 0;
-  --radius-s: 2px;
-  --radius-m: 2px;
-  --radius-l: 4px;
+  --radius-s: 3px;
+  --radius-m: 4px;
+  --radius-l: 6px;
   --radius-pill: 999px;
-  --radius-image: 0;
-  --radius-control: 2px;
-  --radius-card: 0;
+  --radius-image: 3px;
+  --radius-control: 3px;
+  --radius-card: 4px;
+  --radius-stamp: 10px;     /* the frame. The largest radius in the system. */
 
   --border-hair: 1px;
   --border-thick: 2px;
   --border-rule: 3px;
 
-  --shadow-s: 0 1px 2px rgb(var(--color-overlay-scrim) / 0.05),
-              0 2px 6px rgb(var(--color-overlay-scrim) / 0.035);
-  --shadow-m: 0 2px 6px rgb(var(--color-overlay-scrim) / 0.05),
-              0 14px 32px rgb(var(--color-overlay-scrim) / 0.07);
-  --shadow-l: 0 4px 12px rgb(var(--color-overlay-scrim) / 0.05),
-              0 32px 72px rgb(var(--color-overlay-scrim) / 0.10);
+  --shadow-s: 0 1px 2px rgb(var(--color-overlay-scrim) / 0.06);
+  --shadow-m: 0 2px 4px rgb(var(--color-overlay-scrim) / 0.06),
+              0 8px 20px rgb(var(--color-overlay-scrim) / 0.08);
+  --shadow-l: 0 4px 10px rgb(var(--color-overlay-scrim) / 0.07),
+              0 22px 50px rgb(var(--color-overlay-scrim) / 0.12);
 
   --z-base: 0;
   --z-raised: 10;
@@ -367,116 +415,128 @@
 /* ==========================================================================
    §8  SEMANTIC — MOTION
    --------------------------------------------------------------------------
-   Measured, not floaty. A drafting arm moves in one plane and stops. Parallax
-   is ZERO on purpose: a drawing does not have depth planes, and faking one
-   would undo the whole conceit.
+   A stamp does not float. It travels in one plane, arrives, and stops. Every
+   duration here is shorter than 003's and every easing is harder-landing.
+
+   Parallax is a real but small 0.10 in the ambient tier — the hero has genuine
+   photographic depth for the first time in four builds, so there is something
+   to parallax. It stays well under the §4 ceiling of 0.15.
    ========================================================================== */
 :root {
-  --duration-instant: 120ms;
-  --duration-fast: 180ms;
-  --duration-base: 240ms;
-  --duration-slow: 400ms;
-  --duration-reveal: 640ms;
-  --duration-hero: 860ms;
+  --duration-instant: 110ms;
+  --duration-fast: 170ms;
+  --duration-base: 230ms;
+  --duration-slow: 380ms;
+  --duration-reveal: 600ms;
+  --duration-hero: 820ms;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out-soft: cubic-bezier(0.33, 1, 0.68, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-linear: linear;
 
-  --motion-distance: 16px;
+  --motion-distance: 18px;
   --motion-distance-s: 10px;
-  --motion-stagger: 0.10s;
-  --motion-parallax: 0;
-  --motion-hero-delay: 0.15s;
+  --motion-stagger: 0.09s;
+  --motion-parallax: 0.10;
+  --motion-hero-delay: 0.12s;
 
   /* ---- SIGNATURE TIER -------------------------------------------------
-     ONE moment on this page (CLAUDE.md §4a): the hero elevation. The masked
-     line reveal on the headline and the leader lines extending to their
-     callouts are that single moment, not two — they are one gesture, the
-     drawing being annotated.
+     ONE moment on this page (CLAUDE.md §4a): "The Impact". The stamp lands on
+     the CSLB record card, once, at viewport scale.
 
-     --sig-leader-duration  the leader lines scaling out from the facade
-     --sig-parallax stays 0. See above.                                    */
-  --sig-duration: 1000ms;
-  --sig-duration-long: 1400ms;
+     It is a SHORT signature, not a long one, and that is the design. Every
+     other build's signature unfolds over 1.0-1.6s. A rubber stamp that takes a
+     second and a half to arrive is not a rubber stamp. The whole gesture is
+     ~380ms of travel and a 200ms settle.
+
+     THE LANDING IS NOT A BOUNCE. §4 forbids bounce, and an overshoot-and-return
+     on the stamp itself would be exactly that. Instead the stamp travels down
+     in scale and rotation on a hard-decelerating curve and simply STOPS; the
+     CARD beneath it takes a single 4px recoil that does not return past its
+     rest position. One direction, one time.
+
+     --sig-stamp-from-scale   how far "above the page" the stamp starts
+     --sig-stamp-from-rotate  it arrives off-angle and squares up to --stamp-angle
+     --sig-stamp-recoil       the card's one-way settle, transform only          */
+  --sig-duration: 380ms;
+  --sig-duration-long: 620ms;
   --sig-ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --sig-ease-drama: cubic-bezier(0.65, 0, 0.15, 1);
-  --sig-parallax: 0;
-  --sig-parallax-max: 0;
-  --sig-stagger-char: 0.07s;
-  --sig-mask-duration: 1000ms;
+  --sig-ease-drama: cubic-bezier(0.7, 0, 0.2, 1);
+  --sig-ease-impact: cubic-bezier(0.6, 0.02, 0.2, 1);
+  --sig-parallax: 0.10;
+  --sig-parallax-max: 0.18;
+  --sig-stagger-char: 0.05s;
+  --sig-mask-duration: 700ms;
   --sig-mask-ease: cubic-bezier(0.77, 0, 0.18, 1);
   --sig-magnet-radius: 90px;
-  --sig-magnet-strength: 0.24;
+  --sig-magnet-strength: 0.20;
   --sig-tilt: 0deg;
-  --sig-marquee-duration: 42s;
+  --sig-marquee-duration: 46s;
 
-  --sig-leader-duration: 900ms;
-  --sig-leader-stagger: 0.09s;
+  --sig-stamp-duration: 380ms;
+  --sig-stamp-from-scale: 1.42;
+  --sig-stamp-from-rotate: -19deg;
+  --sig-stamp-recoil: 4px;
+  --sig-stamp-recoil-duration: 200ms;
 }
 
 /* ==========================================================================
-   §8a  IDENTITY — THE PLAN-SHEET MOTIF
+   §8a  IDENTITY — THE STAMP AND THE RULE
    --------------------------------------------------------------------------
-   The vocabulary of a drawing, expressed as tokens so it stays consistent and
-   so one edit retunes it everywhere.
+   The client's two real motifs, rebuilt as tokens so one edit retunes every
+   instance and so they stop being flattened images.
 
-   RULE WEIGHTS. On a real drawing, line weight is meaning: the object outline
-   is heavy, the dimension line is light, the leader is lighter still. That
-   hierarchy replaces the drop shadows this build does not use.
+   THE STAMP. Their wordmark is APPROVED set in heavy roman caps inside a
+   rounded-rectangle double rule, rotated off-axis. In the original the rotation
+   is an accident of the source graphic and differs between the header logo and
+   the footer one. Here it is --stamp-angle, one value, used by the wordmark,
+   the section marks and the signature stamp alike.
 
-   TICKS. Architectural dimension lines terminate in a 45-degree slash, not an
-   arrowhead. --dim-tick-size drives every one of them.
+   The original's character comes from a stock distress texture over 26,406
+   partial-alpha pixels. There is no distress here. A stamp that is DRAWN rather
+   than FILTERED is the entire quality jump, and it is what lets the mark set at
+   --step-7 without falling apart.
 
-   Named --dim-tick-* rather than --tick-*, because the engine has since grown
-   its own --tick-* group (§8b, the calibrated ruler leader generalised out of
-   the Setiba build). They are different devices — a repeating ruler versus a
-   dimension terminator — and sharing a prefix would make the first merge of
-   this build back into the engine silently overwrite one with the other.
-
-   GRID. The faint blueprint ruling behind the hero. Deliberately scoped to
-   ONE section: a grid behind the whole page would stop being a reference and
-   start being a wallpaper.
-
-   STAMP. The mark's frame: a double rule with a gap, the way an inked stamp
-   prints.
+   THE RULE. They ship a 202x3 pixel JPEG of a red line, used three times on the
+   homepage as a section divider, with a white counterpart for dark grounds.
+   Same motif, same proportion, zero requests, correct in every context.
    ========================================================================== */
 :root {
-  --rule-object: 2px;      /* the drawn facade outline */
-  --rule-dimension: 1px;   /* dimension and extension lines */
-  --rule-leader: 1px;      /* callout leaders */
+  --stamp-angle: -5.5deg;
+  --stamp-border: 3px;          /* the outer rule of the frame */
+  --stamp-border-inner: 1.5px;  /* the inner rule */
+  --stamp-gap: 4px;             /* the gap an inked double-rule stamp leaves */
+  --stamp-radius: var(--radius-stamp);
+  --stamp-inset: 0.34em 0.62em;
 
-  --dim-tick-size: 7px;        /* the 45-degree dimension slash */
-  --dim-tick-angle: 45deg;
-
-  --grid-minor: 1.5rem;
-  --grid-major: 7.5rem;
-  --grid-minor-opacity: 0.055;
-  --grid-major-opacity: 0.10;
-
-  --stamp-border: 2px;
-  --stamp-gap: 3px;
-  --stamp-inset: 0.7em 1em;
+  --rule-length: 12.625rem;     /* 202px — their divider's exact width */
+  --rule-weight: 3px;           /* 3px — their divider's exact height */
 }
 
 /* ==========================================================================
    §9  SEMANTIC — IMAGE & TEXTURE TREATMENT
    --------------------------------------------------------------------------
-   Hard Valley light. Exterior job photography is shot outdoors at midday and
-   should look it: contrast up, saturation held back, a cool cast. This is the
-   opposite of the soft, warm, diffused treatment every interior remodeler
-   uses, and it is the correct treatment for the only photographs this client
-   will ever supply.
+   LOAD-BEARING AGAIN. This is the first build in four with real photographs,
+   and they are the client's own hand-held job photos: shot on phones, at
+   different times of day, in Southern California light, by installers rather
+   than photographers. They are inconsistent, and the treatment's job is to make
+   eleven inconsistent photographs look like one set without pretending they are
+   studio work.
 
-   NO GRAIN. The blueprint grid in §8a is the texture.
+   So: contrast held almost neutral (pushing it exaggerates the phone-camera
+   look), saturation pulled back a touch to stop the greens shouting, and a
+   very slight warm brightness lift so they sit on warm paper rather than
+   fighting it. No duotone, no heavy grade — these need to read as EVIDENCE.
+
+   NO GRAIN. The colour fields are the texture.
    ========================================================================== */
 :root {
-  --image-filter: saturate(0.90) contrast(1.10);
-  --image-filter-hero: saturate(0.86) contrast(1.14) brightness(0.97);
-  --image-hover-scale: 1.03;
+  --image-filter: saturate(0.94) contrast(1.04);
+  --image-filter-hero: saturate(0.92) contrast(1.06) brightness(1.01);
+  --image-hover-scale: 1.02;
 
-  --scrim-strength: 0.68;
+  --scrim-strength: 0.66;
   --scrim-bottom: linear-gradient(
     to top,
     rgb(var(--color-overlay-scrim) / var(--scrim-strength)) 0%,
@@ -485,7 +545,7 @@
   );
   --scrim-full: linear-gradient(
     to top,
-    rgb(var(--color-overlay-scrim) / calc(var(--scrim-strength) + 0.1)) 0%,
+    rgb(var(--color-overlay-scrim) / calc(var(--scrim-strength) + 0.12)) 0%,
     rgb(var(--color-overlay-scrim) / calc(var(--scrim-strength) * 0.5)) 100%
   );
   --scrim-side: linear-gradient(
@@ -503,6 +563,12 @@
   --ratio-portrait: 4 / 5;
   --ratio-square: 1 / 1;
   --ratio-wide: 21 / 9;
+
+  /* The evidence mount: a job photo printed with a white border and a caption
+     strip, sat on the brand field. Their photos are not good enough to go
+     full-bleed and pretending otherwise is what makes a demo look fake. */
+  --mount-pad: clamp(0.625rem, 0.5rem + 0.55vw, 1rem);
+  --mount-caption-h: 3.25rem;
 }
 
 /* ==========================================================================
@@ -510,6 +576,10 @@
    --------------------------------------------------------------------------
    Any component inside .on-dark or .on-brand re-points its ink/line/focus
    tokens automatically. Wrap the section; never fork the component.
+
+   .on-brand IS THE HEADLINE FEATURE OF THIS BUILD. On every previous project
+   it was a rarely-used band. Here it carries the hero and two structural
+   sections at full brand strength, so it is specified as carefully as :root.
    ========================================================================== */
 .on-dark {
   --color-canvas: var(--color-surface-inverse);
@@ -518,36 +588,38 @@
   --color-ink: var(--color-ink-inverse);
   --color-ink-strong: var(--n-000);
   --color-ink-muted: var(--color-ink-inverse-muted);
-  --color-brand: var(--b-300);            /* 7.49:1 on --n-900 — AAA */
+  --color-brand: var(--b-300);
   --color-brand-strong: var(--b-100);
-  --color-brand-contrast: var(--n-900);   /* 7.49:1 on b-300 fill */
-  --color-accent: var(--a-300);           /* 8.29:1 on --n-900 — AAA */
+  --color-brand-contrast: var(--n-900);
+  --color-accent: var(--a-300);
   --color-accent-contrast: var(--n-900);
-  --color-line: rgb(255 255 255 / 0.16);       /* decorative only */
-  --color-line-strong: rgb(255 255 255 / 0.42);/* 4.01:1 on n-800 — AA */
-  --color-focus: var(--a-300);                 /* 7.25:1 on n-800 — AA */
+  --color-line: rgb(255 255 255 / 0.16);        /* decorative only */
+  --color-line-strong: rgb(255 255 255 / 0.48);
+  --color-focus: var(--b-300);
   color: var(--color-ink);
   background-color: var(--color-canvas);
 }
 
 .on-brand {
   /* Cards RECEDE on a brand band. A surface lighter than its canvas silently
-     costs every ink on it 1-2 points of contrast. Depth comes from rule
-     weight and line, not from a lighter fill. */
-  --color-canvas: var(--b-800);
-  --color-surface: var(--b-900);
-  --color-surface-sunken: var(--b-900);
-  --color-ink: var(--n-050);              /* 11.91:1 on --b-800 — AAA */
-  --color-ink-strong: var(--n-000);
-  --color-ink-muted: var(--b-100);        /*  9.56:1 on --b-800 — AAA */
-  --color-brand: var(--a-300);
-  --color-brand-strong: var(--a-100);
-  --color-brand-contrast: var(--b-900);
-  --color-accent: var(--a-300);
-  --color-accent-contrast: var(--b-900);
-  --color-line: rgb(255 255 255 / 0.20);       /* decorative only */
-  --color-line-strong: rgb(255 255 255 / 0.46);/* 4.06:1 on b-800 — AA */
-  --color-focus: var(--a-100);                 /* 10.14:1 on b-800 — AA */
+     costs every ink on it 1-2 points of contrast (decisions log, 2026-08-09).
+     The one exception is the record card, which is TRUE WHITE by design and
+     declares its own ink locally — it is the figure, the field is the ground,
+     and that inversion is the whole composition. */
+  --color-canvas: var(--b-600);
+  --color-surface: var(--b-700);
+  --color-surface-sunken: var(--b-700);
+  --color-ink: var(--n-050);
+  --color-ink-strong: #ffffff;
+  --color-ink-muted: var(--b-100);
+  --color-brand: var(--n-000);
+  --color-brand-strong: #ffffff;
+  --color-brand-contrast: var(--b-600);
+  --color-accent: var(--n-000);
+  --color-accent-contrast: var(--b-600);
+  --color-line: rgb(255 255 255 / 0.24);        /* decorative only */
+  --color-line-strong: rgb(255 255 255 / 0.62);
+  --color-focus: #ffffff;
   color: var(--color-ink);
   background-color: var(--color-canvas);
 }
@@ -555,11 +627,14 @@
 /* ==========================================================================
    §11  USER PREFERENCE OVERRIDES
    --------------------------------------------------------------------------
-   Reduced motion is handled at the token level so CSS transitions, GSAP
-   (which reads these) and scroll behaviour all fall in line at once. The
-   signature tier collapses to zero with everything else — including the
-   leader lines, which then simply exist, drawn, at rest. That static state is
-   the composition the section was designed around; the motion is the bonus.
+   Reduced motion is handled at the token level so CSS transitions, GSAP (which
+   reads these) and scroll behaviour all fall in line at once.
+
+   The signature tier collapses to zero WITHOUT collapsing the composition: at
+   --sig-stamp-from-scale 1 and --sig-stamp-from-rotate equal to the rest angle,
+   the stamp is simply already printed on the record when the section arrives.
+   That static state is the thing the section was designed around; the impact is
+   the bonus. This is the §4a rule 1 test and it is met by construction.
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
   :root {
@@ -586,8 +661,11 @@
     --sig-tilt: 0deg;
     --sig-marquee-duration: 0s;
 
-    --sig-leader-duration: 0.01ms;
-    --sig-leader-stagger: 0s;
+    --sig-stamp-duration: 0.01ms;
+    --sig-stamp-from-scale: 1;
+    --sig-stamp-from-rotate: var(--stamp-angle);
+    --sig-stamp-recoil: 0px;
+    --sig-stamp-recoil-duration: 0.01ms;
   }
 }
 
@@ -597,7 +675,5 @@
     --color-line: var(--n-400);
     --color-line-strong: var(--n-600);
     --scrim-strength: 0.80;
-    --grid-minor-opacity: 0;
-    --grid-major-opacity: 0.16;
   }
 }

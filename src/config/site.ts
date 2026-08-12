@@ -108,16 +108,23 @@ export const SITE = {
   legalName: "Approved Contractor, Inc.",
   /**
    * NOT their published tagline. "We Treat Your Home Like It's Our Own!" is
-   * the most-used line in the trade and organises nothing. This one states the
-   * category boundary instead — a proposal in their voice, replaced by their
-   * own words the moment they engage (CLAUDE.md §11).
+   * the most-used line in the trade and organises nothing. This one is the
+   * page's organising idea in one line — a proposal in their voice, replaced by
+   * their own words the moment they engage (CLAUDE.md §11).
    */
   tagline:
-    "Siding, windows, stucco and roofing. The part of your house everyone else sees.",
+    "Licensed in California since 2010. Don't take our word for it — take the state's.",
   vertical: "contractor" as Vertical,
 
-  /** Production URL. Cloudflare Pages gives you a *.pages.dev to start with. */
-  url: "https://ambush-approved-contractor.pages.dev",
+  /**
+   * Production URL.
+   *
+   * THE WORD "AMBUSH" MUST NEVER APPEAR HERE. This value is the canonical tag,
+   * og:url and the JSON-LD @id, so the recipient is one right-click from
+   * reading it. Only the local working directory keeps the ambush- prefix; the
+   * deployed host and the GitHub repo are both <business>-concept.
+   */
+  url: "https://approved-contractor-concept.pages.dev",
 
   /* ---- contact ------------------------------------------------------ */
   phone: "(877) 792-9082",
@@ -165,7 +172,11 @@ export const SITE = {
      page AND a wrong `sameAs` in the structured data, so all four stay empty.  */
   social: {
     instagram: "",
-    facebook: "",
+    /* Linked from their own site's footer — the only social URL I could confirm
+       from a primary source. Yelp, Houzz, Angi and HomeAdvisor listings all
+       exist but their canonical URLs were not confirmable, and a wrong link
+       here also puts a wrong `sameAs` in the structured data. */
+    facebook: "https://www.facebook.com/ApprovedContractorInc",
     yelp: "",
     tripadvisor: "",
   },
@@ -184,16 +195,16 @@ export const SITE = {
   twitterHandle: "",
 
   /**
-   * Browser-chrome colour (Android address bar, PWA splash). --b-700, Valley
-   * slate.
+   * Browser-chrome colour (Android address bar, PWA splash). --b-600, the
+   * stamp ink sampled from their own wordmark.
    *
    * This is the ONE place the palette is allowed to exist outside tokens.css,
    * and only because `<meta name="theme-color">` and public/site.webmanifest
    * are both read by the browser OUTSIDE the document's CSS and cannot see a
    * custom property. Keep this value and the manifest's `theme_color` in step
-   * with --b-700 when the palette changes; nothing else may copy a hex.
+   * with --b-600 when the palette changes; nothing else may copy a hex.
    */
-  themeColor: "#2e4354",
+  themeColor: "#ae0f15",
 
   /* ---- ambush mode ---------------------------------------------------- */
   isConcept: true,
@@ -201,16 +212,52 @@ export const SITE = {
   studioUrl: "",
 
   /* ---- regulated vertical: CONTRACTOR ---------------------------------
-     California B&P 7030.5 requires the licence number on advertising, so this
-     is not decoration — it belongs on the page.
-     #952272 is the number Approved Contractor publishes on their own site. It
-     ships verbatim and nothing is added to it: no "bonded", no "insured", no
-     "fully licensed" — the client makes none of those claims and we do not
-     originate one (CLAUDE.md §11).
+     California B&P 7030.5 requires the licence number on contractor
+     advertising, so this is a legal requirement, not decoration.
 
-     OPEN ITEM: confirm on the CSLB licence lookup before this is sent.       */
+     VERIFIED 2026-08-12 against the CSLB register — see LICENCE below. Build
+     003 shipped this number as the client's own unverified claim with an open
+     item against it; that item is now closed.                                */
   licenseNumber: "CA Lic. #952272",
   legalDisclaimer: "",
+} as const;
+
+/**
+ * LICENCE — the public record, and the spine of this page.
+ *
+ * EVERY FIELD BELOW WAS READ OFF THE CALIFORNIA CONTRACTORS STATE LICENSE BOARD
+ * REGISTER on 2026-08-12, not off the client's marketing. That distinction is
+ * what makes publishing it permissible at all.
+ *
+ * CLAUDE.md §11 forbids ORIGINATING a bonding, insurance or licensing claim for
+ * a contractor. Nothing here is originated: this quotes a public record, names
+ * the register, dates the retrieval, and ships the lookup URL beside it so a
+ * reader can repeat the check in about thirty seconds. If the source ever
+ * becomes "the client told us", these fields come off the page.
+ *
+ * `retrieved` is rendered on the card. It is not a nicety — a bond effective
+ * date and a workers' comp expiry both move, and a record card with no date on
+ * it is a claim wearing a document's clothes.
+ */
+export const LICENCE = {
+  authority: "California Contractors State License Board",
+  documentTitle: "Licence detail — 952272",
+  businessName: "APPROVED CONTRACTOR INC",
+  address: "9015 Eton Avenue Unit D, Canoga Park, CA 91304",
+  entity: "Corporation",
+  issued: "14 September 2010",
+  expires: "30 September 2028",
+  status: "Current and active",
+  classification: "B — General Building",
+  bondCompany: "Merchants Bonding Company (Mutual)",
+  bondAmount: "$25,000",
+  bondEffective: "13 February 2025",
+  workersComp: "State Compensation Insurance Fund",
+  workersCompExpires: "1 March 2027",
+  qualifier: "Jared Perry Green",
+  retrieved: "12 August 2026",
+  lookupUrl:
+    "https://www.cslb.ca.gov/OnlineServices/CheckLicenseII/CheckLicense.aspx",
 } as const;
 
 export type SiteConfig = typeof SITE;

@@ -182,8 +182,20 @@ const testimonials = defineCollection({
     quote: z.string(),
     author: z.string(),
     rating: z.number().min(1).max(5).optional(),
-    /** Where it came from. Required so we can never launder an invented one. */
-    source: z.enum(["Google", "Yelp", "Facebook", "TripAdvisor", "Direct"]),
+    /** Where it came from. Required so we can never launder an invented one.
+        "GuildQuality" added for build 005: it surveys customers directly rather
+        than accepting open submissions, and it publishes the negative responses
+        too, which is exactly why it is the source this build leans on
+        (input/reviews.txt §2). "Direct" here means published by the business on
+        their own site. */
+    source: z.enum([
+      "Google",
+      "Yelp",
+      "Facebook",
+      "TripAdvisor",
+      "GuildQuality",
+      "Direct",
+    ]),
     date: z.coerce.date().optional(),
     order: z.number().default(0),
     featured: z.boolean().default(false),
@@ -217,6 +229,27 @@ const people = defineCollection({
       .superRefine(requireAlt),
 });
 
+/**
+ * Credentials. CLIENT-PUBLISHED ONLY (CLAUDE.md §11) — never originated.
+ *
+ * Three fields added for build 005, all additive and all in service of one
+ * problem: a row of eleven partner logos reads as desperate, and it also
+ * cannot be shipped. The James Hardie, Andersen, Pella, Anlin and Owens
+ * Corning marks are licensed to the BUSINESS for its own use, not to us for a
+ * concept on our own domain (input/facts.txt §6). So `logo` goes unused here
+ * and the credential has to carry itself in type instead — which means it needs
+ * to say who granted it and what it actually means, or it is just a word.
+ *
+ *   group     which authority granted it, so the list can be read as a ledger
+ *             rather than a badge wall
+ *   meaning   one plain sentence. NOT marketing — a factual gloss on what the
+ *             designation is. Where the honest answer is "we could not verify
+ *             this", that is what it says.
+ *   verifyUrl the public lookup, where one exists. This is the whole argument
+ *             of the page: a credential you cannot check is a claim.
+ *
+ * Generalisation candidate: every trust-selling vertical wants this.
+ */
 const credentials = defineCollection({
   loader: src("credentials"),
   schema: (ctx) =>
@@ -224,6 +257,9 @@ const credentials = defineCollection({
       lang,
       label: z.string(),
       issuer: z.string().optional(),
+      group: z.string().optional(),
+      meaning: z.string().optional(),
+      verifyUrl: z.string().url().optional(),
       logo: ctx.image().optional(),
       logoAlt: z.string().optional(),
       order: z.number().default(0),

@@ -1,7 +1,1 @@
-{
-  "lang": "en",
-  "name": "Stucco",
-  "summary": "Remediation, and new application.",
-  "detail": "Cracked, patched, water-stained or separating. Remediation first, then the coat and the texture matched to what is already on the wall — because a patch that does not match is just a smaller problem.",
-  "order": 3
-}
+{ "lang": "en", "name": "Stucco", "summary": "Remediation and fresh application.", "detail": "Cracked or failing stucco is either repaired or taken off entirely and replaced with siding — several of their own featured projects are the second of those.", "order": 3 }

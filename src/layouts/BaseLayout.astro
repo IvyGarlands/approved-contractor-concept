@@ -9,29 +9,35 @@
  * The <script> for motion.ts is a plain Astro script: bundled, hashed, and
  * `type="module"` (therefore deferred), so GSAP never blocks render.
  */
-/* Archivo is imported from its WIDTH-axis build, not the standard one: the
-   display voice is set expanded (tokens.css §4, --face-display-stretch).
-   Three families is one over the house limit and the reason is in tokens.css
-   §2 — the mono is the drawing's annotation voice, not decoration. */
-import "@fontsource-variable/archivo/wdth.css";
-import "@fontsource-variable/manrope/wght.css";
-import "@fontsource-variable/jetbrains-mono/wght.css";
+/* TWO families, which is the house limit, and there is no mono — see
+   tokens.css §2 for why that is a design constraint rather than an omission.
+
+   Source Serif 4 is imported from its WEIGHT-axis build. It also ships an
+   OPTICAL-SIZE build, and that is deliberately not used: build 004 made live
+   optical sizing its typographic signature, and taking the same trick one
+   build later would be the studio tic the differentiation log exists to catch.
+   Here the display voice is carried by weight (900 in the stamp) and by the
+   genre contrast against Outfit, not by an axis. */
+import "@fontsource-variable/source-serif-4/wght.css";
+import "@fontsource-variable/outfit/wght.css";
 
 /**
  * The display face is preloaded, and nothing else is (CLAUDE.md §6).
  *
- * The two-axis Archivo is 90KB against 35KB for the weight-only build. That
- * 55KB buys the width axis, which is the identity: the display voice on this
- * site is EXPANDED, the way an architectural sheet title is set, and there is
- * no way to fake that with tracking. It is paid for honestly rather than
- * hidden — this page carries no photography at all, so its total transfer is
- * roughly a third of a normal build of the same page.
+ * The h1 is one of the two LCP candidates here — this build carries real
+ * photography for the first time in four, so the hero print competes with it —
+ * and both need to be right at first paint. Preloading the roman means the
+ * headline swaps from Georgia in the first paint rather than the third, which
+ * matters more than usual because Source Serif 4 and Georgia are close enough
+ * that a late swap is a visible reflow rather than a jump.
  *
- * Preloading it means the h1 — which IS the LCP element here, there being no
- * hero image — swaps from the fallback in the first paint rather than the
- * third. `?url` gives the hashed, emitted path so this can never rot.
+ * Outfit is NOT preloaded. It carries body copy and record fields, all of it
+ * below the headline, and a second preload competes with the hero image for
+ * the same early bandwidth.
+ *
+ * `?url` gives the hashed, emitted path, so this can never rot.
  */
-import archivoDisplay from "@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url";
+import serifDisplay from "@fontsource-variable/source-serif-4/files/source-serif-4-latin-wght-normal.woff2?url";
 
 import "../styles/tokens.css";
 import "../styles/base.css";
@@ -99,7 +105,7 @@ const t = useTranslations(locale);
       rel="preload"
       as="font"
       type="font/woff2"
-      href={archivoDisplay}
+      href={serifDisplay}
       crossorigin
     />
     <slot name="head" />

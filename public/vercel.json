@@ -1,0 +1,39 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "_comment": [
+    "LOCK 4 OF 4, second copy. public/_headers covers Cloudflare Pages and",
+    "Netlify; this covers Vercel. Both ship, because which host a concept demo",
+    "ends up on is decided after the build and a lock that depends on",
+    "remembering to add it is not a lock. On hosts that ignore this file it is",
+    "an inert 400-byte JSON asset, which is the correct cost.",
+    "",
+    "Matches the six directives in the robots meta tag and in _headers exactly.",
+    "If one of the three ever changes, change all three."
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate"
+        },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(jpg|jpeg|png|avif|webp)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, noimageindex, noarchive"
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,1 @@
-{
-  "lang": "en",
-  "name": "Shutters",
-  "summary": "Exterior shutters, sized and hung to the opening.",
-  "detail": "The smallest line on the estimate and the first thing anyone notices from across the street.",
-  "order": 6
-}
+{ "lang": "en", "name": "Shutters", "summary": "Fitted with a window replacement.", "detail": "The smallest line of work they advertise, and the only one that is decorative rather than protective.", "order": 6 }

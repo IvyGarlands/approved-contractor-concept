@@ -123,6 +123,13 @@ const {
   }
 
   .announce__link {
+  /* §5: touch targets are >=44px (the engine aims at 48). inline-flex + a
+     min-height grows the HIT AREA without moving the type or the line box —
+     the fix build 004 landed on and which was never merged back into the
+     engine, so it has to be re-applied per project until it is. */
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.75rem;
     margin-inline-start: var(--space-2xs);
     color: inherit;
     font-weight: var(--weight-strong);
@@ -134,8 +141,8 @@ const {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.75rem;
+    height: 2.75rem;
     margin-inline-start: auto;
     padding: 0;
     background: none;

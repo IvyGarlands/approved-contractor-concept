@@ -127,7 +127,11 @@ const t = useTranslations(locale);
   }
 
   .loc__call-number {
-    display: inline-block;
+    /* §5 — this is the primary call CTA on the section people scroll to in
+       order to tap it. inline-flex + min-height, see the note on .loc__link. */
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.75rem;
     font-family: var(--face-display);
     font-size: var(--step-4);
     font-weight: var(--weight-display);
@@ -149,6 +153,13 @@ const t = useTranslations(locale);
   }
 
   .loc__link {
+  /* §5: touch targets are >=44px (the engine aims at 48). inline-flex + a
+     min-height grows the HIT AREA without moving the type or the line box —
+     the fix build 004 landed on and which was never merged back into the
+     engine, so it has to be re-applied per project until it is. */
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.75rem;
     font-weight: var(--weight-medium);
     text-underline-offset: 0.18em;
   }

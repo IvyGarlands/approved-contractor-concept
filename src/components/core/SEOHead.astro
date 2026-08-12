@@ -21,6 +21,13 @@ interface Props {
   path?: string;
   /** "website" for the homepage, "article" for posts. */
   ogType?: "website" | "article";
+  /**
+   * DEFAULTS TO TRUE. A page must opt IN to being indexed, never out.
+   * Forgetting a prop should leave a page invisible, not exposed — the failure
+   * mode of the old `= false` default was a concept demo getting indexed under
+   * a real business's name. `SITE.isConcept` additionally forces it on, so a
+   * caller cannot re-enable indexing on a concept build by accident.
+   */
   noindex?: boolean;
   /** Rendered visibly on the page — required before emitting FAQPage. */
   faq?: { question: string; answer: string }[];
@@ -34,7 +41,7 @@ const {
   image,
   path = "/",
   ogType = "website",
-  noindex = false,
+  noindex = true,
   faq = [],
   breadcrumb = [],
   priceRange,
@@ -48,6 +55,20 @@ const ogImage = new URL(image ?? SITE.ogImage, SITE.url).href;
 // Title: the homepage leads with the brand; inner pages lead with the page.
 const fullTitle =
   path === "/" ? `${SITE.name} — ${title}` : `${title} | ${SITE.name}`;
+
+/**
+ * The forwarded-link problem. A concept demo gets pasted into a text message or
+ * an email, and the preview card is all most people ever see of it. Without
+ * this prefix that card reads as the business's real site — which is exactly
+ * the misunderstanding the concept badge exists to prevent, except the badge is
+ * inside the page and the preview card is not.
+ *
+ * So og:title and twitter:title carry it; <title> does not, because the browser
+ * tab is read by someone who is already looking at the badge.
+ */
+const socialTitle = SITE.isConcept
+  ? `Concept redesign — ${fullTitle}`
+  : fullTitle;
 
 const blockIndex = noindex || SITE.isConcept;
 
@@ -67,8 +88,16 @@ const schemas = [
 <link rel="canonical" href={canonical} />
 
 {
+  /* All six directives, not just noindex+nofollow. Each blocks a different
+     leak: noarchive stops a cached copy outliving the demo, nosnippet stops
+     the business's own words being quoted in a result, noimageindex stops
+     their job photographs entering image search on our domain, and
+     notranslate stops a translated proxy copy being served. */
   blockIndex ? (
-    <meta name="robots" content="noindex,nofollow" />
+    <meta
+      name="robots"
+      content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate"
+    />
   ) : (
     <meta name="robots" content="index,follow,max-image-preview:large" />
   )
@@ -93,7 +122,7 @@ const schemas = [
 {/* Open Graph */}
 <meta property="og:type" content={ogType} />
 <meta property="og:site_name" content={SITE.name} />
-<meta property="og:title" content={fullTitle} />
+<meta property="og:title" content={socialTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogImage} />
@@ -103,7 +132,7 @@ const schemas = [
 
 {/* Twitter */}
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:title" content={socialTitle} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />
 {SITE.twitterHandle && <meta name="twitter:site" content={SITE.twitterHandle} />}

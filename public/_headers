@@ -1,0 +1,36 @@
+# Cloudflare Pages / Netlify header rules.
+#
+# LOCK 4 OF 4 on a concept build. The other three are robots.txt Disallow, the
+# absent sitemap, and the six-directive <meta name="robots">.
+#
+# X-Robots-Tag matters because the meta tag only exists inside an HTML document.
+# It does not protect the job photographs, the OG image, the favicon or the web
+# manifest — all of which are separate URLs on this host, all of which are
+# crawlable on their own, and one of which is a set of a real business's project
+# photos. A response header covers every one of them.
+#
+# Kept deliberately redundant with the meta tag: they fail differently. A
+# misconfigured host silently drops these rules, and a proxy or a reader-mode
+# extraction can strip the <head>. Either lock alone would leave a gap.
+
+/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+
+# Belt and braces on the two paths a crawler is most likely to reach directly.
+/robots.txt
+  X-Robots-Tag: noindex, nofollow
+
+/*.jpg
+  X-Robots-Tag: noindex, noimageindex, noarchive
+
+/*.png
+  X-Robots-Tag: noindex, noimageindex, noarchive
+
+/*.avif
+  X-Robots-Tag: noindex, noimageindex, noarchive
+
+/*.webp
+  X-Robots-Tag: noindex, noimageindex, noarchive

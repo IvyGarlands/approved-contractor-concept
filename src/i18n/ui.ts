@@ -79,8 +79,16 @@ export const ui = {
     "404.body": "That page has moved or never existed.",
     "404.home": "Back to home",
 
-    "concept.badge": "Concept redesign by",
-    "concept.disclaimer": "Not affiliated with",
+    /* The concept badge. Two tiers, and both are required.
+       `primary` states what the page IS. `secondary` states what its ASSETS
+       are, which is the disclosure that actually matters — a recipient looking
+       at their own logo redrawn and their own job photos re-treated deserves to
+       know which parts are ours. Neither is dismissible. */
+    "concept.primary":
+      "This is a concept redesign, created independently. It is not affiliated with, commissioned by, or endorsed by",
+    "concept.secondary":
+      "I may not have access to their real photography, logo or brand assets, so some imagery and branding here is placeholder or recreated purely to demonstrate the concept. A finished site would use their own materials.",
+    "concept.by": "A concept by",
 
     "footer.rights": "All rights reserved.",
     "footer.builtBy": "Site by",
@@ -150,8 +158,13 @@ export const ui = {
     "404.body": "Esa página se movió o nunca existió.",
     "404.home": "Volver al inicio",
 
-    "concept.badge": "Rediseño conceptual por",
-    "concept.disclaimer": "Sin afiliación con",
+    /* Retained so the `es` table stays key-compatible with `en`. This build
+       ships English only (SITE.locales), so these never render. */
+    "concept.primary":
+      "Este es un rediseño conceptual, creado de forma independiente. No está afiliado, encargado ni respaldado por",
+    "concept.secondary":
+      "Es posible que no tenga acceso a su fotografía, logotipo o recursos de marca reales, por lo que algunas imágenes y elementos de marca son provisionales o recreados únicamente para demostrar el concepto. Un sitio final usaría sus propios materiales.",
+    "concept.by": "Un concepto de",
 
     "footer.rights": "Todos los derechos reservados.",
     "footer.builtBy": "Sitio por",

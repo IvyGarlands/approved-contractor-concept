@@ -1,57 +1,76 @@
 ---
 /**
- * Homepage — Approved Contractor, Inc. (ambush concept build).
+ * Homepage — Approved Contractor, Inc. (concept build 005, "The Stamp").
+ *
+ * SUPERSEDES build 003, "The Elevation", 2026-08-09. That page answered an
+ * empty intake by drawing a picture; this one was gathered first-hand and has
+ * real material to work with. See engine/docs/differentiation-log.md.
  *
  * THE ONE-SENTENCE IDEA
  * ---------------------
- * Approved Contractor only builds the one part of a house its owner never
- * looks at and every neighbour does — so the page is that part, drawn as an
- * architectural ELEVATION, annotated, and stamped with their own name.
+ * Every contractor in California says they are approved. This is the one where
+ * you can actually go and check — so the page is built as the record you check
+ * it against, and their own stamp is what lands on it.
  *
  * The idea is structural, not decorative. It decides:
- *   HERO      a drawn front elevation with the six trades called out on
- *             leaders, dimensioned across the bottom with the sentence the
- *             whole page is built on.
- *   SERVICES  not a card grid — the drawing's LEGEND. Bubble 03 on the facade
- *             is line 03 in the key, and both derive the number from position
- *             in the same collection, so they cannot drift apart.
- *   RECORD    the plan sheet's title block: the mark, the licence, the
- *             counties, the figures. Ruled like a document because reading
- *             like a document is the argument.
- *   TYPE      an expanded grotesque, because every architectural drawing set
- *             on earth is labelled in one, plus a mono that carries every
- *             number on the page.
  *
- * WHAT IS NOT HERE, AND WHY (CLAUDE.md §11)
- * ------------------------------------------
- * Three sections are wired, imported and ready, and render the moment content
- * exists. They ship as nothing rather than as something invented:
+ *   COLOUR    their own sampled stamp ink #ae0f15 as a FIELD, not an accent.
+ *             The page alternates red → paper → red → paper, so the thing you
+ *             remember about it is the colour of their logo.
+ *   HERO      "Don't take our word for it. Take the state's." — the record
+ *             line above it, one of their own job photographs mounted beside
+ *             it as evidence.
+ *   RECORD    the signature moment. Their actual CSLB licence record on a
+ *             true-white card, and the stamp landing on it once.
+ *   LEDGER    every other approval, grouped by who granted it and glossed with
+ *             what it means, with a public lookup link wherever one exists.
+ *             Not a badge wall.
+ *   TYPE      a heavy roman against a light geometric sans, because that is
+ *             exactly the contrast their own wordmark is built on.
  *
- *   BeforeAfter     `projects` is empty. Zero job photographs were supplied.
- *                   For an exterior contractor this is the single biggest gap
- *                   on the page — see OPEN ITEMS at the bottom of this file.
- *   TestimonialGrid `testimonials` is empty. ~800 five-star reviews exist and
- *                   not one verbatim quote was supplied, so none can ship.
- *   HoursTable      no published hours, so `showHours` is false and site.ts
- *                   emits no openingHoursSpecification either.
+ * SECTION RHYTHM. Red hero → paper credentials → paper scope → RED RECORD →
+ * paper work → paper process → paper reviews → paper questions → paper contact
+ * → red close. The two red fields bracket the page and the record sits in the
+ * middle of it. Build 003 alternated paper bands around a single dark title
+ * block; nothing about this rhythm is shared with it.
  *
- * There are NO FPO placeholders on this page. That is deliberate: an FPO field
- * in the hero of a contractor demo reads as an unfinished website, and the
- * drawn hero exists precisely so the page does not need one.
+ * WHAT IS DELIBERATELY NOT HERE (CLAUDE.md §11)
+ * ----------------------------------------------
+ *   NO AGGREGATE RATING, NO STAR COUNT, NO REVIEW TOTAL, anywhere on the page
+ *   or in the JSON-LD. Five sources gave five irreconcilable numbers — their
+ *   own site says "800+", GuildQuality 4.6 from 85, Houzz 4.7 from 77, Yelp
+ *   125, and one aggregator claims 5.0 from 258 while attributing a review of
+ *   a different company (input/facts.txt CONFLICT #4 and #5).
+ *
+ *   This is the single largest omission in the build and it is the point: on a
+ *   page whose whole argument is "go and check us", an uncheckable "800+
+ *   5-star reviews" is the one claim on it that would fail its own test.
+ *
+ *   NO HOURS. Not published by them anywhere; third-party listings disagree.
+ *   showHours={false} and site.ts emits no openingHoursSpecification.
+ *
+ *   NO BORROWED MANUFACTURER LOGOS. Licensed to them, not to us.
+ *
+ *   NO PORTRAIT of Jared Green — none is published. He is named, not shown.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import HeroElevation from "../components/sections/HeroElevation.astro";
-import CredentialSchedule from "../components/sections/CredentialSchedule.astro";
-import ServiceLegend from "../components/sections/ServiceLegend.astro";
-import ProcessSteps from "../components/sections/ProcessSteps.astro";
-import TitleBlock from "../components/sections/TitleBlock.astro";
+import HeroStamp from "../components/sections/HeroStamp.astro";
+import CredentialLedger from "../components/sections/CredentialLedger.astro";
+import ServicesGrid from "../components/sections/ServicesGrid.astro";
+import TheRecord from "../components/sections/TheRecord.astro";
 import BeforeAfter from "../components/sections/BeforeAfter.astro";
+import Gallery from "../components/sections/Gallery.astro";
+import ProcessSteps from "../components/sections/ProcessSteps.astro";
+import TestimonialPullQuote from "../components/sections/TestimonialPullQuote.astro";
 import TestimonialGrid from "../components/sections/TestimonialGrid.astro";
+import ProviderBios from "../components/sections/ProviderBios.astro";
 import FAQ from "../components/sections/FAQ.astro";
 import LocationContact from "../components/sections/LocationContact.astro";
 import CTABand from "../components/sections/CTABand.astro";
 
-import { SITE } from "../config/site";
+import heroPhoto from "../assets/photos/la-stucco-to-hardie-after.jpg";
+
+import { SITE, LICENCE } from "../config/site";
 import { localized } from "../lib/content";
 import { useTranslations, localeFromUrl } from "../i18n/ui";
 
@@ -64,41 +83,55 @@ const process = await localized("process", locale);
 const faqs = await localized("faq", locale);
 const projects = await localized("projects", locale);
 const reviews = await localized("testimonials", locale);
+const people = await localized("people", locale);
 
 /**
- * Service-area list, VERBATIM from the intake. Not expanded, not tidied into
- * "Southern California", not given a radius we cannot support.
- */
-const AREAS = [
-  "Greater Los Angeles",
-  "San Diego",
-  "Orange County",
-  "Riverside County",
-  "Ventura County",
-  "San Bernardino",
-];
-
-/**
- * Client-published scale claims. Rendered exactly as the client states them,
- * including the hedges — "3,000+" not "over 3,000", "around 800" not "800".
+ * The record card.
  *
- * OPEN ITEM: the operator flagged all three for re-verification before this is
- * sent. If any cannot be confirmed, DELETE THE ROW. Do not soften it.
+ * Every value read off the CSLB register on 2026-08-12 and held in site.ts's
+ * LICENCE block, so the card, the FAQ answer and the footer cannot drift apart.
+ * The status row is the only emphasised field — it is the one the whole page
+ * exists to show.
  */
-const FIGURES = [
-  { value: "3,000+", label: "homeowners served" },
-  { value: "~800", label: "five-star reviews" },
-  { value: "10+", label: "years on exteriors" },
+const recordFields = [
+  { label: "Status", value: LICENCE.status, emphasis: true },
+  { label: "Licence number", value: "952272" },
+  { label: "Business name on record", value: LICENCE.businessName },
+  { label: "Classification", value: LICENCE.classification },
+  { label: "Entity", value: LICENCE.entity },
+  { label: "Issued", value: LICENCE.issued },
+  { label: "Expires", value: LICENCE.expires },
+  { label: "Address on record", value: LICENCE.address },
+  {
+    label: "Contractor's bond",
+    value: `${LICENCE.bondAmount} · ${LICENCE.bondCompany}`,
+  },
+  { label: "Workers' compensation", value: LICENCE.workersComp },
+  { label: "Qualifying individual", value: LICENCE.qualifier },
 ];
 
-const TERMS = ["Free consultations", "Financing available"];
+/** The featured pair, and everything else. BeforeAfter filters to pairs itself. */
+const pairs = projects.filter((p) => p.data.beforePhoto);
+const singles = projects.filter((p) => !p.data.beforePhoto);
+
+const galleryItems = singles.map((p) => ({
+  image: p.data.photo!,
+  alt: p.data.alt!,
+  caption: p.data.location
+    ? `${p.data.title} · ${p.data.location}`
+    : p.data.title,
+}));
+
+const featuredReview = reviews.find((r) => r.data.featured);
+const otherReviews = reviews.filter((r) => !r.data.featured);
 
 const callLabel = `${t("cta.call")} ${SITE.phone}`;
 const callHref = `tel:${SITE.phoneHref}`;
 
 const navLinks = [
-  { label: "The work", href: "#services" },
-  { label: "How it goes", href: "#process" },
+  { label: "The record", href: "#record" },
+  { label: "What they do", href: "#services" },
+  { label: "The work", href: "#work" },
   { label: "Questions", href: "#faq" },
   { label: "Contact", href: "#contact" },
 ];
@@ -112,49 +145,100 @@ const faqSchema = faqs.map((f) => ({
 
 {/* SEOHead prefixes SITE.name on the homepage, so `title` must not repeat it. */}
 <BaseLayout
-  title="Siding, windows, stucco & roofing in the San Fernando Valley"
-  description="Exterior only: James Hardie siding, Andersen and Pella windows, stucco, exterior paint, roofing and shutters. Canoga Park, CA. Free consultation — (877) 792-9082."
+  title="Siding, windows, stucco & roofing — licensed in California since 2010"
+  description="Exterior only: James Hardie siding, Andersen and Pella windows, stucco, texture coating, roofing and shutters. Canoga Park, CA. CSLB licence #952272, current and active. Free consultation — (877) 792-9082."
   path="/"
   navLinks={navLinks}
   faq={faqSchema}
+  announcement={{
+    /* Short enough to hold ONE line at 390px. The two-line version cost 25px
+       of a phone viewport that the hero needed to keep its primary CTA clear
+       of the concept badge. Their own bar reads "UPGRADE NOW, PAY LATER -
+       Call Us for Details", so this is also closer to their wording. */
+    message: "Upgrade now, pay later — 12 months no interest.",
+    href: "#contact",
+    linkLabel: "Ask about financing",
+    id: "finance-2026",
+  }}
 >
-  <HeroElevation
-    id="top"
-    eyebrow="Front elevation · exterior only"
-    heading="You're the only one who never sees the outside of your house."
-    body="Siding, windows, stucco, paint, roofing, shutters. Nothing on the inside. The consultation is free and somebody actually walks the house with you."
-    ctaLabel={callLabel}
-    ctaHref={callHref}
-    note="Canoga Park · 6 counties"
-    callouts={services.map((s) => s.data.short ?? s.data.name)}
-    dimension="The part everyone else sees"
-    drawingAlt="Line drawing of the front elevation of a house, with the six exterior trades called out on leader lines: siding on the gable, windows, stucco on the main wall, painting and texture coating on the garage door, roofing on the rake, and shutters beside the front window."
+  <HeroStamp
+    record="CSLB #952272 · Current and active · Class B · Issued 2010"
+    headingLead="Don't take our word for it."
+    headingTurn="Take the state's."
+    body="Siding, windows, stucco, texture coating, roofing and shutters — the outside of the house, and nothing else. Licence, bond and workers' compensation are all public record. The lookup takes about thirty seconds."
+    photo={heroPhoto}
+    photoAlt="The rear elevation of a two-storey Los Angeles house finished in pale James Hardie lap siding, with white trim, dark shutters and a screened porch."
+    captionPlace="Los Angeles, CA"
+    captionWork="Stucco removed, James Hardie lap siding installed"
+    ctaHref="#contact"
+    ctaLabel="Book a free consultation"
+    telHref={callHref}
+    telLabel={callLabel}
   />
 
-  <CredentialSchedule
+  {/*
+    THE SIGNATURE MOMENT, placed high on purpose.
+    Conventionally the proof section sits late, after the sell. Here the proof
+    IS the sell, so it runs second — before the services, before the work,
+    before anything asks for a call. Everything after it is detail.
+  */}
+  <TheRecord
+    id="record"
+    eyebrow="The public record"
+    heading="The company is called Approved Contractor. Here is the approval."
+    body="This is their licence as the State of California holds it, not as they describe it. We looked it up rather than take their word for it, and so can you."
+    authority={LICENCE.authority}
+    documentTitle={LICENCE.documentTitle}
+    fields={recordFields}
+    retrieval={`Retrieved from cslb.ca.gov on ${LICENCE.retrieved}. Bond and policy dates move — check the live record.`}
+    verifyHref={LICENCE.lookupUrl}
+    verifyLabel="Look up licence 952272 yourself →"
+  />
+
+  <CredentialLedger
+    id="credentials"
+    eyebrow="Everyone else who has checked"
+    heading="Nine more approvals, and who granted each one."
+    body="A row of logos proves nothing — anyone can paste a logo. These are the actual designations, the bodies that issue them, and where you can look them up."
     items={credentials}
-    label="Certified, listed and licensed"
+    featureLabel="James Hardie Elite Contractor"
+    footnote="Manufacturer and award marks are the property of the organisations that issue them and are named here in text rather than reproduced. Where a designation could not be confirmed from a public source, the entry says so."
     tone="sunken"
   />
 
-  <ServiceLegend
+  <ServicesGrid
     id="services"
-    eyebrow="Legend"
-    heading="Six things, all of them outdoors."
-    body="Every item on the drawing above, in order. There is no seventh — no kitchens, no bathrooms, no additions."
+    eyebrow="The whole scope"
+    heading="Six trades, all of them outdoors."
+    body="Approved Contractor is not a general remodeler. There is no kitchen, no bathroom and no addition on this list, and that is the point — everything here is the building envelope."
     items={services}
-    note="Not a general remodeler. Exterior envelope only."
+    columns={3}
+    media="none"
   />
 
   {
-    /* Renders the moment `src/content/projects/` has a before/after pair.
-       See OPEN ITEMS — this is the highest-value missing section on the page. */
-    projects.length > 0 && (
+    pairs.length > 0 && (
       <BeforeAfter
-        eyebrow="Same house"
-        heading="Before, and from the street."
-        items={projects}
+        id="work"
+        eyebrow="The same house, twice"
+        heading="Stucco off, James Hardie on."
+        body="One project in Los Angeles, photographed before the work started and after it finished."
+        items={pairs}
         tone="sunken"
+      />
+    )
+  }
+
+  {
+    galleryItems.length > 0 && (
+      <Gallery
+        locale={locale}
+        eyebrow="Recent work"
+        heading="Five more, across six counties."
+        items={galleryItems}
+        layout="uniform"
+        tone="sunken"
+        spacing="tight"
       />
     )
   }
@@ -162,36 +246,52 @@ const faqSchema = faqs.map((f) => ({
   <ProcessSteps
     id="process"
     eyebrow="What happens when you call"
-    heading="Four steps, and you can stop after any of them."
+    heading="Four steps, in their own words."
+    body="Quoted from Approved Contractor's own description of how a job runs, rather than rewritten into ours."
     steps={process}
     layout="row"
-    tone="sunken"
     ctaLabel={callLabel}
     ctaHref={callHref}
   />
 
-  <TitleBlock
-    id="record"
-    label="Company record"
-    areasLabel="Areas served"
-    areas={AREAS}
-    figuresLabel="On record"
-    figures={FIGURES}
-    termsLabel="Terms"
-    terms={TERMS}
-    tone="dark"
-  />
+  {/* Explicit id below: TestimonialPullQuote and TestimonialGrid BOTH default
+      to id="reviews", so leaving it off shipped two elements sharing an id —
+      invalid HTML, and it breaks any in-page anchor to either of them. */}
+  {
+    featuredReview && (
+      <TestimonialPullQuote
+        id="review-featured"
+        locale={locale}
+        eyebrow="A customer, at length"
+        testimonial={featuredReview}
+        tone="sunken"
+      />
+    )
+  }
 
   {
-    /* Renders the moment `src/content/testimonials/` has verbatim reviews.
-       Never invent one to fill this (CLAUDE.md §11). */
-    reviews.length > 0 && (
+    otherReviews.length > 0 && (
       <TestimonialGrid
         locale={locale}
-        eyebrow="From the neighbours"
+        eyebrow="Verified surveys"
         heading="What people said afterwards."
-        items={reviews}
+        body="Collected by GuildQuality, which surveys a contractor's customers directly and publishes the unhappy ones too. No star average is shown here because no two sources agree on one."
+        items={otherReviews}
         columns={3}
+      />
+    )
+  }
+
+  {
+    people.length > 0 && (
+      <ProviderBios
+        id="owner"
+        eyebrow="Who is responsible"
+        heading="There is a name on the licence."
+        body="In a trade where the fear is that whoever took the deposit will not answer the phone, the state requires a specific person to stand behind the work. On licence 952272 that person is named."
+        people={people}
+        layout="feature"
+        tone="sunken"
       />
     )
   }
@@ -208,8 +308,8 @@ const faqSchema = faqs.map((f) => ({
     id="contact"
     locale={locale}
     eyebrow="Canoga Park"
-    heading="Where the shop is."
-    body="The trucks go out from Eton Avenue. Call and someone will come out and walk the outside of the house with you."
+    heading="Where the trucks go out from."
+    body="9015 Eton Avenue — the address on the licence, not a mailbox. Serving Los Angeles, San Diego, Orange, Ventura, San Bernardino and Riverside counties."
     showHours={false}
     tone="sunken"
     formSubject="Exterior consultation request"
@@ -217,10 +317,12 @@ const faqSchema = faqs.map((f) => ({
 
   <CTABand
     heading="Have someone look at the outside of your house."
-    body="Free consultation. Tell us what is bothering you about it and we will tell you what is actually failing."
+    body="Free consultation, and no obligation after it. Tell them what is bothering you about the exterior and they will tell you what is actually failing."
     ctaLabel={callLabel}
     ctaHref={callHref}
-    note="Financing available · CA Lic. #952272"
+    secondaryLabel="Check the licence first"
+    secondaryHref={LICENCE.lookupUrl}
+    note="CA Lic. #952272 · Class B · Current and active · Financing available"
     align="split"
     tone="brand"
   />
@@ -231,70 +333,61 @@ const faqSchema = faqs.map((f) => ({
   ============================================================================
   OPEN ITEMS — CLOSE THESE BEFORE SENDING
   ============================================================================
+  Full detail, with sources and conflicts, is in input/facts.txt §15.
 
-  BLOCKING — the page is honest without them, but weaker:
+  ONLY THE BUSINESS CAN CLOSE THESE:
 
-  1. PHOTOGRAPHS. Zero supplied. `input/photos/` is empty. For an exterior
-     contractor the before/after pair is the product, and its absence is the
-     single biggest gap on this page. To fix: drop matched pairs into
-     src/assets/images/ as job-before.jpg / job-after.jpg, add one JSON entry
-     per job to src/content/projects/ with title, beforePhoto, beforeAlt,
-     photo, alt, location, year. BeforeAfter then renders itself, in place,
-     between the legend and the process. Six pairs is plenty.
+  1. A PORTRAIT OF JARED GREEN. He is named on the page and on the state
+     licence record, but no photograph of him is published anywhere. In this
+     trade a face is the single highest-trust element available, and it is now
+     the biggest remaining gap — the photography gap that dogged builds 002,
+     003 and 004 is otherwise closed.
 
-  2. REVIEWS. Zero verbatim quotes supplied. The intake says ~800 five-star
-     reviews exist and names two reviewers (Kimberly A., Sue H.) with no text.
-     Six to ten real ones, with first name + last initial, rating and month,
-     into src/content/testimonials/ and the section appears. Never write one.
+  2. HOURS. Not published by them. Third-party listings disagree on Saturday.
+     site.ts HOURS is empty, showHours={false}, no openingHoursSpecification.
 
-  3. A NAMED FACE. Nobody is named anywhere — not on their site, not in the
-     intake. In this trade an owner's name and photograph is the highest-trust
-     element available and there is currently no substitute for it on the page.
-     `people` collection + ProviderBios if the operator can get it.
+  3. AN EMAIL ADDRESS. Not published; SITE.email empty, so the block is omitted.
 
-  MUST VERIFY — each is currently on the page as the client publishes it:
+  4. THE PHONE CONFLICT. Their homepage header shows (866) 215-2968 while their
+     contact page, about page AND the CSLB register all show (877) 792-9082.
+     This page uses the register's number. Worth raising with them either way:
+     a header number that disagrees with the licence record is a trust leak on
+     a page whose whole subject is trust.
 
-  4. CSLB LICENCE #952272 — confirm on the Contractors State License Board
-     public licence check. It appears in the footer, the trust bar, the FAQ,
-     the title block stamp and the closing band. If it is wrong it is wrong in
-     five places.
+  5. THE REVIEW COUNT. If they can point at ~800 verified reviews on ONE
+     platform, the number goes straight back on the page — it is a good number.
+     Right now five sources give five answers.
 
-  5. THE THREE FIGURES in FIGURES above — 3,000+ homeowners, ~800 five-star
-     reviews, 10+ years. If any cannot be confirmed, delete that row from the
-     array rather than softening the wording.
+  6. YELP AND GOOGLE REVIEWS. Yelp shows 125 reviews and Google shows more;
+     both were unreadable to us. Ten minutes of copy-and-paste would materially
+     strengthen the testimonial section. One Google review in particular —
+     a customer saying they chose Approved Contractor because the rep
+     "provided full license and insurance info" — is the thesis of this entire
+     redesign in a customer's own words, and it is left off only because the
+     aggregator carrying it is provably contaminated. See input/reviews.txt §3.
 
-  6. THE SIX CREDENTIALS in src/content/credentials/ — James Hardie Elite,
-     Andersen Certified, Pella partner, Qualified Remodeler Top 500 (2025),
-     Home Improvement Pro 200 (2025), BBB A+. All client-published, none
-     embellished. Confirm the two 2025 awards are current.
+  7. AWARD CURRENCY. The Qualified Remodeler Top 500 and HIP 200 badges say
+     2025. Confirm they are current for 2026 or the year stays on them.
 
-  MISSING FACTS — sections are switched off rather than guessed:
+  8. FINANCING TERMS. Read 2026-08-12. Promotional finance offers move
+     constantly; re-check before this is sent.
 
-  7. HOURS. Not published anywhere. site.ts HOURS is empty, LocationContact
-     has showHours={false}, and no openingHoursSpecification is emitted.
+  ENGINEERING, BEFORE ANY CLIENT TEST:
 
-  8. GEO COORDINATES. site.ts `geo` is null so the LocalBusiness schema omits
-     it rather than pin the wrong unit on Eton Avenue. Paste them from the
-     Google Business Profile.
+  9. FORM_ENDPOINT is empty, so ContactForm renders its disabled state.
 
-  9. EMAIL. Not published. SITE.email is empty so the contact block omits it.
-
- 10. SOCIAL / DIRECTORY URLS. The intake says Angi, HomeAdvisor, Houzz and
-     Yelp but supplied no URLs. All four are empty, so nothing wrong lands in
-     `sameAs`.
-
- 11. FORM_ENDPOINT. Empty, so ContactForm renders its disabled state. Point it
-     at a Formspree or Web3Forms endpoint before the client is asked to test.
+ 10. GEO COORDINATES. site.ts `geo` is null, so LocalBusiness omits it rather
+     than pin the wrong unit on Eton Avenue.
 
   CONSIDERED AND DECLINED:
 
- 12. SPANISH. The Valley has a large Spanish-speaking homeowner base and
-     bilingual would be a real differentiator here. Declined for this pass
-     because every word of a licensed trade's advertising has to be the
-     operator's own, not a machine translation. One content pass if wanted.
+ 11. SPANISH. The Valley has a large Spanish-speaking homeowner base and
+     bilingual would be a genuine differentiator here. Declined for this pass:
+     every word of a licensed trade's advertising has to be the operator's own,
+     not a machine translation. One content pass if wanted.
 
- 13. BONDING AND INSURANCE. Not claimed anywhere on this page, in any wording,
-     because the client claims neither. Do not add it (CLAUDE.md §11).
+ 12. AN AGGREGATE RATING. Declined permanently unless a single source can be
+     established. See the header note.
   ============================================================================
   */
 }

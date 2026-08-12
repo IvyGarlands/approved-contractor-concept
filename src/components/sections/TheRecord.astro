@@ -1,0 +1,420 @@
+---
+/**
+ * TheRecord — THE SIGNATURE MOMENT. One per page (CLAUDE.md §4a).
+ *
+ * WHAT IT IS. The business's actual California contractor licence record, set
+ * as a document, on a true-white card laid across a scarlet field — and their
+ * own stamp landing on it once, at viewport scale.
+ *
+ * WHY THIS IS THE MOMENT. The company is called Approved Contractor. Its logo
+ * is a rubber stamp reading APPROVED. On their real site the word never appears
+ * again and the licence number is set at 11px in a footer. The entire identity
+ * was sitting there unused. This section is that identity finally being spent:
+ * the claim in the name, and the public record that backs it, in one frame.
+ *
+ * EVERY VALUE ON THIS CARD WAS READ OFF THE STATE REGISTER, not off the
+ * client's marketing (input/facts.txt §2, looked up 2026-08-12). That is what
+ * lets the page publish a bond amount and a workers' comp carrier at all —
+ * CLAUDE.md §11 forbids ORIGINATING a bonding or insurance claim, and this
+ * originates nothing: it quotes a public record, names it, dates it, and links
+ * to the lookup so the reader can repeat it. The retrieval date is on the card
+ * for the same reason. A bond effective date and a policy expiry both move.
+ *
+ * THE MOTION — "The Impact".
+ *   The stamp travels down in scale and rotation and STOPS. The card takes one
+ *   4px recoil that does not return past its rest position.
+ *
+ *   It is NOT a bounce, which §4 forbids. A bounce overshoots and comes back;
+ *   this decelerates hard into a stop and the recoil is one-way. It is also
+ *   deliberately SHORT — ~380ms of travel where every other build's signature
+ *   runs 1.0–1.6s. A rubber stamp that takes a second and a half to arrive is
+ *   not a rubber stamp.
+ *
+ *   The ink is `mix-blend-mode: multiply`, so where the stamp crosses the card
+ *   it darkens the print underneath instead of hiding it — which is what real
+ *   stamp ink on real paper does, and the detail that sells the whole thing.
+ *
+ * THE THREE CONSTRAINTS (§4a), each met by construction:
+ *   1. STATIC COMPOSITION STANDS ALONE. The hidden start state is scoped to
+ *      `html.js-motion`, which motion.ts only adds once it is alive. JS blocked,
+ *      broken or slow → the stamp is simply already printed. That is also the
+ *      composition this section was designed around; the impact is the bonus.
+ *   2. REDUCED MOTION COLLAPSES IT. motion.ts never adds .js-motion under
+ *      prefers-reduced-motion, and tokens.css §11 additionally zeroes every
+ *      --sig-stamp-* value. Two independent guards, either sufficient.
+ *   3. THE PERF BUDGET DOES NOT MOVE. No library. One IntersectionObserver,
+ *      ~400 bytes, transform and opacity only, disconnected after it fires.
+ *
+ * LAYOUT SAFETY. The stamp is absolutely positioned, so it could cover a field
+ * value. It cannot: the card reserves a real grid row for it (.rec__zone) at
+ * every width, and the stamp is allowed to overflow only outward, past the
+ * card's own edge. Nothing readable is ever underneath it except the card's
+ * blank lower margin.
+ */
+import Section from "./Section.astro";
+import type { SectionProps } from "./Section.astro";
+
+export interface RecordField {
+  label: string;
+  value: string;
+  /** Renders in the accent, for the one field that is the whole point. */
+  emphasis?: boolean;
+}
+
+interface Props extends SectionProps {
+  eyebrow: string;
+  heading: string;
+  body: string;
+  /** Card masthead — the issuing authority and the document. */
+  authority: string;
+  documentTitle: string;
+  fields: RecordField[];
+  /** "Retrieved from … on …" */
+  retrieval: string;
+  verifyHref: string;
+  verifyLabel: string;
+}
+
+const {
+  eyebrow,
+  heading,
+  body,
+  authority,
+  documentTitle,
+  fields,
+  retrieval,
+  verifyHref,
+  verifyLabel,
+  id = "record",
+  ...rest
+} = Astro.props;
+---
+
+<Section
+  id={id}
+  tone="brand"
+  spacing="loose"
+  width="xl"
+  labelledBy={`${id}-heading`}
+  class="record-sec"
+  {...rest}
+>
+  <div class="record-sec__intro">
+    <p class="eyebrow">{eyebrow}</p>
+    <h2 class="record-sec__heading" id={`${id}-heading`}>{heading}</h2>
+    <p class="record-sec__body">{body}</p>
+  </div>
+
+  <div class="rec" data-stamp-scene>
+    <div class="rec__card">
+      <header class="rec__head">
+        <p class="rec__authority record">{authority}</p>
+        <p class="rec__doc">{documentTitle}</p>
+      </header>
+
+      <dl class="rec__fields">
+        {
+          fields.map((f) => (
+            <div class:list={["rec__field", f.emphasis && "rec__field--emph"]}>
+              <dt class="rec__label record">{f.label}</dt>
+              <dd class="rec__value">{f.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      {/* Reserved, always. The stamp lives here and nowhere else, which is what
+          guarantees it never lands on a field value at any width. */}
+      <div class="rec__zone" aria-hidden="true">
+        <span class="rec__stamp" data-stamp>
+          <span class="rec__stamp-word">Approved</span>
+        </span>
+      </div>
+
+      <footer class="rec__foot">
+        <p class="rec__retrieval">{retrieval}</p>
+        <a class="rec__verify" href={verifyHref} rel="noopener" target="_blank">
+          {verifyLabel}
+        </a>
+      </footer>
+    </div>
+  </div>
+</Section>
+
+<script>
+  /* ~400 bytes. No GSAP. Fires once, then disconnects.
+     If this never runs, .js-motion is absent and the stamp is already printed —
+     see the fail-safe note in the frontmatter. */
+  const scene = document.querySelector<HTMLElement>("[data-stamp-scene]");
+  if (scene && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            scene.classList.add("is-stamped");
+            io.disconnect();
+          }
+        }
+      },
+      { threshold: 0.45 }
+    );
+    io.observe(scene);
+  }
+</script>
+
+<style>
+  .record-sec__intro {
+    max-inline-size: var(--measure);
+    margin-inline: auto;
+    text-align: center;
+    margin-block-end: var(--space-xl);
+  }
+
+  .record-sec__heading {
+    margin: var(--space-xs) 0 var(--space-s);
+    font-size: var(--step-4);
+    color: var(--color-ink-strong);
+    text-wrap: balance;
+  }
+
+  .record-sec__body {
+    margin: 0;
+    font-size: var(--step-1);
+    line-height: var(--leading-snug);
+    color: var(--color-ink);
+    text-wrap: pretty;
+  }
+
+  /* ---- the card -------------------------------------------------------- */
+
+  .rec {
+    max-inline-size: var(--container-l);
+    margin-inline: auto;
+  }
+
+  .rec__card {
+    position: relative;
+    /* TRUE WHITE, declared locally. This is the documented exception in
+       tokens.css §10: on a brand band cards normally RECEDE, but this card is
+       the figure and the field is the ground, and that inversion is the whole
+       composition. It therefore also declares its own ink rather than
+       inheriting .on-brand's. */
+    background-color: #ffffff;
+    color: var(--n-800);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-l);
+    padding: clamp(1.25rem, 0.9rem + 1.75vw, 2.5rem);
+  }
+
+  .rec__head {
+    padding-block-end: var(--space-s);
+    border-block-end: var(--border-thick) solid var(--n-900);
+  }
+
+  .rec__authority {
+    margin: 0;
+    color: var(--a-700);
+    text-indent: 0;
+  }
+
+  .rec__doc {
+    margin: var(--space-3xs) 0 0;
+    font-family: var(--face-display);
+    font-size: var(--step-2);
+    font-weight: var(--weight-display);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    color: var(--n-900);
+  }
+
+  /* ---- fields ---------------------------------------------------------- */
+
+  .rec__fields {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 44em) {
+    .rec__fields {
+      grid-template-columns: 1fr 1fr;
+      column-gap: clamp(1.5rem, 0.5rem + 5vw, 4rem);
+    }
+  }
+
+  .rec__field {
+    display: grid;
+    gap: 0.1rem;
+    padding-block: var(--space-xs);
+    border-block-end: var(--border-hair) solid var(--n-100);
+  }
+
+  .rec__label {
+    margin: 0;
+    font-size: 0.6875rem;
+    color: var(--a-700);
+    text-indent: 0;
+  }
+
+  .rec__value {
+    margin: 0;
+    font-family: var(--face-body);
+    font-size: var(--step-0);
+    font-weight: var(--weight-medium);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--leading-snug);
+    color: var(--n-900);
+  }
+
+  /* The status line. The one field this whole page exists to show. */
+  .rec__field--emph .rec__value {
+    font-family: var(--face-display);
+    font-size: var(--step-2);
+    font-weight: var(--weight-display);
+    letter-spacing: var(--tracking-heading);
+    color: var(--b-600);
+  }
+
+  /* ---- the stamp zone --------------------------------------------------
+     A real, reserved row. Its height is what keeps the stamp off the field
+     values at every width. */
+  /* The zone's height is DERIVED FROM THE STAMP, not guessed.
+     An independent clamp was the obvious way to write this and it was wrong:
+     at 1280px the stamp measured 315px tall inside a 192px zone, so it hung
+     62px past both edges and landed on "Qualifying individual" and on the
+     retrieval line. The layout-safety guarantee in the frontmatter was false.
+
+     2.6x --step-7 covers it at every width. The stamp's own box is about
+     1.75x its font-size (line-height 1, 0.3em padding, 0.075em border), and
+     rotating it adds sin(5.5°) x its width to the bounding box — which is
+     roughly another 0.7x at this string length. Measured: 90px tall at 320px
+     against a 98px zone, 315px at 1280px against a 341px zone. */
+  .rec__zone {
+    position: relative;
+    block-size: calc(var(--step-7) * 2.6);
+  }
+
+  .rec__stamp {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-end: -2%;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3em 0.55em;
+    border: 0.075em solid var(--b-600);
+    border-radius: 0.14em;
+    outline: 0.032em solid var(--b-600);
+    outline-offset: 0.055em;
+
+    font-family: var(--face-display);
+    font-size: var(--step-7);
+    font-weight: var(--weight-stamp);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-stamp);
+    color: var(--b-600);
+    white-space: nowrap;
+
+    /* Real stamp ink darkens the print under it rather than hiding it. */
+    mix-blend-mode: multiply;
+
+    transform: translateY(-50%) rotate(var(--stamp-angle));
+    transform-origin: 50% 50%;
+  }
+
+  .rec__stamp-word {
+    text-indent: var(--tracking-stamp);
+  }
+
+  /* ---- THE IMPACT ------------------------------------------------------
+     Hidden start state scoped to .js-motion ONLY. Without it — JS off, JS
+     broken, or prefers-reduced-motion (motion.ts bails before adding the
+     class) — the stamp is simply already printed. */
+  .js-motion .rec__stamp {
+    opacity: 0;
+    transform: translateY(-50%) rotate(var(--sig-stamp-from-rotate))
+      scale(var(--sig-stamp-from-scale));
+  }
+
+  .js-motion .is-stamped .rec__stamp {
+    opacity: 1;
+    transform: translateY(-50%) rotate(var(--stamp-angle)) scale(1);
+    transition:
+      opacity calc(var(--sig-stamp-duration) * 0.45) var(--ease-linear),
+      transform var(--sig-stamp-duration) var(--sig-ease-impact);
+  }
+
+  /* The card's single one-way recoil, timed to land with the stamp. It settles
+     TO rest and never past it — an overshoot-and-return would be the bounce
+     §4 forbids. */
+  .js-motion .is-stamped .rec__card {
+    animation: rec-recoil var(--sig-stamp-recoil-duration) var(--ease-out)
+      var(--sig-stamp-duration) both;
+  }
+
+  @keyframes rec-recoil {
+    from {
+      transform: translateY(var(--sig-stamp-recoil));
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  /* ---- footer ---------------------------------------------------------- */
+
+  .rec__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2xs) var(--space-m);
+    margin-block-start: var(--space-s);
+    padding-block-start: var(--space-s);
+    border-block-start: var(--border-hair) solid var(--n-200);
+  }
+
+  .rec__retrieval {
+    margin: 0;
+    font-size: var(--step--1);
+    line-height: var(--leading-snug);
+    color: var(--n-600);
+  }
+
+  .rec__verify {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.75rem; /* §5 touch target */
+    font-size: var(--step--1);
+    font-weight: var(--weight-strong);
+    letter-spacing: var(--tracking-control);
+    color: var(--b-600);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+  }
+
+  .rec__verify:focus-visible {
+    outline: 3px solid var(--b-600);
+    outline-offset: 3px;
+  }
+
+  /* On the narrowest phones the stamp is pulled back inside the card's own
+     edge — off-page it would clip against the viewport rather than reading as
+     applied slightly off the paper. */
+  @media (max-width: 30em) {
+    .rec__stamp {
+      inset-inline-end: 50%;
+      transform: translate(50%, -50%) rotate(var(--stamp-angle));
+    }
+
+    .js-motion .rec__stamp {
+      transform: translate(50%, -50%) rotate(var(--sig-stamp-from-rotate))
+        scale(var(--sig-stamp-from-scale));
+    }
+
+    .js-motion .is-stamped .rec__stamp {
+      transform: translate(50%, -50%) rotate(var(--stamp-angle)) scale(1);
+    }
+  }
+</style>

@@ -1,0 +1,372 @@
+---
+/**
+ * HeroStamp — the hero for Approved Contractor, Inc. (differentiation log 005)
+ *
+ * THE COMPOSITION. A full-bleed field of the client's own scarlet, carrying the
+ * record line, the headline, and one of their job photographs mounted as an
+ * evidence print: a white border, a caption strip, sat slightly off-square on
+ * the field.
+ *
+ * WHY A COLOUR FIELD. Their brand colour is #ae0f15, sampled from their own
+ * wordmark, and every previous treatment of it — including our own build 003 —
+ * used it as a sub-5% accent. A stamp that appears once at 5% coverage is not a
+ * stamp. Putting the red underneath everything is the single decision that
+ * makes this page unmistakably theirs at a glance, and it is only available
+ * because their actual red happens to carry white body copy at 7.3:1.
+ *
+ * WHY A MOUNTED PHOTO RATHER THAN A FULL-BLEED ONE. These are hand-held job
+ * photos taken by installers on phones, not commissioned photography. Blown up
+ * full-bleed behind a headline they look like what they are, and the page reads
+ * cheap. Presented as a print with a border and a caption, the same photograph
+ * reads as EVIDENCE — which is what this page needs it to be, and which is
+ * honest about its provenance rather than disguising it.
+ *
+ * WHAT THIS HERO DOES NOT DO, ON PURPOSE:
+ *   - No stamp. The stamp is the page's ONE signature moment and it belongs to
+ *     TheRecord (CLAUDE.md §4a: scarcity is the mechanism). Spending it here
+ *     would halve it there.
+ *   - No [data-split] on the h1. The decisions log is explicit that the LCP
+ *     element does not get the masked reveal — at this size the paint → hide →
+ *     slide sequence is plainly visible on a slow connection.
+ *
+ * LCP. The headline and the mounted photograph are both above the fold. The
+ * image is eager + fetchpriority=high and the headline animates from a VISIBLE
+ * state via a CSS keyframe (never from opacity 0), so first paint is complete
+ * with or without JS.
+ */
+import { Image } from "astro:assets";
+import Section from "./Section.astro";
+import type { SectionProps } from "./Section.astro";
+
+interface Props extends SectionProps {
+  /** The record line. Short, factual, checkable. */
+  record: string;
+  /** Two lines. Kept as separate strings so the break is a design decision. */
+  headingLead: string;
+  headingTurn: string;
+  body: string;
+  photo: ImageMetadata;
+  photoAlt: string;
+  /** Caption strip under the mount: where, and what was done. */
+  captionPlace: string;
+  captionWork: string;
+  ctaHref: string;
+  ctaLabel: string;
+  telHref: string;
+  telLabel: string;
+}
+
+const {
+  record,
+  headingLead,
+  headingTurn,
+  body,
+  photo,
+  photoAlt,
+  captionPlace,
+  captionWork,
+  ctaHref,
+  ctaLabel,
+  telHref,
+  telLabel,
+  id = "top",
+  ...rest
+} = Astro.props;
+---
+
+<Section
+  id={id}
+  tone="brand"
+  spacing="none"
+  bleed
+  labelledBy="hero-heading"
+  class="herostamp"
+  {...rest}
+>
+  <div class="herostamp__inner">
+    <div class="herostamp__copy">
+      <p class="herostamp__record record">{record}</p>
+
+      <h1 class="herostamp__heading" id="hero-heading">
+        <span class="herostamp__line">{headingLead}</span>
+        <span class="herostamp__line herostamp__line--turn">{headingTurn}</span>
+      </h1>
+
+      <hr class="rule herostamp__rule" aria-hidden="true" />
+
+      <p class="herostamp__body">{body}</p>
+
+      {/* `.btn` and `.btn--secondary` from base.css §buttons — they carry the
+          48px minimum touch target (§5) and re-ink themselves through
+          .on-brand, so on this field the primary is paper-on-red and the
+          secondary is an outlined white. Do not hand-roll a button here. */}
+      <div class="herostamp__actions">
+        <a class="btn" href={ctaHref} data-magnetic>{ctaLabel}</a>
+        <a class="btn btn--secondary" href={telHref}>{telLabel}</a>
+      </div>
+    </div>
+
+    <figure class="mount" data-parallax-scene>
+      <div class="mount__print" data-depth="0.28">
+        <Image
+          src={photo}
+          alt={photoAlt}
+          widths={[520, 760, 1040]}
+          sizes="(min-width: 62em) 42vw, 92vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <figcaption class="mount__caption">
+        <span class="mount__place record">{captionPlace}</span>
+        <span class="mount__work">{captionWork}</span>
+      </figcaption>
+    </figure>
+  </div>
+</Section>
+
+<style>
+  .herostamp {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .herostamp__inner {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+    max-inline-size: var(--container-xl);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    padding-block: clamp(3rem, 1.7rem + 6.5vw, 6.5rem);
+  }
+
+  @media (min-width: 62em) {
+    .herostamp__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+      gap: var(--space-2xl);
+      /* START, not centre. Centring the mount against the copy column pushed
+         its caption strip down into the bottom-right corner of the viewport,
+         which is where the concept badge floats — measured at 1280x820, the
+         badge landed on "Stucco removed, James Hardie lap siding installed".
+         Top-aligning lifts the whole mount clear and also lines its upper edge
+         up with the record line, which is the better composition anyway. */
+      align-items: start;
+    }
+  }
+
+  /* ---- copy ------------------------------------------------------------ */
+
+  .herostamp__record {
+    color: var(--color-ink-muted);
+    margin: 0 0 var(--space-m);
+  }
+
+  .herostamp__heading {
+    margin: 0;
+    font-size: var(--step-6);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-ink-strong);
+    text-wrap: balance;
+  }
+
+  .herostamp__line {
+    display: block;
+  }
+
+  /* The turn. Set in the light geometric face rather than the roman, so the
+     two halves of the sentence come from the two halves of the wordmark — the
+     same genre contrast the mark is built on, at headline scale. */
+  .herostamp__line--turn {
+    font-family: var(--face-body);
+    font-weight: var(--weight-light);
+    letter-spacing: -0.01em;
+  }
+
+  .herostamp__rule {
+    margin-block: var(--space-l) var(--space-m);
+    background-color: var(--color-brand); /* white, in .on-brand */
+  }
+
+  .herostamp__body {
+    margin: 0;
+    max-inline-size: var(--measure-narrow);
+    font-size: var(--step-1);
+    line-height: var(--leading-snug);
+    color: var(--color-ink);
+  }
+
+  .herostamp__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin-block-start: var(--space-l);
+  }
+
+  /* ---- the evidence mount ---------------------------------------------- */
+
+  .mount {
+    margin: 0;
+    justify-self: center;
+    inline-size: 100%;
+    /* 30rem, not 34: see the align-items note above. The mount has to finish
+       above the badge's reserved corner on a 820px-tall viewport. */
+    max-inline-size: 30rem;
+    background-color: #ffffff;
+    padding: var(--mount-pad);
+    border-radius: var(--radius-image);
+    box-shadow: var(--shadow-l);
+    /* Off-square, by the same angle the stamp uses, in the opposite direction —
+       so the two rotations on the page read as one system rather than two
+       accidents. */
+    transform: rotate(calc(var(--stamp-angle) * -0.42));
+  }
+
+  .mount__print {
+    overflow: hidden;
+    border-radius: 1px;
+    background-color: var(--n-100);
+  }
+
+  .mount__print :global(img) {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: var(--ratio-hero);
+    object-fit: cover;
+    filter: var(--image-filter-hero);
+  }
+
+  .mount__caption {
+    display: grid;
+    gap: 0.15rem;
+    padding: var(--space-xs) var(--space-3xs) var(--space-3xs);
+    /* The mount is white regardless of context, so its caption declares its own
+       ink rather than inheriting .on-brand's. This is the one documented
+       exception in tokens.css §10. */
+    color: var(--n-600);
+  }
+
+  .mount__place {
+    color: var(--a-700);
+    text-indent: 0;
+  }
+
+  .mount__work {
+    font-family: var(--face-body);
+    font-size: var(--step--1);
+    line-height: var(--leading-snug);
+    color: var(--n-800);
+  }
+
+  /* ---- first paint -----------------------------------------------------
+     A CSS keyframe, not GSAP, and it starts from opacity 1. Above-the-fold
+     content must never be hidden by JS and revealed on the first rAF: in a
+     throttled or backgrounded tab that strands it invisible (decisions log,
+     2026-08-09). This settles content that is already painted. */
+  @media (prefers-reduced-motion: no-preference) {
+    .herostamp__record,
+    .herostamp__heading,
+    .herostamp__rule,
+    .herostamp__body,
+    .herostamp__actions,
+    .mount {
+      animation: herostamp-settle var(--duration-hero) var(--ease-out) backwards;
+    }
+    .herostamp__heading {
+      animation-delay: calc(var(--motion-hero-delay) * 1);
+    }
+    .herostamp__rule {
+      animation-delay: calc(var(--motion-hero-delay) * 2);
+    }
+    .herostamp__body {
+      animation-delay: calc(var(--motion-hero-delay) * 2.6);
+    }
+    .herostamp__actions {
+      animation-delay: calc(var(--motion-hero-delay) * 3.2);
+    }
+    .mount {
+      animation-delay: calc(var(--motion-hero-delay) * 1.6);
+    }
+  }
+
+  @keyframes herostamp-settle {
+    from {
+      opacity: 1;
+      transform: translateY(var(--motion-distance-s));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* The mount carries a rotation, so its settle has to compose with it rather
+     than overwrite it — otherwise the print snaps square for the duration of
+     the animation and then tilts. */
+  @keyframes herostamp-settle-mount {
+    from {
+      transform: rotate(calc(var(--stamp-angle) * -0.42))
+        translateY(var(--motion-distance-s));
+    }
+    to {
+      transform: rotate(calc(var(--stamp-angle) * -0.42)) translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .mount {
+      animation-name: herostamp-settle-mount;
+    }
+  }
+
+  /* ---- the stacked hero ------------------------------------------------
+     Scoped to when the hero goes SINGLE-COLUMN (below 62em), not to "phone".
+     That distinction is the bug this replaced: the tightening was scoped to
+     34em, so the whole 545px-991px band kept desktop type in a stacked layout,
+     the hero grew ~90px taller than it needed to be, and the concept badge
+     landed on both CTAs. Measured at 600px.
+
+     Everything here buys vertical space so the primary CTA stays clear of the
+     badge's reserved corner. */
+  @media (max-width: 61.99em) {
+    .mount {
+      max-inline-size: 30rem;
+    }
+
+    .herostamp__inner {
+      padding-block-start: clamp(2rem, 1.5rem + 2vw, 3rem);
+    }
+
+    .herostamp__record {
+      margin-block-end: var(--space-s);
+    }
+
+    .herostamp__heading {
+      font-size: clamp(2.65rem, 1.85rem + 3.4vw, 3.6rem);
+    }
+
+    .herostamp__rule {
+      margin-block: var(--space-m) var(--space-s);
+    }
+
+    .herostamp__body {
+      font-size: var(--step-0);
+    }
+
+    .herostamp__actions {
+      margin-block-start: var(--space-s);
+    }
+  }
+
+  /* The secondary "Call" button is dropped wherever the full-width sticky call
+     bar is present (BaseLayout hides that bar at 60em). Two identical call
+     CTAs within 100px of each other was always redundant; removing one is what
+     a careful designer would do here regardless of the badge. */
+  @media (max-width: 59.99em) {
+    .herostamp__actions .btn--secondary {
+      display: none;
+    }
+  }
+</style>

@@ -2,28 +2,60 @@
 /**
  * StampMark — the wordmark for Approved Contractor, Inc.
  *
- * THE IDEA. In construction, APPROVED is the word a plan check puts on
- * drawings that pass. This business is called Approved Contractor and nobody
- * had ever drawn the name as what it already is. So the mark is a stamp: the
- * word APPROVED inside a double-ruled frame, printed in plan-check red, with
- * the rest of the name set beside or beneath it.
+ * THIS IS A REDRAW, NOT A REPLACEMENT. Their existing mark is a good idea with
+ * poor execution, and the brief on that is unambiguous: keep the recognisable
+ * shape, the era, the ornament and the colour; fix the spacing, the curves, the
+ * weight and the legibility at small sizes. See input/brand.md §7.
  *
- * COMPLIANCE — read before changing anything here (CLAUDE.md §11, contractor).
+ * WHAT THE ORIGINAL IS (sampled, not guessed — input/brand.md §1–2):
+ *   - "APPROVED" in heavy roman capitals, inside a rounded-rectangle DOUBLE
+ *     rule, rotated roughly −6°, printed in #ae0f15.
+ *   - "Contractor" BELOW and to the right, horizontal, in a light geometric
+ *     sans with generous letterspacing, in #231f20.
+ *   - The contrast between those two genres is the whole idea of the mark: a
+ *     bureaucratic rubber stamp landing on a calm modern name.
+ *
+ * WHAT IS KEPT: all of the above. Both colours are the client's own sampled
+ * hex values, unchanged. The lockup, the rotation, the double rule, the case,
+ * the two-genre contrast and the relative position of the two words are all
+ * theirs.
+ *
+ *   NOTE: build 003 set "Contractor" BESIDE the frame rather than beneath it,
+ *   which quietly broke the lockup. It is back where they have it.
+ *
+ * WHAT IS FIXED:
+ *   1. VECTOR, NOT A 590px RASTER. The original is a bitmap; this sets at any
+ *      size, including --step-7 in the signature moment.
+ *   2. THE DISTRESS TEXTURE IS GONE. 26,406 of the original's 37,356
+ *      non-transparent pixels are partial-alpha mottling — stock "grunge stamp"
+ *      filtering, and the single thing that makes it read as clip-art. The mark
+ *      now gets its character from letterform, weight and frame proportion. A
+ *      stamp that is drawn rather than filtered.
+ *   3. ONE ROTATION. The original's angle differs between the header and
+ *      footer copies because it is an accident of the source graphic. Here it
+ *      is --stamp-angle, one token, shared with every other stamp on the page.
+ *   4. RE-SPACED. In the original, "Contractor" collides with the frame's lower
+ *      rule and the two words' optical centres disagree.
+ *   5. LEGIBLE AT 24px, which the distressed original is not.
+ *   6. ONE RED. Their logo uses #ae0f15 and their stylesheet uses #aa0e00;
+ *      this uses --color-brand, which is #ae0f15 everywhere.
+ *
+ * COMPLIANCE — read before changing anything (CLAUDE.md §11, contractor).
  * A stamp device in a licensed trade must not imply MUNICIPAL approval. This
- * mark therefore contains only the business's own name and, at `lg`, its own
- * CSLB number. It must never gain the words permit, city, county, inspected,
- * certified, or "approved by", and it must never gain a seal, a scallop, an
- * eagle or a date field. It is a wordmark in a stamp frame. Keep it that way.
+ * mark contains only the business's own name and, where `serial` is set, its
+ * own CSLB number. It must never gain the words permit, city, county,
+ * inspected, certified or "approved by", and never a seal, a scallop, an eagle
+ * or a date field. It is a wordmark in a stamp frame. Keep it that way.
  *
- * Colour comes from --color-accent, so the mark re-inks itself automatically
- * in .on-dark and .on-brand contexts without a variant prop.
+ * Colour comes from --color-brand / --color-ink-strong, so the mark re-inks
+ * itself in .on-dark and .on-brand with no variant prop.
  */
 import { SITE } from "../../config/site";
 
 interface Props {
-  /** sm = header, md = footer, lg = the title block (once per page). */
+  /** sm = header, md = footer, lg = the record section (once per page). */
   size?: "sm" | "md" | "lg";
-  /** Show the CSLB serial line. Only true where there is room to read it. */
+  /** Show the CSLB serial line. Only where there is room to read it. */
   serial?: boolean;
   class?: string;
 }
@@ -38,87 +70,93 @@ const { size = "sm", serial = false, class: className } = Astro.props;
   <span class="stamp__rest">Contractor{size === "lg" ? ", Inc." : ""}</span>
   {
     serial && SITE.licenseNumber && (
-      <span class="stamp__serial">{SITE.licenseNumber}</span>
+      <span class="stamp__serial record">{SITE.licenseNumber}</span>
     )
   }
 </span>
 
 <style>
   .stamp {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45em;
-    font-family: var(--face-display);
-    font-stretch: var(--face-display-stretch, 100%);
-    font-weight: var(--weight-display);
+    display: inline-grid;
+    justify-items: start;
     line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-label);
-    color: var(--color-ink-strong);
-    /* Tracking leaves a trailing space on the final glyph of every run. */
-    text-indent: 0;
+    /* The frame is rotated, so the lockup needs room on the block axis or the
+       stamp's corners clip against whatever sits above and below it. */
+    padding-block: 0.28em;
   }
 
-  /* The frame: a heavy rule with a hairline shadowing it, which is how an
-     inked stamp actually prints — the die edge and the ink bleed. Built from
-     border + outline rather than two elements so there is nothing to keep in
-     sync. */
+  /* The frame. A heavy rule with a lighter one shadowing it at a gap, which is
+     how an inked double-rule stamp actually prints — the die edge, then the
+     bleed. Built from border + outline rather than two elements so there is
+     nothing to keep in sync, and rounded because their frame is rounded. */
   .stamp__frame {
     display: inline-flex;
     align-items: center;
     padding: var(--stamp-inset);
-    border: var(--stamp-border) solid var(--color-accent);
-    outline: var(--border-hair) solid var(--color-accent);
+    border: var(--stamp-border) solid var(--color-brand);
+    border-radius: var(--stamp-radius);
+    outline: var(--stamp-border-inner) solid var(--color-brand);
     outline-offset: var(--stamp-gap);
-    color: var(--color-accent);
+    color: var(--color-brand);
+    transform: rotate(var(--stamp-angle));
+    transform-origin: 40% 60%;
+
+    font-family: var(--face-display);
+    font-weight: var(--weight-stamp);
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-stamp);
   }
 
   .stamp__word {
-    /* The tracked-out run needs its trailing space put back on the left or the
-       word sits visibly off-centre inside the frame. */
-    text-indent: var(--tracking-label);
+    /* Tracking adds a trailing space after the final glyph; put it back on the
+       left or the word sits visibly off-centre inside the frame. */
+    text-indent: var(--tracking-stamp);
   }
 
+  /* "Contractor": horizontal while the stamp is not, indented so it starts
+     under the middle of the frame, and pulled up so the stamp reads as having
+     landed ON the name rather than floating above it. Exactly the relationship
+     in their original. */
   .stamp__rest {
+    margin-block-start: 0.18em;
+    margin-inline-start: 1.15em;
+    font-family: var(--face-body);
+    font-weight: var(--weight-light);
+    font-size: 0.92em;
+    letter-spacing: 0.13em;
+    text-indent: 0.13em;
     color: var(--color-ink-strong);
   }
 
   .stamp__serial {
-    font-family: var(--face-mono);
-    font-size: 0.62em;
-    font-weight: var(--weight-medium);
-    letter-spacing: var(--tracking-wide);
-    color: var(--color-ink-muted);
-    text-indent: var(--tracking-wide);
+    margin-block-start: 0.5em;
+    margin-inline-start: 1.2em;
+    font-size: 0.5em;
   }
 
-  /* ---- sizes ---------------------------------------------------------- */
+  /* ---- sizes ----------------------------------------------------------
+     Sized in em off a single font-size so every part scales together. */
 
   .stamp--sm {
-    font-size: var(--step--1);
+    font-size: clamp(0.9375rem, 0.88rem + 0.28vw, 1.125rem);
   }
 
   .stamp--md {
-    font-size: var(--step-0);
+    font-size: var(--step-1);
   }
 
-  /* The one-per-page appearance. Stacks, so the frame reads as a stamp that
-     has landed on the sheet rather than as a button in a row of words. */
+  /* The one-per-page appearance. */
   .stamp--lg {
-    display: inline-grid;
-    justify-items: start;
-    gap: 0.5em;
-    font-size: var(--step-2);
+    font-size: var(--step-3);
   }
 
-  .stamp--lg .stamp__rest {
-    font-size: 0.82em;
-    letter-spacing: var(--tracking-label);
-  }
-
-  /* The stamp frame is the single densest use of the accent on the page, so
-     it holds its own margin at every size rather than inheriting a gap. */
-  .stamp--lg .stamp__frame {
-    padding: 0.55em 0.9em;
+  /* At the smallest size the outline ring is the first thing to become mush,
+     so it is dropped below ~15px and the frame carries the mark alone. This is
+     the legibility fix the raster original cannot make. */
+  @media (max-width: 26em) {
+    .stamp--sm .stamp__frame {
+      outline: 0;
+    }
   }
 </style>
