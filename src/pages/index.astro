@@ -67,6 +67,7 @@ import Divider from "../components/core/Divider.astro";
 
 import heroPhoto from "../assets/photos/rpv-03.jpg";
 import promisePhoto from "../assets/photos/la-craftsman-01.jpg";
+import quotePhoto from "../assets/photos/thousand-oaks-06.jpg";
 
 import { SITE, LICENCE } from "../config/site";
 import { localized } from "../lib/content";
@@ -241,6 +242,8 @@ const faqSchema = faqs.map((f) => ({
         locale={locale}
         eyebrow="A customer, at length"
         testimonial={featuredReview}
+        photo={quotePhoto}
+        photoAlt="A Thousand Oaks home after its damaged stucco was replaced and the exterior refinished."
         spacing="default"
       />
     )

@@ -139,3 +139,21 @@ export const CITIES = [
 
 /** Convenience — every page puts the number in front of someone. */
 export const CALL_HREF = `tel:${SITE.phoneHref}`;
+
+/**
+ * How a review's source is credited under the quote.
+ *
+ * The collection stores an enum, and rendering it raw produced "via Direct",
+ * which reads like a system field leaking onto the page. Everything except
+ * "Direct" is a real platform name and reads correctly with "via"; "Direct"
+ * means the business published it on their own site, so it gets said properly.
+ *
+ * Attribution is never dropped — a quote whose provenance is not stated is
+ * indistinguishable from an invented one, which is the whole reason `source`
+ * is a required field (CLAUDE.md §11).
+ */
+export function sourceLabel(source: string, via: string): string {
+  return source === "Direct"
+    ? "Shared with us directly"
+    : `${via} ${source}`;
+}

@@ -3,28 +3,56 @@
  * TestimonialPullQuote — one review, set large.
  *
  * One real review at display size outperforms six in a carousel. Use the
- * client's single best Google review here and put the rest on an inner page.
+ * client's single best review here and put the rest on an inner page.
+ *
+ * TWO MODES, CHOSEN BY LENGTH, NOT BY THE PAGE AUTHOR.
+ *
+ * The component was written for a pull quote — one or two sentences at
+ * --step-3 on a 28ch measure. Handed an 800-character review it produced 25
+ * lines of 30px display type and swallowed an entire screen, which is what
+ * happened with Kimberly A.'s Cool Life review. That is not a styling
+ * preference, it is the component being used outside the shape it was drawn
+ * for.
+ *
+ * So the mode is derived from the content rather than passed in: above
+ * LONG_QUOTE characters it switches to a reading setting — smaller type, a
+ * proper 54ch measure, ranged left, and paragraph breaks preserved. A page
+ * author cannot get this wrong by forgetting a prop, and swapping in a longer
+ * review later cannot silently break the layout.
  *
  * Real review text only, with its source attributed — never authored by us
  * (CLAUDE.md §11). `source` is a required field on the collection precisely so
  * an invented quote cannot be laundered into the page.
  */
+import { Image } from "astro:assets";
 import Section from "./Section.astro";
 import Stars from "../core/Stars.astro";
 import type { CollectionEntry } from "astro:content";
 import type { SectionProps } from "./Section.astro";
 import { useTranslations, type Locale } from "../../i18n/ui";
+import { sourceLabel } from "../../lib/page";
 
 interface Props extends SectionProps {
   locale: Locale;
   eyebrow?: string;
   testimonial: CollectionEntry<"testimonials">;
+  /**
+   * Used in the LONG setting only. Ranging an excerpt left on a 54ch measure
+   * is correct for reading and leaves the other half of a 68rem section empty;
+   * a photograph of the job the review is about fills it with the thing the
+   * customer is describing. Ignored in the short setting, where a centred pull
+   * quote should be alone on the band.
+   */
+  photo?: ImageMetadata;
+  photoAlt?: string;
 }
 
 const {
   locale,
   eyebrow,
   testimonial,
+  photo,
+  photoAlt,
   id = "reviews",
   tone = "brand",
   spacing,
@@ -33,6 +61,17 @@ const {
 
 const t = useTranslations(locale);
 const { quote, author, rating, source, date } = testimonial.data;
+
+/** Beyond this, a "pull quote" is really an excerpt and needs reading type. */
+const LONG_QUOTE = 280;
+const isLong = quote.length > LONG_QUOTE;
+
+/* Reviews arrive with real paragraph breaks. Rendering them as one run is what
+   turns four short paragraphs into a wall. */
+const paragraphs = quote
+  .split(/\n{2,}/)
+  .map((p) => p.trim())
+  .filter(Boolean);
 
 const dateLabel = date
   ? new Intl.DateTimeFormat(locale, { year: "numeric", month: "long" }).format(date)
@@ -45,29 +84,85 @@ const dateLabel = date
   id={id}
   tone={tone}
   spacing={spacing}
-  width="m"
+  width={isLong && photo ? "xl" : "m"}
   aria-label={t("testimonials.title")}
   {...rest}
 >
-  <figure class="pull-quote" data-reveal-stagger>
-    {eyebrow && <p class="eyebrow pull-quote__eyebrow" data-reveal>{eyebrow}</p>}
+  <div class:list={["pq-wrap", isLong && photo && "pq-wrap--split"]}>
+    <figure
+      class:list={["pull-quote", isLong && "pull-quote--long"]}
+      data-reveal-stagger
+    >
+      {eyebrow && (
+        <p class="eyebrow pull-quote__eyebrow" data-reveal>
+          {eyebrow}
+        </p>
+      )}
 
-    {rating && <div data-reveal><Stars rating={rating} /></div>}
+      {rating && (
+        <div data-reveal>
+          <Stars rating={rating} />
+        </div>
+      )}
 
-    <blockquote class="pull-quote__quote" data-reveal>
-      <p>{quote}</p>
-    </blockquote>
+      <blockquote class="pull-quote__quote" data-reveal>
+        {paragraphs.map((p) => <p>{p}</p>)}
+      </blockquote>
 
-    <figcaption class="pull-quote__cite" data-reveal>
-      <span class="pull-quote__author">{author}</span>
-      <span class="pull-quote__source">
-        {t("testimonials.source")} {source}{dateLabel && ` · ${dateLabel}`}
-      </span>
-    </figcaption>
-  </figure>
+      <figcaption class="pull-quote__cite" data-reveal>
+        <span class="pull-quote__author">{author}</span>
+        <span class="pull-quote__source">
+          {sourceLabel(source, t("testimonials.source"))}{dateLabel && ` · ${dateLabel}`}
+        </span>
+      </figcaption>
+    </figure>
+
+    {
+      isLong && photo && (
+        <div class="pq-photo" data-reveal="right">
+          <Image
+            src={photo}
+            alt={photoAlt ?? ""}
+            widths={[420, 640, 880]}
+            sizes="(min-width: 62em) 42vw, 92vw"
+            loading="lazy"
+          />
+        </div>
+      )
+    }
+  </div>
 </Section>
 
 <style>
+  .pq-wrap {
+    display: grid;
+    gap: var(--space-l);
+  }
+
+  @media (min-width: 62em) {
+    .pq-wrap--split {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.86fr);
+      gap: var(--space-2xl);
+      align-items: center;
+    }
+  }
+
+  .pq-photo {
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-m);
+    background-color: var(--n-100);
+  }
+
+  .pq-photo :global(img) {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    filter: var(--image-filter);
+  }
+
   .pull-quote {
     display: flex;
     flex-direction: column;
@@ -90,21 +185,69 @@ const dateLabel = date
     color: var(--color-ink-strong);
     text-wrap: balance;
     max-width: 28ch;
+    margin: 0;
+  }
+
+  .pull-quote__quote p {
+    margin: 0;
+  }
+
+  .pull-quote__quote p + p {
+    margin-block-start: 0.6em;
+  }
+
+  /* ---- the reading setting -------------------------------------------
+     An excerpt, not a pull quote. Ranged left because centred text over four
+     paragraphs is genuinely harder to read — the eye loses the start of each
+     line — and on a 54ch measure at --step-1 this review runs about nine lines
+     instead of twenty-five. */
+  .pull-quote--long {
+    align-items: start;
+    text-align: start;
+  }
+
+  .pull-quote--long .pull-quote__quote {
+    font-size: var(--step-1);
+    font-weight: var(--weight-body);
+    line-height: var(--leading-snug);
+    letter-spacing: 0;
+    max-width: 54ch;
+    text-wrap: pretty;
+  }
+
+  /* The opening mark stays display-sized and hangs into the margin, so the
+     block still reads as a quotation at a glance without the body type having
+     to shout. */
+  .pull-quote--long .pull-quote__quote p:first-of-type::before {
+    font-family: var(--face-display);
+    font-size: 1.9em;
+    font-weight: var(--weight-display);
+    line-height: 0;
+    vertical-align: -0.22em;
+    color: var(--color-brand);
+    margin-inline-start: -0.42em;
+    margin-inline-end: 0.04em;
+  }
+
+  .pull-quote--long .pull-quote__cite {
+    align-items: start;
   }
 
   /* Typographic quote marks, not an icon. Hung so the first line stays optically
      aligned with the rest of the block. */
-  .pull-quote__quote p::before {
+  /* Marks on the FIRST and LAST paragraph only. Applying them per-paragraph
+     put an opening and closing quote around each of four paragraphs. */
+  .pull-quote__quote {
+    quotes: "\201C" "\201D";
+  }
+
+  .pull-quote__quote p:first-of-type::before {
     content: open-quote;
     margin-inline-start: -0.4em;
   }
 
-  .pull-quote__quote p::after {
+  .pull-quote__quote p:last-of-type::after {
     content: close-quote;
-  }
-
-  .pull-quote__quote p {
-    quotes: "\201C" "\201D";
   }
 
   .pull-quote__cite {

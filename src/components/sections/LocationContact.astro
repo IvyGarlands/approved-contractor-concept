@@ -90,10 +90,18 @@ const t = useTranslations(locale);
       }
 
       {showHours && <div data-reveal><HoursTable locale={locale} /></div>}
+
+      {/* THE MAP LIVES HERE, not in the aside beside the form.
+          Measured on this build at 1280px: details ran 238px (address, phone,
+          directions) against an aside of 919px (map + form), leaving ~680px of
+          dead canvas in the left column — the single largest empty area on the
+          site. The map also simply belongs next to the address it depicts.
+          The engine's own decisions log reached this conclusion after build
+          004 and it was never merged back. */}
+      {showMap && <div data-reveal><GoogleMap locale={locale} /></div>}
     </div>
 
     <div class="loc__aside stack stack--l">
-      {showMap && <div data-reveal><GoogleMap locale={locale} /></div>}
 
       {
         showForm && (

@@ -19,6 +19,7 @@ import PhotoBand from "../components/sections/PhotoBand.astro";
 import Divider from "../components/core/Divider.astro";
 
 import heroPhoto from "../assets/photos/la-craftsman-01.jpg";
+import quotePhoto from "../assets/photos/la-craftsman-02.jpg";
 
 /* Five real jobs, edge to edge, to keep the product in front of someone on a
    page that is otherwise records and lists. See PhotoBand for why alt is "". */
@@ -75,6 +76,8 @@ const bandPhotos = [
         locale={locale}
         eyebrow="A customer, at length"
         testimonial={featured}
+        photo={quotePhoto}
+        photoAlt="A 107-year-old Los Angeles Craftsman home after its siding was replaced."
         spacing="default"
       />
     )
