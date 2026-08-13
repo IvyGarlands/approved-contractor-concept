@@ -64,9 +64,14 @@ const sorted = [...items].sort((a, b) => a.data.order - b.data.order);
         const Tag = s.data.href ? "a" : "div";
         return (
           <li class="svc__item" data-reveal="fade">
+            {/* data-tilt: the toolkit's damped hover tilt. The CSS hover lift
+                came OFF at the same time — GSAP's tilt and a CSS translateY
+                both write `transform`, and two writers on one property is a
+                fight the user sees as jitter. */}
             <Tag
               class:list={["svc__card", s.data.href && "svc__card--link"]}
               href={s.data.href}
+              data-tilt
             >
               {s.data.photo && (
                 <div class="svc__media">
@@ -123,7 +128,6 @@ const sorted = [...items].sort((a, b) => a.data.order - b.data.order);
   }
 
   .svc__card--link:hover {
-    transform: translateY(-2px);
     box-shadow: var(--shadow-m);
     border-color: var(--color-brand);
   }

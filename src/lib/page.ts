@@ -2,7 +2,7 @@
  * page.ts — the things more than one page needs, in one place.
  *
  * This build is ten pages rather than one, and the fastest way to make a
- * ten-page concept look amateur is to let the nav, the licence figures or the
+ * ten-page concept look amateur is to let the nav, the license figures or the
  * promise list drift apart between them. Nothing here is copy the client would
  * edit — that lives in `src/content/`. This is the structural furniture that
  * every page reads from the same source (CLAUDE.md §3).
@@ -37,7 +37,7 @@ export const HERO_FACTS = [
 ];
 
 /**
- * The licence record card.
+ * The license record card.
  *
  * Read off the CSLB register on 2026-08-12 and held in site.ts, so the card,
  * the FAQ answer and the footer cannot disagree. The status row is the only
@@ -45,7 +45,7 @@ export const HERO_FACTS = [
  */
 export const RECORD_FIELDS = [
   { label: "Status", value: LICENCE.status, emphasis: true },
-  { label: "Licence number", value: "952272" },
+  { label: "License number", value: "952272" },
   { label: "Business name on record", value: LICENCE.businessName },
   { label: "Classification", value: LICENCE.classification },
   { label: "Entity", value: LICENCE.entity },

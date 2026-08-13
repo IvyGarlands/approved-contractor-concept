@@ -8,7 +8,7 @@
  *
  * Same construction as the homepage hero so the set reads as one site: a real
  * photograph of the trade, a brand-tinted gradient over it, white type. Never a
- * flat colour band with a word on it, which is what a "clean and modern" inner
+ * flat color band with a word on it, which is what a "clean and modern" inner
  * page would do and what leaves a dead strip at the top of every page.
  */
 import { Image } from "astro:assets";
@@ -26,16 +26,18 @@ interface Props {
 const { eyebrow, heading, body, photo, photoAlt, crumbs = [] } = Astro.props;
 ---
 
-<section class="phero on-brand" aria-labelledby="phero-heading">
+<section class="phero on-brand" aria-labelledby="phero-heading" data-parallax-scene>
   <div class="phero__media">
-    <Image
+    <div class="phero__layer" data-depth="1">
+      <Image
       src={photo}
       alt={photoAlt}
       widths={[640, 1024, 1600]}
       sizes="100vw"
-      loading="eager"
-      fetchpriority="high"
-    />
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
     <div class="phero__scrim" aria-hidden="true"></div>
   </div>
 
@@ -83,7 +85,12 @@ const { eyebrow, heading, body, photo, photoAlt, crumbs = [] } = Astro.props;
     z-index: 0;
   }
 
-  .phero__media :global(img) {
+  .phero__layer {
+    position: absolute;
+    inset: -9% 0;
+  }
+
+  .phero__layer :global(img) {
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
@@ -102,7 +109,7 @@ const { eyebrow, heading, body, photo, photoAlt, crumbs = [] } = Astro.props;
     position: absolute;
     inset: 0;
     /* Lighter than the first draft, for the same reason as the homepage hero:
-       an inner-page banner that crushes its photograph into a colour block is
+       an inner-page banner that crushes its photograph into a color block is
        just a coloured band with a word on it. */
     background-image: linear-gradient(
       to top,

@@ -482,7 +482,11 @@
   --sig-mask-ease: cubic-bezier(0.77, 0, 0.18, 1);
   --sig-magnet-radius: 90px;
   --sig-magnet-strength: 0.20;
-  --sig-tilt: 0deg;
+  /* Hover tilt on the service cards. 2.5° is deliberately shy — at this size
+     a card should feel like it has a surface, not like it is a playing card
+     being flipped. Collapses to 0 under prefers-reduced-motion with the rest
+     of the tier. */
+  --sig-tilt: 2.5deg;
   --sig-marquee-duration: 46s;
 
   --sig-stamp-duration: 380ms;

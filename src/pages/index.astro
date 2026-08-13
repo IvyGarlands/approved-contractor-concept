@@ -10,16 +10,16 @@
  *
  * SECTION ORDER, AND WHY IT CHANGED
  * ----------------------------------
- * The first pass ran the licence record second, on the argument that the proof
+ * The first pass ran the license record second, on the argument that the proof
  * IS the sell. That was backwards. Nobody arrives at a contractor's site
- * wanting to read a licence — they arrive wanting to know whether we do the
+ * wanting to read a license — they arrive wanting to know whether we do the
  * thing their house needs, and what it looks like when we've done it. Proof
  * answers the second question they ask, not the first.
  *
  *   1  HERO          a real finished job, full-bleed, with their own headline
  *   2  WHAT WE DO    six trades, each with a photograph of it finished
  *   3  THE WORK      before and after, then five more jobs
- *   4  THE RECORD    the signature moment. The licence, and the stamp
+ *   4  THE RECORD    the signature moment. The license, and the stamp
  *   5  CREDENTIALS   everyone else who has checked us
  *   6  PROCESS       what happens when you call, in their own words
  *   7  PROMISE       their "Our Promise To You", set properly
@@ -63,6 +63,7 @@ import ProviderBios from "../components/sections/ProviderBios.astro";
 import FAQ from "../components/sections/FAQ.astro";
 import LocationContact from "../components/sections/LocationContact.astro";
 import CTABand from "../components/sections/CTABand.astro";
+import MarqueeBand from "../components/sections/MarqueeBand.astro";
 import Divider from "../components/core/Divider.astro";
 
 import heroPhoto from "../assets/photos/rpv-03.jpg";
@@ -127,7 +128,7 @@ const faqSchema = faqs.map((f) => ({
     heading="A Home Exterior that Withstands the Test of Time"
     body="We're an award-winning siding, windows and home exterior contractor serving Greater Los Angeles & San Diego, including Orange, Riverside and Ventura counties."
     photo={heroPhoto}
-    photoAlt="A single-storey Rancho Palos Verdes home finished in white James Hardie lap siding, with new landscaping and a stone stairway, under a clear blue sky."
+    photoAlt="A single-story Rancho Palos Verdes home finished in white James Hardie lap siding, with new landscaping and a stone stairway, under a clear blue sky."
     captionPlace="Rancho Palos Verdes, CA"
     captionWork="James Hardie lap siding, soffit, fascia and exterior paint"
     ctaHref="/free-estimate"
@@ -182,13 +183,13 @@ const faqSchema = faqs.map((f) => ({
     id="record"
     eyebrow="The public record"
     heading="We're called Approved Contractor. Here's the approval."
-    body="This is our licence as the State of California holds it, not as we describe it. Don't take our word for it — the lookup takes about thirty seconds."
+    body="This is our license as the State of California holds it, not as we describe it. Don't take our word for it — the lookup takes about thirty seconds."
     authority={LICENCE.authority}
     documentTitle={LICENCE.documentTitle}
     fields={RECORD_FIELDS}
     retrieval={`Retrieved from cslb.ca.gov on ${LICENCE.retrieved}. Bond and policy dates move — check the live record.`}
     verifyHref={LICENCE.lookupUrl}
-    verifyLabel="Look up licence 952272 yourself →"
+    verifyLabel="Look up license 952272 yourself →"
   />
 
   {/* 5 — everyone else who has checked us. */}
@@ -199,7 +200,7 @@ const faqSchema = faqs.map((f) => ({
     body="A row of logos proves nothing — anyone can paste a logo. These are the actual designations, the bodies that issue them, and where you can look them up."
     items={credentials}
     featureLabel="James Hardie Elite Contractor"
-    footnote="Manufacturer and award marks are the property of the organisations that issue them and are named here in text rather than reproduced. Where a designation could not be confirmed from a public source, the entry says so."
+    footnote="Manufacturer and award marks are the property of the organizations that issue them and are named here in text rather than reproduced. Where a designation could not be confirmed from a public source, the entry says so."
     tone="sunken"
     spacing="default"
   />
@@ -232,6 +233,25 @@ const faqSchema = faqs.map((f) => ({
     spacing="default"
     ctaLabel="Schedule your free quote"
     ctaHref="/free-estimate"
+  />
+
+  {/* The kinetic strip. CSS-only, pointer-free, and the one loud thing
+      between the quiet promise section and the reviews. Outline style — a
+      solid marquee reads as a sale banner (the component's own note). */}
+  <MarqueeBand
+    items={[
+      "Siding",
+      "Windows",
+      "Stucco",
+      "Paint & texture coating",
+      "Roofing",
+      "Shutters",
+      "Free consultations",
+      "CSLB #952272",
+    ]}
+    tone="brand"
+    style="outline"
+    size="m"
   />
 
   {/* 8 — reviews. */}
@@ -272,8 +292,8 @@ const faqSchema = faqs.map((f) => ({
       <ProviderBios
         id="owner"
         eyebrow="Who's responsible"
-        heading="There's a name on the licence."
-        body="In a trade where the fear is that whoever took the deposit won't answer the phone, the state requires a specific person to stand behind the work. On licence 952272, that person is named."
+        heading="There's a name on the license."
+        body="In a trade where the fear is that whoever took the deposit won't answer the phone, the state requires a specific person to stand behind the work. On license 952272, that person is named."
         people={people}
         layout="feature"
         spacing="default"
@@ -296,7 +316,7 @@ const faqSchema = faqs.map((f) => ({
     locale={locale}
     eyebrow="Canoga Park"
     heading="Where our trucks go out from."
-    body="9015 Eton Avenue — the address on our licence, not a mailbox. We serve Los Angeles, San Diego, Orange, Ventura, San Bernardino and Riverside counties."
+    body="9015 Eton Avenue — the address on our license, not a mailbox. We serve Los Angeles, San Diego, Orange, Ventura, San Bernardino and Riverside counties."
     showHours={false}
     formSubject="Exterior consultation request"
     spacing="default"
@@ -307,7 +327,7 @@ const faqSchema = faqs.map((f) => ({
     body="Free consultation, and no obligation after it. Tell us what's bothering you about the exterior and we'll tell you what's actually failing."
     ctaLabel={callLabel}
     ctaHref={callHref}
-    secondaryLabel="Check our licence first"
+    secondaryLabel="Check our license first"
     secondaryHref={LICENCE.lookupUrl}
     note="CA Lic. #952272 · Class B · Current and active · Financing available"
     align="split"

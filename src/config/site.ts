@@ -195,7 +195,7 @@ export const SITE = {
   twitterHandle: "",
 
   /**
-   * Browser-chrome colour (Android address bar, PWA splash). --b-600, the
+   * Browser-chrome color (Android address bar, PWA splash). --b-600, the
    * stamp ink sampled from their own wordmark.
    *
    * This is the ONE place the palette is allowed to exist outside tokens.css,
@@ -212,7 +212,7 @@ export const SITE = {
   studioUrl: "",
 
   /* ---- regulated vertical: CONTRACTOR ---------------------------------
-     California B&P 7030.5 requires the licence number on contractor
+     California B&P 7030.5 requires the license number on contractor
      advertising, so this is a legal requirement, not decoration.
 
      VERIFIED 2026-08-12 against the CSLB register — see LICENCE below. Build
@@ -241,7 +241,7 @@ export const SITE = {
  */
 export const LICENCE = {
   authority: "California Contractors State License Board",
-  documentTitle: "Licence detail — 952272",
+  documentTitle: "License detail — 952272",
   businessName: "APPROVED CONTRACTOR INC",
   address: "9015 Eton Avenue Unit D, Canoga Park, CA 91304",
   entity: "Corporation",

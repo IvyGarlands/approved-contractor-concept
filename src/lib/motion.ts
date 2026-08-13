@@ -154,6 +154,50 @@ function init(): void {
     });
   }
 
+  /* ---- THE RESCUE OBSERVER --------------------------------------------
+     ScrollTrigger's reveals ride on scroll events and rAF, and both can be
+     throttled, missed, or jumped past — a backgrounded tab, an instant
+     programmatic scroll, a browser restoring a deep scroll position. When
+     that happens an element whose trigger never fired is stranded at inline
+     opacity 0, which reads as a blank hole in the page. Observed on this
+     build: 73 of 92 reveals stranded after a scripted jump.
+
+     This is the belt to ScrollTrigger's braces: a cheap IntersectionObserver
+     that watches every reveal target, and if one is still hidden ~700ms after
+     genuinely entering the viewport, finishes its reveal itself. On a healthy
+     page it never fires — ScrollTrigger wins the race by half a second. On an
+     unhealthy one it turns "missing content" into "content that arrived a
+     beat late", which is the difference between a bug and nothing.          */
+  const rescue = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const el = entry.target as HTMLElement;
+        rescue.unobserve(el);
+        window.setTimeout(() => {
+          if (
+            el.classList.contains("is-revealed") ||
+            parseFloat(getComputedStyle(el).opacity) > 0.95
+          )
+            return;
+          gsap.to(el, {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            duration: 0.45,
+            ease,
+            overwrite: true,
+            onComplete: () => settle([el]),
+          });
+        }, 700);
+      }
+    },
+    { threshold: 0.05 }
+  );
+  for (const el of document.querySelectorAll<HTMLElement>("[data-reveal]")) {
+    rescue.observe(el);
+  }
+
   /* ---- hero -----------------------------------------------------------
      Intentionally NOT handled here. [data-hero-settle] is animated by a pure
      CSS keyframe in base.css §8 so above-the-fold content paints without

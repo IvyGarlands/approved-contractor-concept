@@ -4,7 +4,7 @@
  *
  * THIS IS A REDRAW, NOT A REPLACEMENT. Their existing mark is a good idea with
  * poor execution, and the brief on that is unambiguous: keep the recognisable
- * shape, the era, the ornament and the colour; fix the spacing, the curves, the
+ * shape, the era, the ornament and the color; fix the spacing, the curves, the
  * weight and the legibility at small sizes. See input/brand.md §7.
  *
  * WHAT THE ORIGINAL IS (sampled, not guessed — input/brand.md §1–2):
@@ -35,7 +35,7 @@
  *      footer copies because it is an accident of the source graphic. Here it
  *      is --stamp-angle, one token, shared with every other stamp on the page.
  *   4. RE-SPACED. In the original, "Contractor" collides with the frame's lower
- *      rule and the two words' optical centres disagree.
+ *      rule and the two words' optical centers disagree.
  *   5. LEGIBLE AT 24px, which the distressed original is not.
  *   6. ONE RED. Their logo uses #ae0f15 and their stylesheet uses #aa0e00;
  *      this uses --color-brand, which is #ae0f15 everywhere.
@@ -47,7 +47,7 @@
  * inspected, certified or "approved by", and never a seal, a scallop, an eagle
  * or a date field. It is a wordmark in a stamp frame. Keep it that way.
  *
- * Colour comes from --color-brand / --color-ink-strong, so the mark re-inks
+ * Color comes from --color-brand / --color-ink-strong, so the mark re-inks
  * itself in .on-dark and .on-brand with no variant prop.
  */
 import { SITE } from "../../config/site";
@@ -110,7 +110,7 @@ const { size = "sm", serial = false, class: className } = Astro.props;
 
   .stamp__word {
     /* Tracking adds a trailing space after the final glyph; put it back on the
-       left or the word sits visibly off-centre inside the frame. */
+       left or the word sits visibly off-center inside the frame. */
     text-indent: var(--tracking-stamp);
   }
 

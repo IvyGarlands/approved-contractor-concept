@@ -5,9 +5,9 @@
  * REVISED. The first pass put a mounted photograph BESIDE a headline on a flat
  * red field. Right instincts, wrong proportions: the photograph was a
  * supporting element on a page selling a visual transformation, and a flat
- * full-bleed colour read as printed card. The house is now the hero, and the
+ * full-bleed color read as printed card. The house is now the hero, and the
  * red arrives as light laid OVER it — so the first thing anyone sees is the
- * actual work, and the brand colour still owns the screen.
+ * actual work, and the brand color still owns the screen.
  *
  * THE COPY IS THEIRS. The eyebrow and the H1 are verbatim from their homepage.
  * We are proposing a better setting of what they already say rather than
@@ -60,16 +60,27 @@ const {
 } = Astro.props;
 ---
 
-<section id={id} class="hero on-brand" aria-labelledby="hero-heading">
+<section
+  id={id}
+  class="hero on-brand"
+  aria-labelledby="hero-heading"
+  data-parallax-scene
+>
+  {/* The parallax layer is oversized (inset -9%) so the ambient drift can
+      never expose an edge. Depth 1 x --sig-parallax 0.10 = a 10% total travel,
+      half of it each way — inside the 9% bleed with the layer's own extra
+      height covering the rest. */}
   <div class="hero__media">
-    <Image
+    <div class="hero__layer" data-depth="1">
+      <Image
       src={photo}
       alt={photoAlt}
       widths={[640, 1024, 1600, 2200]}
       sizes="100vw"
-      loading="eager"
-      fetchpriority="high"
-    />
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
     <div class="hero__scrim" aria-hidden="true"></div>
   </div>
 
@@ -78,8 +89,11 @@ const {
       <p class="hero__eyebrow">{eyebrow}</p>
       <h1 class="hero__heading" id="hero-heading">{heading}</h1>
       <p class="hero__body">{body}</p>
+      {/* NO data-magnetic. The magnetic drift made the primary CTA slide
+          around under the pointer — on a button that reads as indecision, and
+          the user called it out. A button should sit still and get pressed. */}
       <div class="hero__actions">
-        <a class="btn" href={ctaHref} data-magnetic>{ctaLabel}</a>
+        <a class="btn" href={ctaHref}>{ctaLabel}</a>
         <a class="btn btn--secondary" href={telHref}>{telLabel}</a>
       </div>
     </div>
@@ -134,7 +148,12 @@ const {
     z-index: 0;
   }
 
-  .hero__media :global(img) {
+  .hero__layer {
+    position: absolute;
+    inset: -9% 0;
+  }
+
+  .hero__layer :global(img) {
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
@@ -145,7 +164,7 @@ const {
   }
 
   /* The brand arrives HERE — as light over the photograph rather than as a flat
-     panel beside it. Two layers: the tinted gradient for colour, and a solid
+     panel beside it. Two layers: the tinted gradient for color, and a solid
      foot so the copy keeps its contrast regardless of what the photograph is
      doing underneath it. */
   .hero__scrim {
