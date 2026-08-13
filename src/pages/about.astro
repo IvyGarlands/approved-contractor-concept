@@ -97,7 +97,7 @@ const bandPhotos = [
         id="owner"
         eyebrow="Who's responsible"
         heading="There's a name on our license."
-        body="In a trade where the fear is that whoever took the deposit won't answer the phone, the state requires a specific person to stand behind the work."
+        body="California requires a specific person to stand behind every licensed job."
         people={people}
         layout="feature"
         tone="sunken"
@@ -114,7 +114,7 @@ const bandPhotos = [
     authority={LICENCE.authority}
     documentTitle={LICENCE.documentTitle}
     fields={RECORD_FIELDS}
-    retrieval={`Retrieved from cslb.ca.gov on ${LICENCE.retrieved}. Bond and policy dates move — check the live record.`}
+    retrieval={`License record current as of ${LICENCE.retrieved}. Bond and policy dates change — check the live record any time.`}
     verifyHref={LICENCE.lookupUrl}
     verifyLabel="Look up license 952272 yourself →"
   />
@@ -128,7 +128,7 @@ const bandPhotos = [
     body="We serve Southern California with two locations, in Los Angeles and San Diego."
     counties={COUNTIES}
     cities={CITIES}
-    note="This list is exactly the one we publish — no radius we can't support and no 'surrounding areas'. If your town isn't on it, call and ask; the honest answer is either yes or no."
+    note="If your town isn't on the list, call and ask — we'll give you a straight yes or no."
     tone="sunken"
     spacing="default"
   />
@@ -137,10 +137,9 @@ const bandPhotos = [
     id="credentials"
     eyebrow="Everyone else who has checked"
     heading="Ten approvals, and who granted each one."
-    body="A row of logos proves nothing — anyone can paste a logo. These are the actual designations, the bodies that issue them, and where you can look them up."
+    body="Each one came from someone else — a manufacturer, a trade body, or the state — and every one of them can be looked up."
     items={credentials}
     featureLabel="James Hardie Elite Contractor"
-    footnote="Manufacturer and award marks are the property of the organizations that issue them and are named here in text rather than reproduced. Where a designation could not be confirmed from a public source, the entry says so."
     spacing="default"
   />
 

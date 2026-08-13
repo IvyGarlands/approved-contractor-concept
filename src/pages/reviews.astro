@@ -56,14 +56,14 @@ const bandPhotos = [
 
 <BaseLayout
   title="Reviews from our customers"
-  description="Verbatim reviews from GuildQuality surveys and our own site, from customers across Los Angeles, San Diego, Malibu, Reseda, Burbank and San Gabriel."
+  description="Reviews from our customers across Los Angeles, San Diego, Malibu, Reseda, Burbank and San Gabriel. Siding, windows, stucco and exterior coating."
   path="/reviews"
   navLinks={NAV_LINKS}
 >
   <PageHero
     eyebrow="Reviews"
     heading="Reviews from our clients around Los Angeles & San Diego."
-    body="Every quote on this page is verbatim, with the customer's own wording and their own typos left alone."
+    body="Siding, windows, stucco and coating, reviewed by the people we did the work for."
     photo={heroPhoto}
     photoAlt="A 107-year-old Los Angeles Craftsman home after its siding was replaced."
     crumbs={[{ label: "Home", href: "/" }]}
@@ -74,7 +74,7 @@ const bandPhotos = [
       <TestimonialPullQuote
         id="review-featured"
         locale={locale}
-        eyebrow="A customer, at length"
+        eyebrow="In one customer's words"
         testimonial={featured}
         photo={quotePhoto}
         photoAlt="A 107-year-old Los Angeles Craftsman home after its siding was replaced."
@@ -90,8 +90,8 @@ const bandPhotos = [
       <TestimonialGrid
         locale={locale}
         eyebrow="Verified surveys"
-        heading="Eight more, in their own words."
-        body="Most of these come from GuildQuality, which surveys our customers directly rather than accepting open submissions — and publishes the unhappy responses alongside the happy ones."
+        heading="Eight more, unedited."
+        body="Most of these come from GuildQuality, which surveys our customers directly and publishes the complaints alongside the compliments."
         items={rest}
         columns={3}
         tone="sunken"
@@ -104,9 +104,9 @@ const bandPhotos = [
 
   <CredentialLedger
     id="why-no-rating"
-    eyebrow="Why there's no star rating on this page"
-    heading="Because we can't show you one we can prove."
-    body="Our own site says 800+ reviews. GuildQuality has us at 4.6 from 85 surveys. Houzz says 4.7 from 77. Yelp lists 125. A fourth aggregator claims 5.0 from 258 and attributes at least one review to us that belongs to a different company entirely. We can't reconcile those into a single honest number, so we're not going to print one — on a page that asks you to go and check us, an unverifiable average would be the one claim on it that fails its own test. Here's the survey platform instead. Go and read it."
+    eyebrow="About our ratings"
+    heading="We'd rather you read the reviews than trust a number."
+    body="You'll find us rated on Houzz, Yelp, Angi and GuildQuality, and every one of them counts differently. Rather than pick whichever number flatters us most, we'd sooner send you to the surveys and let you read what people actually wrote. Start with GuildQuality — they ask our customers directly, and they publish the complaints too."
     items={guild}
     spacing="default"
   />

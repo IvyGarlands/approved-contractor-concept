@@ -1,1 +1,6 @@
-{ "lang": "en", "question": "Do you do kitchens, bathrooms or additions?", "answer": "No. Siding, windows, stucco, exterior paint and texture coating, roofing and shutters. Everything on the outside, and nothing on the inside. If a job needs an interior remodeler, that is a different company.", "order": 1 }
+{
+  "lang": "en",
+  "question": "Do you do kitchens, bathrooms or additions?",
+  "answer": "No. Siding, windows, stucco, exterior paint and texture coating, roofing and shutters. Everything on the outside, nothing on the inside. If your job needs an interior remodeler, that's a different company and we'll tell you so.",
+  "order": 1
+}

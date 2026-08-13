@@ -480,3 +480,40 @@ CONFLICT #6 — HOURS
   7. Re-check the Service Finance promotional terms before sending (§11).
   8. Their own high-resolution logo file, and whether the "Cool Life" coating
      name may be used in body copy (it is a manufacturer's trademark).
+
+================================================================================
+16. CAVEATS MOVED OFF THE PAGE  (added 2026-08-13)
+================================================================================
+
+The first copy pass wrote several research caveats into customer-facing text —
+sourcing notes, verification gaps, and explanations of our own editorial method.
+That is the wrong place for them: a homeowner reading a contractor's website is
+not the audience for our fact-checking. The caveats are all still true and are
+recorded HERE. Raise them on the call; do not put them back on the page.
+
+  a. JAMES HARDIE ELITE — the page now states this designation flatly, with no
+     qualifier. It is the client's own published claim (§6) and client-published
+     credentials ship verbatim under CLAUDE.md §11. We still could NOT confirm it
+     independently: jameshardie.com sits behind a bot challenge we did not
+     bypass. If they cannot show a current Elite certificate, take it off.
+
+  b. BBB — the page says "An A+ rating with the Better Business Bureau."
+     ACCURATE AND DELIBERATELY INCOMPLETE: the BBB profile also records that the
+     company is NOT a BBB Accredited Business. The rating and the accreditation
+     are different things and only the rating applies. The page must never be
+     upgraded to say "BBB Accredited".
+
+  c. AGGREGATE RATING — still absent everywhere, still on purpose (CONFLICT #4).
+     The reviews page now explains this in one plain sentence about preferring
+     the surveys to a number, rather than reciting all five conflicting figures.
+     The underlying reason has not changed.
+
+  d. MANUFACTURER MARKS — the footnote explaining that we set credentials in type
+     rather than reproduce logos has come OFF the page. It was a note to
+     ourselves. The practice is unchanged: no borrowed logos anywhere (§6).
+
+  e. INVENTED STATISTIC, CAUGHT AND REMOVED — the siding page carried the
+     heading "Three quarters of what we do is siding." No source supports that
+     ratio; I wrote it. Replaced with "Siding is what we're known for", which
+     their own site does support. Flagged here because it is exactly the class
+     of error §11 exists to prevent, and it got past the first review.

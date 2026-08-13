@@ -46,7 +46,7 @@ const shortReviews = reviews.filter((r) => !r.data.featured).slice(0, 3);
   <PageHero
     eyebrow="Our work"
     heading="The same houses, before and after."
-    body="Real projects across six counties, photographed on site. No renderings, no stock houses."
+    body="Real houses across six counties, photographed on the job."
     photo={heroPhoto}
     photoAlt="A two-story Los Angeles home after its stucco was replaced with pale James Hardie lap siding."
     crumbs={[{ label: "Home", href: "/" }]}
@@ -58,7 +58,7 @@ const shortReviews = reviews.filter((r) => !r.data.featured).slice(0, 3);
         id="work"
         eyebrow="Before and after"
         heading="Two projects, photographed both ways."
-        body="Everything below was shot on our own jobs, by our own crews, on the days the work happened."
+        body="Photographed before we started and after we finished."
         items={pairs}
         spacing="default"
       />
@@ -83,7 +83,7 @@ const shortReviews = reviews.filter((r) => !r.data.featured).slice(0, 3);
       <TestimonialGrid
         locale={locale}
         eyebrow="From the same customers"
-        heading="What they said afterwards."
+        heading="What our customers said afterwards."
         items={shortReviews}
         columns={3}
         spacing="default"
@@ -93,7 +93,7 @@ const shortReviews = reviews.filter((r) => !r.data.featured).slice(0, 3);
 
   <CTABand
     heading="Want yours to look like this?"
-    body="Free consultation. We'll walk the outside of the house with you and give you the price from the start."
+    body="Free consultation. We'll walk the outside of your house with you and give you the price from the start."
     ctaLabel={callLabel}
     ctaHref={CALL_HREF}
     secondaryLabel="Check our license"
