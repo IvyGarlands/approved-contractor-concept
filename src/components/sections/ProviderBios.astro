@@ -171,5 +171,25 @@ const mode = people.length === 1 ? "feature" : layout;
       grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
       gap: var(--space-3xl);
     }
+
+    /* NO PHOTO, NO SECOND COLUMN.
+       The feature layout reserves 1fr for a portrait. When the person has no
+       photo — which is the case whenever the client has not supplied one, and
+       is the case here — that column stayed in the grid and rendered as dead
+       space: measured at 1280px, 470px of copy against a 671px void, 55% of
+       the row. The copy then wrapped at a needlessly narrow measure while half
+       the section sat empty.
+
+       `:not(:has(.person__media))` collapses the row to one column and gives
+       the copy a proper reading measure instead of a squeezed one. */
+    .people--feature .person:not(:has(.person__media)) {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-l);
+    }
+
+    .people--feature .person:not(:has(.person__media)) .person__bio,
+    .people--feature .person:not(:has(.person__media)) .person__body {
+      max-inline-size: var(--measure);
+    }
   }
 </style>

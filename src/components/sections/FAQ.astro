@@ -46,11 +46,17 @@ const {
 const t = useTranslations(locale);
 ---
 
+{/* width="l", not "s". A narrow container centred the WHOLE section, pushing
+    the heading 256px in from the page's left edge while every other section
+    header on the site starts at the container edge. One section indenting
+    itself for no reason reads as a mistake, because it is one. The list keeps
+    its readable measure via .faq in the stylesheet below — that is a property
+    of the answer text, not of the section. */}
 <Section
   id={id}
   tone={tone}
   spacing={spacing}
-  width="s"
+  width="l"
   labelledBy={`${id}-heading`}
   {...rest}
 >
@@ -82,6 +88,10 @@ const t = useTranslations(locale);
   .faq {
     display: flex;
     flex-direction: column;
+    /* The measure lives HERE now that the section is full width. Questions and
+       answers still read at a comfortable line length; the section header
+       lines up with every other one on the page. */
+    max-inline-size: 52rem;
   }
 
   .faq__item {

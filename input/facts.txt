@@ -517,3 +517,41 @@ recorded HERE. Raise them on the call; do not put them back on the page.
      ratio; I wrote it. Replaced with "Siding is what we're known for", which
      their own site does support. Flagged here because it is exactly the class
      of error §11 exists to prevent, and it got past the first review.
+
+================================================================================
+17. CLAIMS CORRECTED IN THE BOTTOM SECTIONS  (2026-08-13)
+================================================================================
+
+A review of the lower quarter of the page found several claims that were not
+supported by anything in this file. All were written by me, none came from a
+source, and all are now corrected. Recorded because they are the exact class of
+error §11 exists to prevent and they survived two earlier passes.
+
+  a. "Owner and President since 2010" (credential chip) and "Jared has run
+     Approved Contractor since 2010" (bio).
+     NOT SOURCED. Their About page names him "Owner and President" with no date.
+     The CSLB record shows the COMPANY licensed 09/14/2010 and his
+     bond-of-qualifying-individual certification effective 09/09/2016. Neither
+     establishes when he took the role. Both dates removed.
+
+  b. "California requires a specific person to stand behind every licensed job"
+     and "California holds him personally responsible for every job we do."
+     OVERSTATED, and a licensing claim we must not originate. The qualifying
+     individual under B&P 7068.1 is responsible for exercising direct
+     supervision and control of construction operations — not for personal
+     liability on every job. Reworded to "the person the state registers as
+     responsible for supervising our construction work."
+
+  c. "9015 Eton Avenue — the address on our license, not a mailbox."
+     "Not a mailbox" is an inference. The CSLB record confirms the address; it
+     says nothing about what kind of premises it is. Clause removed.
+
+  d. "issued 14 September 2010 and current today."
+     A live status claim on a static page, which silently goes stale. The record
+     card carries a retrieval date; the FAQ now points at the live lookup
+     instead of asserting present-tense status.
+
+  e. "Current and active" in the closing CTA of /contact and /reviews.
+     Same problem, and neither of those pages carries the dated record card to
+     qualify it. Removed there; kept on / and /about where the dated card sits
+     on the same page.
