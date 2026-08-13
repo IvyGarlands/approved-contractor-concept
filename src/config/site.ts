@@ -117,14 +117,19 @@ export const SITE = {
   vertical: "contractor" as Vertical,
 
   /**
-   * Production URL.
+   * Production URL. MUST match the deployed host exactly.
+   *
+   * This value is the canonical tag, og:url and the JSON-LD @id, so if it does
+   * not match where the site actually lives, every one of those points at a
+   * URL that does not exist. Set it BEFORE the first deploy: pick the Vercel
+   * project name first (that fixes the domain), then set this, then push.
    *
    * THE WORD "AMBUSH" MUST NEVER APPEAR HERE. This value is the canonical tag,
    * og:url and the JSON-LD @id, so the recipient is one right-click from
    * reading it. Only the local working directory keeps the ambush- prefix; the
    * deployed host and the GitHub repo are both <business>-concept.
    */
-  url: "https://approved-contractor-concept.pages.dev",
+  url: "https://approved-contractor-concept.vercel.app",
 
   /* ---- contact ------------------------------------------------------ */
   phone: "(877) 792-9082",

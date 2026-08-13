@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Finder duplicates — these once shipped a stale copy of the services
+# collection and produced ghost cards on the live site.
+*\ 2.*
+*\ copy.*
