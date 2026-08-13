@@ -254,7 +254,14 @@
 /* ==========================================================================
    §4  SEMANTIC — TYPOGRAPHY
    --------------------------------------------------------------------------
-   THE SCALE IS ORDINARY ON PURPOSE, AND THEN IT IS NOT.
+   THE SCALE IS SMALL, DENSE AND ORDINARY ON PURPOSE, AND THEN IT IS NOT.
+
+   Retuned down hard after the first pass read as oversized: body anchors at
+   16px (not 17), the hero tops out at 56px (not 68), and section headings at
+   38px (not 44). A homeowner assessing a contractor is SCANNING — they want to
+   know what we do and whether we are real inside one screen, not to be walked
+   through a magazine spread. Density is the service here; the scale that reads
+   as expensive on a restaurant page reads as slow on this one.
 
    Every previous build in the log has a "concept" scale — flat-then-breaking
    (002), evenly stepped (003), shifted (004). This one runs a plain ~1.20 →
@@ -281,18 +288,18 @@
    --step-7    THE STAMP. Once per page. Nothing else may use it.
    ========================================================================== */
 :root {
-  --step--1: clamp(0.8125rem, 0.7708rem + 0.19vw, 0.9375rem);
-  --step-0:  clamp(1.0625rem, 1.0417rem + 0.09vw, 1.125rem);
-  --step-1:  clamp(1.275rem, 1.2333rem + 0.19vw, 1.4rem);
-  --step-2:  clamp(1.53rem, 1.4567rem + 0.33vw, 1.75rem);
-  --step-3:  clamp(1.836rem, 1.7187rem + 0.52vw, 2.188rem);
-  --step-4:  clamp(2.203rem, 2.026rem + 0.79vw, 2.734rem);
-  --step-5:  clamp(2.644rem, 2.386rem + 1.15vw, 3.418rem);
-  --step-6:  clamp(3.172rem, 2.8053rem + 1.63vw, 4.272rem);
-  /* THE STAMP, and nothing else. Tuned so the word APPROVED plus its frame
-     fits the record card's width at every viewport from 320px up — the type
-     cannot reflow, so the clamp is the only thing preventing an overflow. */
-  --step-7:  clamp(2.35rem, 0.0611rem + 10.17vw, 9.25rem);
+  --step--1: clamp(0.8125rem, 0.79rem + 0.09vw, 0.875rem);
+  --step-0:  clamp(1rem, 0.978rem + 0.093vw, 1.0625rem);
+  --step-1:  clamp(1.125rem, 1.08rem + 0.185vw, 1.25rem);
+  --step-2:  clamp(1.3125rem, 1.24rem + 0.28vw, 1.5rem);
+  --step-3:  clamp(1.5rem, 1.375rem + 0.56vw, 1.875rem);
+  --step-4:  clamp(1.75rem, 1.542rem + 0.93vw, 2.375rem);
+  --step-5:  clamp(2rem, 1.708rem + 1.30vw, 2.875rem);
+  --step-6:  clamp(2.25rem, 1.833rem + 1.85vw, 3.5rem);
+  /* THE STAMP, and nothing else. Tuned so APPROVED plus its frame fits the
+     record card at every viewport from 320px up — the type cannot reflow, so
+     the clamp is the only thing preventing an overflow. */
+  --step-7:  clamp(2.1rem, 0.64rem + 6.5vw, 6.5rem);
 
   /* Source Serif 4 runs 200-900; Outfit runs 100-900. */
   --weight-light: 300;      /* the "Contractor" voice */
@@ -337,12 +344,16 @@
   --space-l:   clamp(2rem, 1.92rem + 0.40vw, 2.5rem);
   --space-xl:  clamp(3rem, 2.88rem + 0.60vw, 3.75rem);
   --space-2xl: clamp(4rem, 3.84rem + 0.80vw, 5rem);
-  --space-3xl: clamp(5.5rem, 5.28rem + 1.10vw, 6.875rem);
-  --space-4xl: clamp(7.5rem, 7.2rem + 1.50vw, 9.375rem);
+  --space-3xl: clamp(4rem, 3.84rem + 0.80vw, 5rem);
+  --space-4xl: clamp(5.5rem, 5.28rem + 1.10vw, 6.875rem);
 
-  --section-y: clamp(4rem, 2.86rem + 5.71vw, 8rem);
-  --section-y-tight: clamp(2.5rem, 1.93rem + 2.86vw, 4.5rem);
-  --section-y-loose: clamp(5.5rem, 3.93rem + 7.86vw, 11rem);
+  /* Cut by roughly a third from the first pass. --section-y is the single
+     biggest lever on perceived scale, and generous-equals-expensive is a
+     hospitality rule. On a trades page the same generosity reads as padding to
+     scroll past, and it pushes the proof below the fold. */
+  --section-y: clamp(2.75rem, 2.04rem + 3.57vw, 5.25rem);
+  --section-y-tight: clamp(1.75rem, 1.39rem + 1.79vw, 3rem);
+  --section-y-loose: clamp(3.5rem, 2.64rem + 4.29vw, 6.5rem);
 
   --stack-gap: var(--space-m);
 }
@@ -515,6 +526,86 @@
 }
 
 /* ==========================================================================
+   §8b  IDENTITY — GRADIENTS AND THE LAP DIVIDER
+   --------------------------------------------------------------------------
+   GRADIENTS. Flat brand fields were correct but inert: a page that is 30% one
+   colour needs that colour to have some life in it or the big panels read as
+   printed card. Every gradient here stays INSIDE the brand ramp — it is the
+   same red lit from one side, never a second hue creeping in — so the contrast
+   gate still governs, and every one of them is measured against its darkest
+   stop rather than its average.
+
+   --grad-brand        the hero and the record field. Lit from top-left.
+   --grad-brand-deep   the closing band. Darker, so the page ends heavier.
+   --grad-paper        near-invisible warmth on the light sections, enough to
+                       stop a full-width neutral looking like unpainted drywall.
+   --grad-ink          the footer.
+   --grad-photo        laid OVER photography, brand-tinted, so a phone snapshot
+                       picks up the page's colour instead of fighting it.
+
+   THE LAP DIVIDER. The decorative rule between sections is drawn as courses of
+   lap siding — the product this company actually installs, and the thing every
+   one of their photographs is a picture of. It is a repeating-linear-gradient,
+   so it costs zero requests and reflows to any width.
+
+   This is the ornament slot 003 filled with architect tick marks and 004 filled
+   with a highlighter. It is better than either because it is not a metaphor for
+   the business — it is a drawing of the product.
+   ========================================================================== */
+:root {
+  --grad-brand: linear-gradient(
+    152deg,
+    #c4161d 0%,
+    var(--b-600) 44%,
+    #8d0c11 100%
+  );
+  --grad-brand-deep: linear-gradient(
+    152deg,
+    var(--b-600) 0%,
+    #8d0c11 52%,
+    #6b0a0e 100%
+  );
+  --grad-paper: linear-gradient(
+    168deg,
+    var(--n-000) 0%,
+    var(--n-050) 62%,
+    var(--n-100) 100%
+  );
+  --grad-ink: linear-gradient(
+    152deg,
+    #2f2a2c 0%,
+    var(--n-900) 58%,
+    #171314 100%
+  );
+  /* Sits over a photograph. Dark enough at the foot to carry white type. */
+  /* Retuned after seeing it over a real photograph: the first values were a
+     scrim pretending to be a tint and they flattened the image into a colour
+     panel. The brand should COLOUR the photograph, not replace it. */
+  --grad-photo: linear-gradient(
+    to top,
+    rgb(122 12 17 / 0.46) 0%,
+    rgb(122 12 17 / 0.26) 52%,
+    rgb(35 31 32 / 0.10) 100%
+  );
+
+  /* Lap siding courses. --lap-h is one course; the shadow line under each
+     board is what makes it read as siding rather than as stripes. */
+  --lap-h: 9px;
+  --lap-line: rgb(35 31 32 / 0.10);
+  --lap-highlight: rgb(255 255 255 / 0.55);
+  --divider-lap: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--lap-h) - 2px),
+    var(--lap-line) calc(var(--lap-h) - 2px),
+    var(--lap-line) calc(var(--lap-h) - 1px),
+    var(--lap-highlight) calc(var(--lap-h) - 1px),
+    var(--lap-highlight) var(--lap-h)
+  );
+  --divider-height: 2.25rem;
+}
+
+/* ==========================================================================
    §9  SEMANTIC — IMAGE & TEXTURE TREATMENT
    --------------------------------------------------------------------------
    LOAD-BEARING AGAIN. This is the first build in four with real photographs,
@@ -598,6 +689,10 @@
   --color-focus: var(--b-300);
   color: var(--color-ink);
   background-color: var(--color-canvas);
+  /* The gradient sits ON the canvas colour, never instead of it — if the image
+     fails to paint, the flat token underneath is the colour the contrast gate
+     measured. Every gradient stop stays inside the same ramp. */
+  background-image: var(--grad-ink);
 }
 
 .on-brand {
@@ -622,6 +717,12 @@
   --color-focus: #ffffff;
   color: var(--color-ink);
   background-color: var(--color-canvas);
+  background-image: var(--grad-brand);
+}
+
+/* The closing band ends the page heavier than the hero opens it. */
+.on-brand--deep {
+  background-image: var(--grad-brand-deep);
 }
 
 /* ==========================================================================

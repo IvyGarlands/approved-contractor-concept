@@ -1,0 +1,124 @@
+---
+/**
+ * /window-replacement — windows, shutters and doors.
+ *
+ * The opening paragraph is verbatim from their homepage windows tile. Brand
+ * names appear as a factual list of what we install; none is used as a headline
+ * or implied endorsement (input/facts.txt §6).
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/sections/PageHero.astro";
+import AboutAlternating from "../components/sections/AboutAlternating.astro";
+import BeforeAfter from "../components/sections/BeforeAfter.astro";
+import CTABand from "../components/sections/CTABand.astro";
+import Divider from "../components/core/Divider.astro";
+
+import heroPhoto from "../assets/photos/agoura-windows-detail.jpg";
+import rowChoice from "../assets/photos/agoura-windows-after.jpg";
+import rowFit from "../assets/photos/mt-baldy-01.jpg";
+import rowShutters from "../assets/photos/la-jolla-after.jpg";
+
+import { SITE, LICENCE } from "../config/site";
+import { localized } from "../lib/content";
+import { useTranslations, localeFromUrl } from "../i18n/ui";
+import { NAV_LINKS, CALL_HREF } from "../lib/page";
+
+const locale = localeFromUrl(Astro.url);
+const t = useTranslations(locale);
+const callLabel = `${t("cta.call")} ${SITE.phone}`;
+
+/* Filtered from the shared collection rather than hand-built on the page, so a
+   project edited once is correct on every page that shows it. */
+const projects = await localized("projects", locale);
+const windowPairs = projects.filter(
+  (p) => p.data.beforePhoto && p.data.trade.includes("windows")
+);
+
+const rows = [
+  {
+    heading: "Vinyl, fiberglass, aluminium or wood",
+    body: "Save money with energy-efficient window replacements! Whether you are looking for vinyl, fiberglass, aluminum or wood, we have many window styles and designs to choose from. We install Andersen, Pella and Anlin alongside our own ranges — which one is right depends on the opening, the exposure and the budget, and that's a conversation, not a catalogue.",
+    image: rowChoice,
+    alt: "New dual-pane vinyl windows fitted to an Agoura Hills home.",
+    meta: [
+      { label: "Designation", value: "Andersen Certified Contractor" },
+      { label: "Lines fitted", value: "Andersen, Pella, Anlin" },
+    ],
+  },
+  {
+    heading: "Fitted, not just supplied",
+    body: "A window is only as good as the opening it sits in. We pull the old unit, deal with the framing and the flashing, and finish the trim so water goes where it should. Most of the callbacks in this trade come from installations that were rushed at exactly that point — which is why we protect the warranty by complying with strict manufacturer requirements.",
+    image: rowFit,
+    alt: "A Mt. Baldy home with replacement windows and new fiber cement siding.",
+    meta: [
+      { label: "Typical job", value: "Whole-house replacement" },
+      { label: "Often paired with", value: "Siding or coating" },
+    ],
+  },
+  {
+    heading: "Shutters and patio doors",
+    body: "We fit shutters as part of window work rather than as a job on their own, and we handle sliding and bi-fold patio doors on the same visit. On an oceanfront house in La Jolla that meant Andersen E-Series units chosen for salt air, alongside new siding and texture coating.",
+    image: rowShutters,
+    alt: "An oceanfront La Jolla home after new windows, siding and exterior texture coating.",
+    meta: [
+      { label: "Also fitted", value: "Sliding & bi-fold patio doors" },
+      { label: "Coastal", value: "Specified for salt exposure" },
+    ],
+  },
+];
+
+---
+
+<BaseLayout
+  title="Window replacement & installation | Andersen Certified Contractor"
+  description="Energy-efficient window replacement in vinyl, fiberglass, aluminium and wood across Greater Los Angeles and San Diego. Andersen Certified Contractor. CSLB #952272."
+  path="/window-replacement"
+  navLinks={NAV_LINKS}
+>
+  <PageHero
+    eyebrow="Window replacement & installation"
+    heading="Save money with energy-efficient windows."
+    body="Vinyl, fiberglass, aluminium or wood — plus shutters and patio doors, fitted on the same visit."
+    photo={heroPhoto}
+    photoAlt="Newly installed dual-pane vinyl windows and a sliding patio door in an Agoura Hills home."
+    crumbs={[{ label: "Home", href: "/" }]}
+  />
+
+  <AboutAlternating
+    id="detail"
+    eyebrow="What we fit"
+    heading="Four window lines, one standard of installation."
+    rows={rows}
+    spacing="default"
+  />
+
+  <Divider tone="sunken" />
+
+  {
+    windowPairs.length > 0 && (
+      <BeforeAfter
+        id="work"
+        eyebrow="The same house, twice"
+        heading="Old glass out, dual-pane in."
+        body="An Agoura Hills project, photographed before we started and after we finished."
+        items={windowPairs}
+        tone="sunken"
+        spacing="default"
+      />
+    )
+  }
+
+  <CTABand
+    heading="Get a quote on your windows."
+    body="Free consultation, and no obligation. We'll measure, talk through the options that actually suit the openings, and give you the price from the start."
+    ctaLabel={callLabel}
+    ctaHref={CALL_HREF}
+    secondaryLabel="Check our licence"
+    secondaryHref={LICENCE.lookupUrl}
+    note="CA Lic. #952272 · Andersen Certified Contractor · Financing available"
+    align="split"
+    tone="brand"
+    class="on-brand--deep"
+    spacing="tight"
+  />
+</BaseLayout>

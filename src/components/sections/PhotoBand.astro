@@ -1,0 +1,129 @@
+---
+/**
+ * PhotoBand — a full-bleed strip of job photographs between sections.
+ *
+ * WHY IT EXISTS. Four of the ten pages are structurally text-heavy — reviews,
+ * contact, free-estimate and about are lists, forms and records. Left alone
+ * they run three or four full-width type blocks in a row, which on a page
+ * selling a visual transformation is a wasted page.
+ *
+ * This is the fix: a band of five real jobs, edge to edge, no container. It
+ * costs one row of vertical space, needs no copy, and it puts the product back
+ * in front of someone who has scrolled past the pictures.
+ *
+ * It is NOT a carousel and it does not autoplay (CLAUDE.md §1). On a phone it
+ * becomes a horizontal scroller with snap points, which is the one place a
+ * swipe is genuinely the right interaction rather than a substitute for space.
+ *
+ * The photographs are decorative in the strict sense — every one of these jobs
+ * is also shown, captioned and credited elsewhere on the site — so they take
+ * `alt=""` and the band is aria-hidden. Alt text repeating five house
+ * descriptions to a screen reader for a purely atmospheric strip is noise.
+ */
+import { Image } from "astro:assets";
+
+interface Props {
+  photos: { src: ImageMetadata; label: string }[];
+  /** Sits over the band, small. Optional — usually the band speaks for itself. */
+  caption?: string;
+}
+
+const { photos, caption } = Astro.props;
+---
+
+<aside class="band" aria-hidden="true">
+  <ul class="band__strip" role="list">
+    {
+      photos.map((p) => (
+        <li class="band__item">
+          <Image
+            src={p.src}
+            alt=""
+            widths={[280, 420, 560]}
+            sizes="(min-width: 60em) 20vw, 62vw"
+            loading="lazy"
+          />
+          <span class="band__label record">{p.label}</span>
+        </li>
+      ))
+    }
+  </ul>
+  {caption && <p class="band__caption record">{caption}</p>}
+</aside>
+
+<style>
+  .band {
+    position: relative;
+    background-image: var(--grad-ink);
+  }
+
+  .band__strip {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 62%;
+    gap: 1px;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  @media (min-width: 60em) {
+    .band__strip {
+      grid-auto-columns: 1fr;
+      overflow-x: visible;
+    }
+  }
+
+  .band__item {
+    position: relative;
+    scroll-snap-align: start;
+    overflow: hidden;
+    background-color: var(--n-900);
+  }
+
+  .band__item :global(img) {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    filter: var(--image-filter);
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  @media (min-width: 60em) {
+    .band__item:hover :global(img) {
+      transform: scale(var(--image-hover-scale));
+    }
+  }
+
+  /* The place name, burned into the corner of each frame. Small enough to read
+     as a photo credit rather than a caption, and it stops the band being five
+     anonymous houses. */
+  .band__label {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: 0;
+    padding: var(--space-xs) var(--space-s) var(--space-2xs);
+    font-size: 0.6875rem;
+    color: #ffffff;
+    text-indent: 0;
+    background-image: linear-gradient(
+      to top,
+      rgb(35 31 32 / 0.8) 0%,
+      rgb(35 31 32 / 0) 100%
+    );
+  }
+
+  .band__caption {
+    margin: 0;
+    padding: var(--space-2xs) var(--gutter);
+    font-size: 0.6875rem;
+    color: var(--n-300);
+    text-align: center;
+    text-indent: 0;
+  }
+</style>

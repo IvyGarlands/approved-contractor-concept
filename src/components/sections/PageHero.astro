@@ -1,0 +1,183 @@
+---
+/**
+ * PageHero — the compact hero every inner page opens with.
+ *
+ * Deliberately about a third the height of the homepage hero. An inner page is
+ * reached by someone who already knows what they want, so its job is to confirm
+ * they are in the right place and get out of the way — not to re-sell.
+ *
+ * Same construction as the homepage hero so the set reads as one site: a real
+ * photograph of the trade, a brand-tinted gradient over it, white type. Never a
+ * flat colour band with a word on it, which is what a "clean and modern" inner
+ * page would do and what leaves a dead strip at the top of every page.
+ */
+import { Image } from "astro:assets";
+
+interface Props {
+  eyebrow?: string;
+  heading: string;
+  body?: string;
+  photo: ImageMetadata;
+  photoAlt: string;
+  /** Trail of ancestors. The current page is NOT included. */
+  crumbs?: { label: string; href: string }[];
+}
+
+const { eyebrow, heading, body, photo, photoAlt, crumbs = [] } = Astro.props;
+---
+
+<section class="phero on-brand" aria-labelledby="phero-heading">
+  <div class="phero__media">
+    <Image
+      src={photo}
+      alt={photoAlt}
+      widths={[640, 1024, 1600]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="phero__scrim" aria-hidden="true"></div>
+  </div>
+
+  <div class="phero__inner">
+    {
+      crumbs.length > 0 && (
+        <nav class="phero__crumbs" aria-label="Breadcrumb">
+          <ol role="list">
+            {crumbs.map((c) => (
+              <li>
+                <a href={c.href}>{c.label}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+    {eyebrow && <p class="phero__eyebrow">{eyebrow}</p>}
+    <h1 class="phero__heading" id="phero-heading">{heading}</h1>
+    {body && <p class="phero__body">{body}</p>}
+  </div>
+</section>
+
+<style>
+  .phero {
+    position: relative;
+    isolation: isolate;
+    /* .on-brand supplies a background-color AND --grad-brand. Both must come
+       off here or the photograph is invisible: `isolation: isolate` makes this
+       element a stacking context, and a child at z-index -1 then paints BEHIND
+       its own context's background rather than behind the page. The class is
+       still needed for the token remapping (white ink, white focus ring), just
+       not for its fill. */
+    background-color: transparent;
+    background-image: none;
+    display: flex;
+    align-items: flex-end;
+    min-block-size: clamp(14rem, 11rem + 12vh, 19rem);
+    overflow: hidden;
+  }
+
+  .phero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .phero__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: 50% 42%;
+    filter: var(--image-filter-hero);
+  }
+
+  .phero__scrim {
+    position: absolute;
+    inset: 0;
+    background-image: var(--grad-photo);
+  }
+
+  .phero__scrim::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* Lighter than the first draft, for the same reason as the homepage hero:
+       an inner-page banner that crushes its photograph into a colour block is
+       just a coloured band with a word on it. */
+    background-image: linear-gradient(
+      to top,
+      rgb(35 31 32 / 0.74) 0%,
+      rgb(35 31 32 / 0.4) 58%,
+      rgb(35 31 32 / 0.08) 100%
+    );
+  }
+
+  .phero__inner {
+    position: relative;
+    z-index: 1;
+    inline-size: 100%;
+    max-inline-size: var(--container-xl);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    padding-block: var(--space-l) var(--space-m);
+  }
+
+  .phero__crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0 0 var(--space-2xs);
+    padding: 0;
+    list-style: none;
+    font-size: var(--step--1);
+  }
+
+  .phero__crumbs li + li::before {
+    content: "/";
+    margin-inline-end: 0.4rem;
+    opacity: 0.6;
+  }
+
+  .phero__crumbs a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.75rem; /* §5 touch target */
+    color: #ffffff;
+    opacity: 0.85;
+    text-underline-offset: 0.2em;
+  }
+
+  .phero__crumbs a:hover {
+    opacity: 1;
+  }
+
+  .phero__eyebrow {
+    margin: 0 0 var(--space-3xs);
+    font-family: var(--face-body);
+    font-size: var(--step--1);
+    font-weight: var(--weight-strong);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--b-100);
+    text-shadow: 0 1px 3px rgb(35 31 32 / 0.6);
+  }
+
+  .phero__heading {
+    margin: 0;
+    font-size: var(--step-5);
+    line-height: 1.05;
+    letter-spacing: var(--tracking-display);
+    color: #ffffff;
+    text-wrap: balance;
+    text-shadow: 0 2px 10px rgb(35 31 32 / 0.5);
+  }
+
+  .phero__body {
+    margin: var(--space-xs) 0 0;
+    max-inline-size: 56ch;
+    font-size: var(--step-0);
+    line-height: var(--leading-snug);
+    color: #ffffff;
+    text-shadow: 0 1px 6px rgb(35 31 32 / 0.6);
+  }
+</style>

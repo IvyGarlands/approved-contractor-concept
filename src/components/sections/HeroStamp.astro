@@ -2,64 +2,50 @@
 /**
  * HeroStamp — the hero for Approved Contractor, Inc. (differentiation log 005)
  *
- * THE COMPOSITION. A full-bleed field of the client's own scarlet, carrying the
- * record line, the headline, and one of their job photographs mounted as an
- * evidence print: a white border, a caption strip, sat slightly off-square on
- * the field.
+ * REVISED. The first pass put a mounted photograph BESIDE a headline on a flat
+ * red field. Right instincts, wrong proportions: the photograph was a
+ * supporting element on a page selling a visual transformation, and a flat
+ * full-bleed colour read as printed card. The house is now the hero, and the
+ * red arrives as light laid OVER it — so the first thing anyone sees is the
+ * actual work, and the brand colour still owns the screen.
  *
- * WHY A COLOUR FIELD. Their brand colour is #ae0f15, sampled from their own
- * wordmark, and every previous treatment of it — including our own build 003 —
- * used it as a sub-5% accent. A stamp that appears once at 5% coverage is not a
- * stamp. Putting the red underneath everything is the single decision that
- * makes this page unmistakably theirs at a glance, and it is only available
- * because their actual red happens to carry white body copy at 7.3:1.
+ * THE COPY IS THEIRS. The eyebrow and the H1 are verbatim from their homepage.
+ * We are proposing a better setting of what they already say rather than
+ * replacing their voice, and "A Home Exterior that Withstands the Test of Time"
+ * is a genuinely good line that their current site sets in 24px Open Sans over
+ * a manufacturer stock photo.
  *
- * WHY A MOUNTED PHOTO RATHER THAN A FULL-BLEED ONE. These are hand-held job
- * photos taken by installers on phones, not commissioned photography. Blown up
- * full-bleed behind a headline they look like what they are, and the page reads
- * cheap. Presented as a print with a border and a caption, the same photograph
- * reads as EVIDENCE — which is what this page needs it to be, and which is
- * honest about its provenance rather than disguising it.
+ * THE FACT STRIP is where the argument starts: four checkable things, small and
+ * dense, above the fold. The full record — and the stamp landing on it — is the
+ * signature moment further down. This is the trailer for it.
  *
- * WHAT THIS HERO DOES NOT DO, ON PURPOSE:
- *   - No stamp. The stamp is the page's ONE signature moment and it belongs to
- *     TheRecord (CLAUDE.md §4a: scarcity is the mechanism). Spending it here
- *     would halve it there.
- *   - No [data-split] on the h1. The decisions log is explicit that the LCP
- *     element does not get the masked reveal — at this size the paint → hide →
- *     slide sequence is plainly visible on a slow connection.
- *
- * LCP. The headline and the mounted photograph are both above the fold. The
- * image is eager + fetchpriority=high and the headline animates from a VISIBLE
- * state via a CSS keyframe (never from opacity 0), so first paint is complete
- * with or without JS.
+ * LCP. The photograph is the LCP element: eager, fetchpriority=high, sized.
+ * The headline animates from a VISIBLE state via a CSS keyframe, never from
+ * opacity 0, so first paint is complete with or without JS.
  */
 import { Image } from "astro:assets";
-import Section from "./Section.astro";
-import type { SectionProps } from "./Section.astro";
 
-interface Props extends SectionProps {
-  /** The record line. Short, factual, checkable. */
-  record: string;
-  /** Two lines. Kept as separate strings so the break is a design decision. */
-  headingLead: string;
-  headingTurn: string;
+interface Props {
+  id?: string;
+  eyebrow: string;
+  heading: string;
   body: string;
   photo: ImageMetadata;
   photoAlt: string;
-  /** Caption strip under the mount: where, and what was done. */
+  /** Credit for the photograph — where, and what we did. */
   captionPlace: string;
   captionWork: string;
   ctaHref: string;
   ctaLabel: string;
   telHref: string;
   telLabel: string;
+  /** The checkable strip across the foot. Four, never more. */
+  facts: { value: string; label: string }[];
 }
 
 const {
-  record,
-  headingLead,
-  headingTurn,
+  eyebrow,
+  heading,
   body,
   photo,
   photoAlt,
@@ -69,229 +55,299 @@ const {
   ctaLabel,
   telHref,
   telLabel,
+  facts,
   id = "top",
-  ...rest
 } = Astro.props;
 ---
 
-<Section
-  id={id}
-  tone="brand"
-  spacing="none"
-  bleed
-  labelledBy="hero-heading"
-  class="herostamp"
-  {...rest}
->
-  <div class="herostamp__inner">
-    <div class="herostamp__copy">
-      <p class="herostamp__record record">{record}</p>
+<section id={id} class="hero on-brand" aria-labelledby="hero-heading">
+  <div class="hero__media">
+    <Image
+      src={photo}
+      alt={photoAlt}
+      widths={[640, 1024, 1600, 2200]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="hero__scrim" aria-hidden="true"></div>
+  </div>
 
-      <h1 class="herostamp__heading" id="hero-heading">
-        <span class="herostamp__line">{headingLead}</span>
-        <span class="herostamp__line herostamp__line--turn">{headingTurn}</span>
-      </h1>
-
-      <hr class="rule herostamp__rule" aria-hidden="true" />
-
-      <p class="herostamp__body">{body}</p>
-
-      {/* `.btn` and `.btn--secondary` from base.css §buttons — they carry the
-          48px minimum touch target (§5) and re-ink themselves through
-          .on-brand, so on this field the primary is paper-on-red and the
-          secondary is an outlined white. Do not hand-roll a button here. */}
-      <div class="herostamp__actions">
+  <div class="hero__inner">
+    <div class="hero__copy">
+      <p class="hero__eyebrow">{eyebrow}</p>
+      <h1 class="hero__heading" id="hero-heading">{heading}</h1>
+      <p class="hero__body">{body}</p>
+      <div class="hero__actions">
         <a class="btn" href={ctaHref} data-magnetic>{ctaLabel}</a>
         <a class="btn btn--secondary" href={telHref}>{telLabel}</a>
       </div>
     </div>
 
-    <figure class="mount" data-parallax-scene>
-      <div class="mount__print" data-depth="0.28">
-        <Image
-          src={photo}
-          alt={photoAlt}
-          widths={[520, 760, 1040]}
-          sizes="(min-width: 62em) 42vw, 92vw"
-          loading="eager"
-          fetchpriority="high"
-        />
-      </div>
-      <figcaption class="mount__caption">
-        <span class="mount__place record">{captionPlace}</span>
-        <span class="mount__work">{captionWork}</span>
-      </figcaption>
-    </figure>
+    <p class="hero__caption">
+      <span class="hero__caption-place record">{captionPlace}</span>
+      <span class="hero__caption-work">{captionWork}</span>
+    </p>
   </div>
-</Section>
+
+  <ul class="hero__facts" role="list">
+    {
+      facts.map((f) => (
+        <li class="hero__fact">
+          <span class="hero__fact-value">{f.value}</span>
+          <span class="hero__fact-label">{f.label}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>
 
 <style>
-  .herostamp {
+  .hero {
     position: relative;
+    isolation: isolate;
+    /* .on-brand supplies a background-color AND --grad-brand. Both must come
+       off here or the photograph is invisible: `isolation: isolate` makes this
+       element a stacking context, and a child at z-index -1 then paints BEHIND
+       its own context's background rather than behind the page. The class is
+       still needed for the token remapping (white ink, white focus ring), just
+       not for its fill. */
+    background-color: transparent;
+    background-image: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    /* Measured against the concept badge, which is 172px tall and pinned to
+       the viewport foot. At 29rem+26vh the fact strip landed at y=637 on an
+       820px screen and the badge covered two of the four facts. This brings the
+       strip up clear of it, and a shorter hero is the right call anyway — the
+       services have to be visible on the first scroll, not the third. */
+    min-block-size: clamp(24rem, 17rem + 24vh, 34rem);
     overflow: hidden;
   }
 
-  .herostamp__inner {
-    display: grid;
-    gap: var(--space-xl);
-    align-items: center;
-    max-inline-size: var(--container-xl);
-    margin-inline: auto;
-    padding-inline: var(--gutter);
-    padding-block: clamp(3rem, 1.7rem + 6.5vw, 6.5rem);
+  /* ---- the photograph -------------------------------------------------- */
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
   }
 
-  @media (min-width: 62em) {
-    .herostamp__inner {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
-      gap: var(--space-2xl);
-      /* START, not centre. Centring the mount against the copy column pushed
-         its caption strip down into the bottom-right corner of the viewport,
-         which is where the concept badge floats — measured at 1280x820, the
-         badge landed on "Stucco removed, James Hardie lap siding installed".
-         Top-aligning lifts the whole mount clear and also lines its upper edge
-         up with the record line, which is the better composition anyway. */
-      align-items: start;
-    }
+  .hero__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    /* Their photos put the house in the upper two-thirds and driveway or lawn
+       in the lower third, so anchoring high crops tarmac rather than roofline. */
+    object-position: 50% 38%;
+    filter: var(--image-filter-hero);
+  }
+
+  /* The brand arrives HERE — as light over the photograph rather than as a flat
+     panel beside it. Two layers: the tinted gradient for colour, and a solid
+     foot so the copy keeps its contrast regardless of what the photograph is
+     doing underneath it. */
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    background-image: var(--grad-photo);
+  }
+
+  /* A SIDE scrim as well as a bottom one. The bottom gradient alone left the
+     eyebrow sitting on bright sky at the top of the copy column — white on a
+     pale roofline, which fails AA outright. A left-anchored wedge gives the
+     whole copy column a ground regardless of how tall the headline runs, and
+     releases before the middle of the frame so the house stays lit. */
+  .hero__scrim::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      to right,
+      rgb(35 31 32 / 0.78) 0%,
+      rgb(35 31 32 / 0.52) 26%,
+      rgb(35 31 32 / 0.12) 52%,
+      rgb(35 31 32 / 0) 68%
+    );
+  }
+
+  .hero__scrim::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    /* Tuned by eye against the real photograph. The first draft stacked 0.88
+       on top of --grad-photo's 0.82 and composited to ~0.98 at the foot, which
+       crushed the house into a flat red panel — the exact failure this hero
+       exists to avoid. The copy sits in the lower left, so the scrim is
+       strongest there and releases fast. */
+    block-size: 72%;
+    background-image: linear-gradient(
+      to top,
+      rgb(35 31 32 / 0.72) 0%,
+      rgb(35 31 32 / 0.34) 46%,
+      rgb(35 31 32 / 0) 100%
+    );
   }
 
   /* ---- copy ------------------------------------------------------------ */
 
-  .herostamp__record {
-    color: var(--color-ink-muted);
-    margin: 0 0 var(--space-m);
-  }
-
-  .herostamp__heading {
-    margin: 0;
-    font-size: var(--step-6);
-    line-height: var(--leading-display);
-    letter-spacing: var(--tracking-display);
-    color: var(--color-ink-strong);
-    text-wrap: balance;
-  }
-
-  .herostamp__line {
-    display: block;
-  }
-
-  /* The turn. Set in the light geometric face rather than the roman, so the
-     two halves of the sentence come from the two halves of the wordmark — the
-     same genre contrast the mark is built on, at headline scale. */
-  .herostamp__line--turn {
-    font-family: var(--face-body);
-    font-weight: var(--weight-light);
-    letter-spacing: -0.01em;
-  }
-
-  .herostamp__rule {
-    margin-block: var(--space-l) var(--space-m);
-    background-color: var(--color-brand); /* white, in .on-brand */
-  }
-
-  .herostamp__body {
-    margin: 0;
-    max-inline-size: var(--measure-narrow);
-    font-size: var(--step-1);
-    line-height: var(--leading-snug);
-    color: var(--color-ink);
-  }
-
-  .herostamp__actions {
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+    inline-size: 100%;
+    max-inline-size: var(--container-xl);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    /* Tightened from --space-xl/--space-m. The hero's height is content-driven,
+       not min-height-driven, so trimming the padding is the only lever that
+       actually lifts the fact strip clear of the badge's reserved corner. */
+    padding-block: var(--space-l) var(--space-s);
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-s);
-    margin-block-start: var(--space-l);
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-m);
   }
 
-  /* ---- the evidence mount ---------------------------------------------- */
+  /* 38rem, measured rather than guessed. The two CTAs come to 558px together
+     (317 + 229 + the gap) and a 46ch column gave them 508 — so they stacked,
+     which in a hero reads as indecision. Widening the COLUMN rather than
+     shrinking the buttons also drops the headline from three lines to two,
+     which is the right answer for a page meant to be scanned.
 
-  .mount {
-    margin: 0;
-    justify-self: center;
-    inline-size: 100%;
-    /* 30rem, not 34: see the align-items note above. The mount has to finish
-       above the badge's reserved corner on a 820px-tall viewport. */
-    max-inline-size: 30rem;
-    background-color: #ffffff;
-    padding: var(--mount-pad);
-    border-radius: var(--radius-image);
-    box-shadow: var(--shadow-l);
-    /* Off-square, by the same angle the stamp uses, in the opposite direction —
-       so the two rotations on the page read as one system rather than two
-       accidents. */
-    transform: rotate(calc(var(--stamp-angle) * -0.42));
+     The body paragraph keeps its own narrower measure below, so the column
+     being wide does not make the prose hard to read. */
+  .hero__copy {
+    max-inline-size: 38rem;
   }
 
-  .mount__print {
-    overflow: hidden;
-    border-radius: 1px;
-    background-color: var(--n-100);
-  }
-
-  .mount__print :global(img) {
-    display: block;
-    inline-size: 100%;
-    block-size: auto;
-    aspect-ratio: var(--ratio-hero);
-    object-fit: cover;
-    filter: var(--image-filter-hero);
-  }
-
-  .mount__caption {
-    display: grid;
-    gap: 0.15rem;
-    padding: var(--space-xs) var(--space-3xs) var(--space-3xs);
-    /* The mount is white regardless of context, so its caption declares its own
-       ink rather than inheriting .on-brand's. This is the one documented
-       exception in tokens.css §10. */
-    color: var(--n-600);
-  }
-
-  .mount__place {
-    color: var(--a-700);
-    text-indent: 0;
-  }
-
-  .mount__work {
+  .hero__eyebrow {
+    margin: 0 0 var(--space-2xs);
     font-family: var(--face-body);
     font-size: var(--step--1);
-    line-height: var(--leading-snug);
-    color: var(--n-800);
+    font-weight: var(--weight-strong);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgb(35 31 32 / 0.6);
   }
 
-  /* ---- first paint -----------------------------------------------------
-     A CSS keyframe, not GSAP, and it starts from opacity 1. Above-the-fold
-     content must never be hidden by JS and revealed on the first rAF: in a
-     throttled or backgrounded tab that strands it invisible (decisions log,
-     2026-08-09). This settles content that is already painted. */
-  @media (prefers-reduced-motion: no-preference) {
-    .herostamp__record,
-    .herostamp__heading,
-    .herostamp__rule,
-    .herostamp__body,
-    .herostamp__actions,
-    .mount {
-      animation: herostamp-settle var(--duration-hero) var(--ease-out) backwards;
+  .hero__heading {
+    margin: 0;
+    font-size: var(--step-6);
+    line-height: 1.02;
+    letter-spacing: var(--tracking-display);
+    color: #ffffff;
+    text-wrap: balance;
+    text-shadow: 0 2px 12px rgb(35 31 32 / 0.5);
+  }
+
+  .hero__body {
+    margin: var(--space-s) 0 0;
+    max-inline-size: 46ch;
+    font-size: var(--step-0);
+    line-height: var(--leading-snug);
+    color: #ffffff;
+    text-shadow: 0 1px 6px rgb(35 31 32 / 0.6);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-block-start: var(--space-m);
+  }
+
+  .hero__actions .btn {
+    white-space: nowrap;
+  }
+
+  /* The photograph's own credit. Small, bottom-right, so the image is
+     identified as a real job rather than passing as stock. */
+  .hero__caption {
+    display: grid;
+    gap: 0.1rem;
+    margin: 0;
+    text-align: end;
+    color: #ffffff;
+    text-shadow: 0 1px 4px rgb(35 31 32 / 0.7);
+  }
+
+  .hero__caption-place {
+    color: #ffffff;
+    text-indent: 0;
+    opacity: 0.85;
+  }
+
+  .hero__caption-work {
+    font-size: var(--step--1);
+    line-height: var(--leading-snug);
+  }
+
+  /* ---- the fact strip -------------------------------------------------- */
+
+  .hero__facts {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(255 255 255 / 0.22);
+    border-block-start: 1px solid rgb(255 255 255 / 0.22);
+  }
+
+  @media (min-width: 46em) {
+    .hero__facts {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
-    .herostamp__heading {
+  }
+
+  .hero__fact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding: var(--space-xs) var(--gutter);
+    background-image: var(--grad-brand-deep);
+  }
+
+  .hero__fact-value {
+    font-family: var(--face-display);
+    font-size: var(--step-1);
+    font-weight: var(--weight-display);
+    line-height: 1.1;
+    color: #ffffff;
+  }
+
+  .hero__fact-label {
+    font-size: var(--step--1);
+    line-height: var(--leading-snug);
+    color: var(--b-100);
+  }
+
+  /* ---- first paint ----------------------------------------------------- */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__eyebrow,
+    .hero__heading,
+    .hero__body,
+    .hero__actions {
+      animation: hero-settle var(--duration-hero) var(--ease-out) backwards;
+    }
+    .hero__heading {
       animation-delay: calc(var(--motion-hero-delay) * 1);
     }
-    .herostamp__rule {
-      animation-delay: calc(var(--motion-hero-delay) * 2);
+    .hero__body {
+      animation-delay: calc(var(--motion-hero-delay) * 1.8);
     }
-    .herostamp__body {
-      animation-delay: calc(var(--motion-hero-delay) * 2.6);
-    }
-    .herostamp__actions {
-      animation-delay: calc(var(--motion-hero-delay) * 3.2);
-    }
-    .mount {
-      animation-delay: calc(var(--motion-hero-delay) * 1.6);
+    .hero__actions {
+      animation-delay: calc(var(--motion-hero-delay) * 2.4);
     }
   }
 
-  @keyframes herostamp-settle {
+  @keyframes hero-settle {
     from {
       opacity: 1;
       transform: translateY(var(--motion-distance-s));
@@ -302,70 +358,22 @@ const {
     }
   }
 
-  /* The mount carries a rotation, so its settle has to compose with it rather
-     than overwrite it — otherwise the print snaps square for the duration of
-     the animation and then tilts. */
-  @keyframes herostamp-settle-mount {
-    from {
-      transform: rotate(calc(var(--stamp-angle) * -0.42))
-        translateY(var(--motion-distance-s));
-    }
-    to {
-      transform: rotate(calc(var(--stamp-angle) * -0.42)) translateY(0);
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .mount {
-      animation-name: herostamp-settle-mount;
-    }
-  }
-
-  /* ---- the stacked hero ------------------------------------------------
-     Scoped to when the hero goes SINGLE-COLUMN (below 62em), not to "phone".
-     That distinction is the bug this replaced: the tightening was scoped to
-     34em, so the whole 545px-991px band kept desktop type in a stacked layout,
-     the hero grew ~90px taller than it needed to be, and the concept badge
-     landed on both CTAs. Measured at 600px.
-
-     Everything here buys vertical space so the primary CTA stays clear of the
-     badge's reserved corner. */
-  @media (max-width: 61.99em) {
-    .mount {
-      max-inline-size: 30rem;
+  @media (max-width: 46em) {
+    .hero {
+      min-block-size: clamp(22rem, 17rem + 26vh, 29rem);
     }
 
-    .herostamp__inner {
-      padding-block-start: clamp(2rem, 1.5rem + 2vw, 3rem);
+    .hero__inner {
+      padding-block: var(--space-l) var(--space-s);
     }
 
-    .herostamp__record {
-      margin-block-end: var(--space-s);
+    /* Provenance, not persuasion — the space belongs to the headline. */
+    .hero__caption {
+      display: none;
     }
 
-    .herostamp__heading {
-      font-size: clamp(2.65rem, 1.85rem + 3.4vw, 3.6rem);
-    }
-
-    .herostamp__rule {
-      margin-block: var(--space-m) var(--space-s);
-    }
-
-    .herostamp__body {
-      font-size: var(--step-0);
-    }
-
-    .herostamp__actions {
-      margin-block-start: var(--space-s);
-    }
-  }
-
-  /* The secondary "Call" button is dropped wherever the full-width sticky call
-     bar is present (BaseLayout hides that bar at 60em). Two identical call
-     CTAs within 100px of each other was always redundant; removing one is what
-     a careful designer would do here regardless of the badge. */
-  @media (max-width: 59.99em) {
-    .herostamp__actions .btn--secondary {
+    /* The full-width sticky call bar is an exact duplicate of this. */
+    .hero__actions .btn--secondary {
       display: none;
     }
   }

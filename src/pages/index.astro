@@ -2,77 +2,76 @@
 /**
  * Homepage — Approved Contractor, Inc. (concept build 005, "The Stamp").
  *
- * SUPERSEDES build 003, "The Elevation", 2026-08-09. That page answered an
- * empty intake by drawing a picture; this one was gathered first-hand and has
- * real material to work with. See engine/docs/differentiation-log.md.
- *
  * THE ONE-SENTENCE IDEA
  * ---------------------
- * Every contractor in California says they are approved. This is the one where
- * you can actually go and check — so the page is built as the record you check
- * it against, and their own stamp is what lands on it.
+ * Every contractor in California says they're approved. We're the one you can
+ * go and check — so the page is built as the record you check us against, and
+ * our own stamp is what lands on it.
  *
- * The idea is structural, not decorative. It decides:
+ * SECTION ORDER, AND WHY IT CHANGED
+ * ----------------------------------
+ * The first pass ran the licence record second, on the argument that the proof
+ * IS the sell. That was backwards. Nobody arrives at a contractor's site
+ * wanting to read a licence — they arrive wanting to know whether we do the
+ * thing their house needs, and what it looks like when we've done it. Proof
+ * answers the second question they ask, not the first.
  *
- *   COLOUR    their own sampled stamp ink #ae0f15 as a FIELD, not an accent.
- *             The page alternates red → paper → red → paper, so the thing you
- *             remember about it is the colour of their logo.
- *   HERO      "Don't take our word for it. Take the state's." — the record
- *             line above it, one of their own job photographs mounted beside
- *             it as evidence.
- *   RECORD    the signature moment. Their actual CSLB licence record on a
- *             true-white card, and the stamp landing on it once.
- *   LEDGER    every other approval, grouped by who granted it and glossed with
- *             what it means, with a public lookup link wherever one exists.
- *             Not a badge wall.
- *   TYPE      a heavy roman against a light geometric sans, because that is
- *             exactly the contrast their own wordmark is built on.
+ *   1  HERO          a real finished job, full-bleed, with their own headline
+ *   2  WHAT WE DO    six trades, each with a photograph of it finished
+ *   3  THE WORK      before and after, then five more jobs
+ *   4  THE RECORD    the signature moment. The licence, and the stamp
+ *   5  CREDENTIALS   everyone else who has checked us
+ *   6  PROCESS       what happens when you call, in their own words
+ *   7  PROMISE       their "Our Promise To You", set properly
+ *   8  REVIEWS       one at length, then eight short
+ *   9  WHO WE ARE    the owner. LAST of the persuasion, not second
+ *  10  FAQ / CONTACT / CLOSE
  *
- * SECTION RHYTHM. Red hero → paper credentials → paper scope → RED RECORD →
- * paper work → paper process → paper reviews → paper questions → paper contact
- * → red close. The two red fields bracket the page and the record sits in the
- * middle of it. Build 003 alternated paper bands around a single dark title
- * block; nothing about this rhythm is shared with it.
+ * VOICE. First person throughout — "we", "our", "us". The copy is the client's
+ * own wherever they wrote something usable, which is most places: the hero
+ * headline and eyebrow, all six service summaries, all four process steps and
+ * every line of the promise list are verbatim from their site. Where we wrote
+ * new copy it is a proposal in their voice, replaced by their own words the
+ * moment they engage (CLAUDE.md §11).
  *
  * WHAT IS DELIBERATELY NOT HERE (CLAUDE.md §11)
  * ----------------------------------------------
  *   NO AGGREGATE RATING, NO STAR COUNT, NO REVIEW TOTAL, anywhere on the page
  *   or in the JSON-LD. Five sources gave five irreconcilable numbers — their
  *   own site says "800+", GuildQuality 4.6 from 85, Houzz 4.7 from 77, Yelp
- *   125, and one aggregator claims 5.0 from 258 while attributing a review of
- *   a different company (input/facts.txt CONFLICT #4 and #5).
+ *   125, and one aggregator claims 5.0 from 258 while attributing a review of a
+ *   different company (input/facts.txt CONFLICT #4 and #5). On a page whose
+ *   whole argument is "go and check us", an uncheckable "800+ 5-star reviews"
+ *   is the one claim on it that would fail its own test.
  *
- *   This is the single largest omission in the build and it is the point: on a
- *   page whose whole argument is "go and check us", an uncheckable "800+
- *   5-star reviews" is the one claim on it that would fail its own test.
- *
- *   NO HOURS. Not published by them anywhere; third-party listings disagree.
- *   showHours={false} and site.ts emits no openingHoursSpecification.
- *
+ *   NO HOURS. Not published by them; third-party listings disagree.
  *   NO BORROWED MANUFACTURER LOGOS. Licensed to them, not to us.
- *
  *   NO PORTRAIT of Jared Green — none is published. He is named, not shown.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HeroStamp from "../components/sections/HeroStamp.astro";
-import CredentialLedger from "../components/sections/CredentialLedger.astro";
-import ServicesGrid from "../components/sections/ServicesGrid.astro";
-import TheRecord from "../components/sections/TheRecord.astro";
+import ServiceShowcase from "../components/sections/ServiceShowcase.astro";
 import BeforeAfter from "../components/sections/BeforeAfter.astro";
 import Gallery from "../components/sections/Gallery.astro";
+import TheRecord from "../components/sections/TheRecord.astro";
+import CredentialLedger from "../components/sections/CredentialLedger.astro";
 import ProcessSteps from "../components/sections/ProcessSteps.astro";
+import PromiseSplit from "../components/sections/PromiseSplit.astro";
 import TestimonialPullQuote from "../components/sections/TestimonialPullQuote.astro";
 import TestimonialGrid from "../components/sections/TestimonialGrid.astro";
 import ProviderBios from "../components/sections/ProviderBios.astro";
 import FAQ from "../components/sections/FAQ.astro";
 import LocationContact from "../components/sections/LocationContact.astro";
 import CTABand from "../components/sections/CTABand.astro";
+import Divider from "../components/core/Divider.astro";
 
-import heroPhoto from "../assets/photos/la-stucco-to-hardie-after.jpg";
+import heroPhoto from "../assets/photos/rpv-03.jpg";
+import promisePhoto from "../assets/photos/la-craftsman-01.jpg";
 
 import { SITE, LICENCE } from "../config/site";
 import { localized } from "../lib/content";
 import { useTranslations, localeFromUrl } from "../i18n/ui";
+import { NAV_LINKS, RECORD_FIELDS, HERO_FACTS, PROMISES } from "../lib/page";
 
 const locale = localeFromUrl(Astro.url);
 const t = useTranslations(locale);
@@ -85,32 +84,6 @@ const projects = await localized("projects", locale);
 const reviews = await localized("testimonials", locale);
 const people = await localized("people", locale);
 
-/**
- * The record card.
- *
- * Every value read off the CSLB register on 2026-08-12 and held in site.ts's
- * LICENCE block, so the card, the FAQ answer and the footer cannot drift apart.
- * The status row is the only emphasised field — it is the one the whole page
- * exists to show.
- */
-const recordFields = [
-  { label: "Status", value: LICENCE.status, emphasis: true },
-  { label: "Licence number", value: "952272" },
-  { label: "Business name on record", value: LICENCE.businessName },
-  { label: "Classification", value: LICENCE.classification },
-  { label: "Entity", value: LICENCE.entity },
-  { label: "Issued", value: LICENCE.issued },
-  { label: "Expires", value: LICENCE.expires },
-  { label: "Address on record", value: LICENCE.address },
-  {
-    label: "Contractor's bond",
-    value: `${LICENCE.bondAmount} · ${LICENCE.bondCompany}`,
-  },
-  { label: "Workers' compensation", value: LICENCE.workersComp },
-  { label: "Qualifying individual", value: LICENCE.qualifier },
-];
-
-/** The featured pair, and everything else. BeforeAfter filters to pairs itself. */
 const pairs = projects.filter((p) => p.data.beforePhoto);
 const singles = projects.filter((p) => !p.data.beforePhoto);
 
@@ -128,103 +101,63 @@ const otherReviews = reviews.filter((r) => !r.data.featured);
 const callLabel = `${t("cta.call")} ${SITE.phone}`;
 const callHref = `tel:${SITE.phoneHref}`;
 
-const navLinks = [
-  { label: "The record", href: "#record" },
-  { label: "What they do", href: "#services" },
-  { label: "The work", href: "#work" },
-  { label: "Questions", href: "#faq" },
-  { label: "Contact", href: "#contact" },
-];
-
-/** FAQPage JSON-LD — only ever emitted for Q&As the page visibly renders. */
 const faqSchema = faqs.map((f) => ({
   question: f.data.question,
   answer: f.data.answer,
 }));
 ---
 
-{/* SEOHead prefixes SITE.name on the homepage, so `title` must not repeat it. */}
 <BaseLayout
   title="Siding, windows, stucco & roofing — licensed in California since 2010"
-  description="Exterior only: James Hardie siding, Andersen and Pella windows, stucco, texture coating, roofing and shutters. Canoga Park, CA. CSLB licence #952272, current and active. Free consultation — (877) 792-9082."
+  description="Award-winning siding, windows and home exterior contractor serving Greater Los Angeles & San Diego. James Hardie Elite Contractor. CSLB #952272, current and active. Free quote — (877) 792-9082."
   path="/"
-  navLinks={navLinks}
+  navLinks={NAV_LINKS}
   faq={faqSchema}
   announcement={{
-    /* Short enough to hold ONE line at 390px. The two-line version cost 25px
-       of a phone viewport that the hero needed to keep its primary CTA clear
-       of the concept badge. Their own bar reads "UPGRADE NOW, PAY LATER -
-       Call Us for Details", so this is also closer to their wording. */
     message: "Upgrade now, pay later — 12 months no interest.",
-    href: "#contact",
-    linkLabel: "Ask about financing",
+    href: "/financing-options",
+    linkLabel: "See financing options",
     id: "finance-2026",
   }}
 >
+  {/* 1 — the work itself, full-bleed. Their headline, verbatim. */}
   <HeroStamp
-    record="CSLB #952272 · Current and active · Class B · Issued 2010"
-    headingLead="Don't take our word for it."
-    headingTurn="Take the state's."
-    body="Siding, windows, stucco, texture coating, roofing and shutters — the outside of the house, and nothing else. Licence, bond and workers' compensation are all public record. The lookup takes about thirty seconds."
+    eyebrow="Los Angeles & San Diego's trusted siding & windows contractor"
+    heading="A Home Exterior that Withstands the Test of Time"
+    body="We're an award-winning siding, windows and home exterior contractor serving Greater Los Angeles & San Diego, including Orange, Riverside and Ventura counties."
     photo={heroPhoto}
-    photoAlt="The rear elevation of a two-storey Los Angeles house finished in pale James Hardie lap siding, with white trim, dark shutters and a screened porch."
-    captionPlace="Los Angeles, CA"
-    captionWork="Stucco removed, James Hardie lap siding installed"
-    ctaHref="#contact"
-    ctaLabel="Book a free consultation"
+    photoAlt="A single-storey Rancho Palos Verdes home finished in white James Hardie lap siding, with new landscaping and a stone stairway, under a clear blue sky."
+    captionPlace="Rancho Palos Verdes, CA"
+    captionWork="James Hardie lap siding, soffit, fascia and exterior paint"
+    ctaHref="/free-estimate"
+    ctaLabel="Schedule your free quote"
     telHref={callHref}
     telLabel={callLabel}
+    facts={HERO_FACTS}
   />
 
-  {/*
-    THE SIGNATURE MOMENT, placed high on purpose.
-    Conventionally the proof section sits late, after the sell. Here the proof
-    IS the sell, so it runs second — before the services, before the work,
-    before anything asks for a call. Everything after it is detail.
-  */}
-  <TheRecord
-    id="record"
-    eyebrow="The public record"
-    heading="The company is called Approved Contractor. Here is the approval."
-    body="This is their licence as the State of California holds it, not as they describe it. We looked it up rather than take their word for it, and so can you."
-    authority={LICENCE.authority}
-    documentTitle={LICENCE.documentTitle}
-    fields={recordFields}
-    retrieval={`Retrieved from cslb.ca.gov on ${LICENCE.retrieved}. Bond and policy dates move — check the live record.`}
-    verifyHref={LICENCE.lookupUrl}
-    verifyLabel="Look up licence 952272 yourself →"
-  />
-
-  <CredentialLedger
-    id="credentials"
-    eyebrow="Everyone else who has checked"
-    heading="Nine more approvals, and who granted each one."
-    body="A row of logos proves nothing — anyone can paste a logo. These are the actual designations, the bodies that issue them, and where you can look them up."
-    items={credentials}
-    featureLabel="James Hardie Elite Contractor"
-    footnote="Manufacturer and award marks are the property of the organisations that issue them and are named here in text rather than reproduced. Where a designation could not be confirmed from a public source, the entry says so."
-    tone="sunken"
-  />
-
-  <ServicesGrid
-    id="services"
-    eyebrow="The whole scope"
+  {/* 2 — what we actually do. Product before proof. */}
+  <ServiceShowcase
+    eyebrow="Home exterior services that last"
     heading="Six trades, all of them outdoors."
-    body="Approved Contractor is not a general remodeler. There is no kitchen, no bathroom and no addition on this list, and that is the point — everything here is the building envelope."
+    body="We're not a general remodeler. There's no kitchen, no bathroom and no addition on this list — everything we do is the outside of your house."
     items={services}
-    columns={3}
-    media="none"
+    spacing="default"
   />
 
+  <Divider tone="sunken" />
+
+  {/* 3 — the same house, twice. The strongest thing an exterior firm owns. */}
   {
     pairs.length > 0 && (
       <BeforeAfter
         id="work"
         eyebrow="The same house, twice"
-        heading="Stucco off, James Hardie on."
-        body="One project in Los Angeles, photographed before the work started and after it finished."
+        heading="Stucco off. James Hardie on."
+        body="One project in Los Angeles, photographed before we started and after we finished."
         items={pairs}
         tone="sunken"
+        spacing="default"
       />
     )
   }
@@ -243,20 +176,64 @@ const faqSchema = faqs.map((f) => ({
     )
   }
 
+  {/* 4 — THE SIGNATURE MOMENT. */}
+  <TheRecord
+    id="record"
+    eyebrow="The public record"
+    heading="We're called Approved Contractor. Here's the approval."
+    body="This is our licence as the State of California holds it, not as we describe it. Don't take our word for it — the lookup takes about thirty seconds."
+    authority={LICENCE.authority}
+    documentTitle={LICENCE.documentTitle}
+    fields={RECORD_FIELDS}
+    retrieval={`Retrieved from cslb.ca.gov on ${LICENCE.retrieved}. Bond and policy dates move — check the live record.`}
+    verifyHref={LICENCE.lookupUrl}
+    verifyLabel="Look up licence 952272 yourself →"
+  />
+
+  {/* 5 — everyone else who has checked us. */}
+  <CredentialLedger
+    id="credentials"
+    eyebrow="Everyone else who has checked"
+    heading="Nine more approvals, and who granted each one."
+    body="A row of logos proves nothing — anyone can paste a logo. These are the actual designations, the bodies that issue them, and where you can look them up."
+    items={credentials}
+    featureLabel="James Hardie Elite Contractor"
+    footnote="Manufacturer and award marks are the property of the organisations that issue them and are named here in text rather than reproduced. Where a designation could not be confirmed from a public source, the entry says so."
+    tone="sunken"
+    spacing="default"
+  />
+
+  <Divider />
+
+  {/* 6 — what happens when you call. Their four steps, verbatim. */}
   <ProcessSteps
     id="process"
-    eyebrow="What happens when you call"
-    heading="Four steps, in their own words."
-    body="Quoted from Approved Contractor's own description of how a job runs, rather than rewritten into ours."
+    eyebrow="Our simple process"
+    heading="Four steps, in our own words."
+    body="Quoted from how we describe a job on our own site, rather than rewritten."
     steps={process}
     layout="row"
     ctaLabel={callLabel}
     ctaHref={callHref}
+    spacing="default"
   />
 
-  {/* Explicit id below: TestimonialPullQuote and TestimonialGrid BOTH default
-      to id="reviews", so leaving it off shipped two elements sharing an id —
-      invalid HTML, and it breaks any in-page anchor to either of them. */}
+  {/* 7 — their best writing, finally set like it matters. */}
+  <PromiseSplit
+    id="promise"
+    eyebrow="Our promise to you"
+    heading="We treat your home like it's our own."
+    body="Don't waste time hiring a sub-par siding, window and home exterior contractor. Get superior customer service, premium products, and optimal results."
+    promises={PROMISES}
+    photo={promisePhoto}
+    photoAlt="A 107-year-old Los Angeles Craftsman home after its original wood siding was replaced with James Hardie ColorPlus lap siding."
+    tone="sunken"
+    spacing="default"
+    ctaLabel="Schedule your free quote"
+    ctaHref="/free-estimate"
+  />
+
+  {/* 8 — reviews. */}
   {
     featuredReview && (
       <TestimonialPullQuote
@@ -264,7 +241,7 @@ const faqSchema = faqs.map((f) => ({
         locale={locale}
         eyebrow="A customer, at length"
         testimonial={featuredReview}
-        tone="sunken"
+        spacing="default"
       />
     )
   }
@@ -275,23 +252,28 @@ const faqSchema = faqs.map((f) => ({
         locale={locale}
         eyebrow="Verified surveys"
         heading="What people said afterwards."
-        body="Collected by GuildQuality, which surveys a contractor's customers directly and publishes the unhappy ones too. No star average is shown here because no two sources agree on one."
+        body="Collected by GuildQuality, which surveys our customers directly and publishes the unhappy ones too. No star average is shown here because no two sources agree on one."
         items={otherReviews}
         columns={3}
+        tone="sunken"
+        spacing="default"
       />
     )
   }
 
+  <Divider />
+
+  {/* 9 — who we are. Late, because nobody hires a contractor for their bio. */}
   {
     people.length > 0 && (
       <ProviderBios
         id="owner"
-        eyebrow="Who is responsible"
-        heading="There is a name on the licence."
-        body="In a trade where the fear is that whoever took the deposit will not answer the phone, the state requires a specific person to stand behind the work. On licence 952272 that person is named."
+        eyebrow="Who's responsible"
+        heading="There's a name on the licence."
+        body="In a trade where the fear is that whoever took the deposit won't answer the phone, the state requires a specific person to stand behind the work. On licence 952272, that person is named."
         people={people}
         layout="feature"
-        tone="sunken"
+        spacing="default"
       />
     )
   }
@@ -302,92 +284,63 @@ const faqSchema = faqs.map((f) => ({
     eyebrow="Before you call"
     heading="The questions people actually ask."
     items={faqs}
+    tone="sunken"
+    spacing="default"
   />
 
   <LocationContact
     id="contact"
     locale={locale}
     eyebrow="Canoga Park"
-    heading="Where the trucks go out from."
-    body="9015 Eton Avenue — the address on the licence, not a mailbox. Serving Los Angeles, San Diego, Orange, Ventura, San Bernardino and Riverside counties."
+    heading="Where our trucks go out from."
+    body="9015 Eton Avenue — the address on our licence, not a mailbox. We serve Los Angeles, San Diego, Orange, Ventura, San Bernardino and Riverside counties."
     showHours={false}
-    tone="sunken"
     formSubject="Exterior consultation request"
+    spacing="default"
   />
 
   <CTABand
-    heading="Have someone look at the outside of your house."
-    body="Free consultation, and no obligation after it. Tell them what is bothering you about the exterior and they will tell you what is actually failing."
+    heading="Let us look at the outside of your house."
+    body="Free consultation, and no obligation after it. Tell us what's bothering you about the exterior and we'll tell you what's actually failing."
     ctaLabel={callLabel}
     ctaHref={callHref}
-    secondaryLabel="Check the licence first"
+    secondaryLabel="Check our licence first"
     secondaryHref={LICENCE.lookupUrl}
     note="CA Lic. #952272 · Class B · Current and active · Financing available"
     align="split"
     tone="brand"
+    class="on-brand--deep"
+    spacing="tight"
   />
 </BaseLayout>
 
 {
   /*
   ============================================================================
-  OPEN ITEMS — CLOSE THESE BEFORE SENDING
-  ============================================================================
-  Full detail, with sources and conflicts, is in input/facts.txt §15.
+  OPEN ITEMS — full detail, with sources and conflicts, in input/facts.txt §15.
 
   ONLY THE BUSINESS CAN CLOSE THESE:
-
-  1. A PORTRAIT OF JARED GREEN. He is named on the page and on the state
-     licence record, but no photograph of him is published anywhere. In this
-     trade a face is the single highest-trust element available, and it is now
-     the biggest remaining gap — the photography gap that dogged builds 002,
-     003 and 004 is otherwise closed.
-
-  2. HOURS. Not published by them. Third-party listings disagree on Saturday.
-     site.ts HOURS is empty, showHours={false}, no openingHoursSpecification.
-
-  3. AN EMAIL ADDRESS. Not published; SITE.email empty, so the block is omitted.
-
-  4. THE PHONE CONFLICT. Their homepage header shows (866) 215-2968 while their
-     contact page, about page AND the CSLB register all show (877) 792-9082.
-     This page uses the register's number. Worth raising with them either way:
-     a header number that disagrees with the licence record is a trust leak on
-     a page whose whole subject is trust.
-
-  5. THE REVIEW COUNT. If they can point at ~800 verified reviews on ONE
-     platform, the number goes straight back on the page — it is a good number.
-     Right now five sources give five answers.
-
-  6. YELP AND GOOGLE REVIEWS. Yelp shows 125 reviews and Google shows more;
-     both were unreadable to us. Ten minutes of copy-and-paste would materially
-     strengthen the testimonial section. One Google review in particular —
-     a customer saying they chose Approved Contractor because the rep
-     "provided full license and insurance info" — is the thesis of this entire
-     redesign in a customer's own words, and it is left off only because the
-     aggregator carrying it is provably contaminated. See input/reviews.txt §3.
-
-  7. AWARD CURRENCY. The Qualified Remodeler Top 500 and HIP 200 badges say
-     2025. Confirm they are current for 2026 or the year stays on them.
-
-  8. FINANCING TERMS. Read 2026-08-12. Promotional finance offers move
-     constantly; re-check before this is sent.
+   1. A PORTRAIT OF JARED GREEN. Named on the page and on the state record, but
+      no photograph of him is published anywhere. Biggest remaining gap.
+   2. HOURS. Not published by them; third-party listings disagree on Saturday.
+   3. AN EMAIL ADDRESS. Not published, so the contact block omits it.
+   4. THE PHONE CONFLICT. Their homepage header shows (866) 215-2968 while their
+      contact page, about page AND the CSLB register all show (877) 792-9082.
+      This build uses the register's number.
+   5. THE REVIEW COUNT. One verifiable source and the number goes back on.
+   6. YELP AND GOOGLE REVIEWS — 125 on Yelp alone, none of it machine-readable.
+   7. AWARD CURRENCY. The QR Top 500 and HIP 200 badges say 2025.
+   8. FINANCING TERMS. Read 2026-08-12; promotional finance moves constantly.
 
   ENGINEERING, BEFORE ANY CLIENT TEST:
+   9. FORM_ENDPOINT is empty, so ContactForm renders its disabled state.
+  10. GEO COORDINATES. `geo` is null, so LocalBusiness omits it.
 
-  9. FORM_ENDPOINT is empty, so ContactForm renders its disabled state.
-
- 10. GEO COORDINATES. site.ts `geo` is null, so LocalBusiness omits it rather
-     than pin the wrong unit on Eton Avenue.
-
-  CONSIDERED AND DECLINED:
-
- 11. SPANISH. The Valley has a large Spanish-speaking homeowner base and
-     bilingual would be a genuine differentiator here. Declined for this pass:
-     every word of a licensed trade's advertising has to be the operator's own,
-     not a machine translation. One content pass if wanted.
-
- 12. AN AGGREGATE RATING. Declined permanently unless a single source can be
-     established. See the header note.
+  PAGES DELIBERATELY NOT BUILT — see the scope note in the handoff. Their site
+  runs to 37 top-level URLs plus 12 featured-project pages plus a blog. This
+  build covers the ten that carry the commercial argument. Deferred: the four
+  siding sub-pages, five window sub-pages, individual project pages, both
+  buying guides, the blog, video resources, media, and the city landing pages.
   ============================================================================
   */
 }

@@ -1,0 +1,194 @@
+---
+/**
+ * PromiseSplit — their own "Our Promise To You", set properly.
+ *
+ * WHY THIS SECTION EXISTS. Their homepage carries two blocks of genuinely good
+ * writing — "Our Promise To You" and "Treating Every Customer Like They're #1"
+ * — and sets both as grey bullet lists in 16px Open Sans. The copy is the best
+ * argument on their whole site and it currently looks like terms and
+ * conditions. Every line here is theirs, verbatim, first person as they wrote
+ * it; the only thing that changed is the setting.
+ *
+ * It also solves a layout problem. Between the work and the process there was a
+ * dead full-width text band. A photograph on one side and the promises on the
+ * other fills it with something worth looking at, and puts a picture of a
+ * finished house next to the sentence "You'll find us after your project is
+ * done."
+ */
+import { Image } from "astro:assets";
+import Section from "./Section.astro";
+import type { SectionProps } from "./Section.astro";
+
+interface Props extends SectionProps {
+  eyebrow?: string;
+  heading: string;
+  body?: string;
+  /** Verbatim client copy. Never paraphrase these. */
+  promises: string[];
+  photo: ImageMetadata;
+  photoAlt: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const {
+  eyebrow,
+  heading,
+  body,
+  promises,
+  photo,
+  photoAlt,
+  ctaLabel,
+  ctaHref,
+  id = "promise",
+  tone,
+  spacing,
+  ...rest
+} = Astro.props;
+---
+
+<Section
+  id={id}
+  tone={tone}
+  spacing={spacing}
+  width="xl"
+  labelledBy={`${id}-heading`}
+  {...rest}
+>
+  <div class="promise">
+    <figure class="promise__media" data-reveal="left">
+      <Image
+        src={photo}
+        alt={photoAlt}
+        widths={[420, 640, 900]}
+        sizes="(min-width: 60em) 44vw, 92vw"
+        loading="lazy"
+      />
+    </figure>
+
+    <div class="promise__copy" data-reveal-stagger>
+      {eyebrow && <p class="eyebrow" data-reveal="fade">{eyebrow}</p>}
+      <h2 class="promise__heading" id={`${id}-heading`} data-reveal>{heading}</h2>
+      {body && <p class="promise__body" data-reveal="fade">{body}</p>}
+
+      <ul class="promise__list" role="list">
+        {
+          promises.map((p) => (
+            <li class="promise__item" data-reveal="fade">
+              <span class="promise__tick" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4 12.5l5.5 5.5L20 6.5"
+                  />
+                </svg>
+              </span>
+              <span>{p}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      {
+        ctaLabel && ctaHref && (
+          <p class="promise__cta" data-reveal="fade">
+            <a class="btn" href={ctaHref}>
+              {ctaLabel}
+            </a>
+          </p>
+        )
+      }
+    </div>
+  </div>
+</Section>
+
+<style>
+  .promise {
+    display: grid;
+    gap: var(--space-l);
+    align-items: center;
+  }
+
+  @media (min-width: 60em) {
+    .promise {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: var(--space-2xl);
+    }
+  }
+
+  .promise__media {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-m);
+    background-color: var(--n-100);
+  }
+
+  .promise__media :global(img) {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    filter: var(--image-filter);
+  }
+
+  .promise__heading {
+    margin: var(--space-2xs) 0 0;
+    font-size: var(--step-4);
+    line-height: var(--leading-heading);
+    text-wrap: balance;
+  }
+
+  .promise__body {
+    margin: var(--space-xs) 0 0;
+    max-inline-size: var(--measure);
+    font-size: var(--step-0);
+    line-height: var(--leading-snug);
+    color: var(--color-ink-muted);
+    text-wrap: pretty;
+  }
+
+  .promise__list {
+    display: grid;
+    gap: var(--space-xs);
+    margin: var(--space-m) 0 0;
+    padding: 0;
+  }
+
+  .promise__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-xs);
+    align-items: start;
+    font-size: var(--step-0);
+    line-height: var(--leading-snug);
+    color: var(--color-ink);
+    text-wrap: pretty;
+  }
+
+  .promise__tick {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1.375rem;
+    block-size: 1.375rem;
+    margin-block-start: 0.1em;
+    border-radius: var(--radius-pill);
+    background-image: var(--grad-brand);
+    color: var(--color-brand-contrast);
+  }
+
+  .promise__tick svg {
+    inline-size: 0.8rem;
+    block-size: 0.8rem;
+  }
+
+  .promise__cta {
+    margin: var(--space-l) 0 0;
+  }
+</style>

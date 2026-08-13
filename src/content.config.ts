@@ -138,6 +138,10 @@ const services = defineCollection({
         priceNote: z.string().optional(),
         /** Key into the inline icon set, not a file path. */
         icon: z.string().optional(),
+        /** Its own page, where one exists. Added for the multi-page build. */
+        href: z.string().optional(),
+        /** One-line proof point pulled from the client's own copy. */
+        note: z.string().optional(),
         order: z.number().default(0),
         featured: z.boolean().default(false),
         ...photoFields(ctx),
@@ -159,6 +163,16 @@ const projects = defineCollection({
         beforeAlt: z.string().optional(),
         location: z.string().optional(),
         year: z.string().optional(),
+        /**
+         * Which trade(s) this job demonstrates. Added for the multi-page build:
+         * /siding, /window-replacement, /paint-texture-coating and /roofing
+         * each show their own work, and filtering a shared collection is the
+         * only way that stays true when a project is edited. A job usually
+         * carries more than one — most of these houses got siding AND windows.
+         */
+        trade: z
+          .array(z.enum(["siding", "windows", "stucco", "coating", "roofing"]))
+          .default([]),
         order: z.number().default(0),
         ...photoFields(ctx),
       })

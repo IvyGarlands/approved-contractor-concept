@@ -1,0 +1,159 @@
+---
+/**
+ * /siding — the trade they are best known for and the one their Elite
+ * designation covers, so it gets the fullest of the four service pages.
+ *
+ * Copy: the opening paragraph is verbatim from their homepage siding tile.
+ * Everything else is a proposal in their voice, first person.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/sections/PageHero.astro";
+import AboutAlternating from "../components/sections/AboutAlternating.astro";
+import Gallery from "../components/sections/Gallery.astro";
+import BeforeAfter from "../components/sections/BeforeAfter.astro";
+import CTABand from "../components/sections/CTABand.astro";
+import Divider from "../components/core/Divider.astro";
+
+import heroPhoto from "../assets/photos/la-newbuild-01.jpg";
+import rowHardie from "../assets/photos/rpv-03.jpg";
+import rowCraftsman from "../assets/photos/la-craftsman-02.jpg";
+import rowFire from "../assets/photos/sandiego-fire-during.jpg";
+import gMtBaldy from "../assets/photos/mt-baldy-01.jpg";
+import gThousandOaks from "../assets/photos/thousand-oaks-06.jpg";
+import gNewbuild from "../assets/photos/la-newbuild-03.jpg";
+import gRpv from "../assets/photos/rpv-05.jpg";
+
+import { SITE, LICENCE } from "../config/site";
+import { localized } from "../lib/content";
+import { useTranslations, localeFromUrl } from "../i18n/ui";
+import { NAV_LINKS, CALL_HREF } from "../lib/page";
+
+const locale = localeFromUrl(Astro.url);
+const t = useTranslations(locale);
+const projects = await localized("projects", locale);
+const pairs = projects.filter(
+  (p) => p.data.beforePhoto && p.data.trade.includes("siding")
+);
+
+const callLabel = `${t("cta.call")} ${SITE.phone}`;
+
+const rows = [
+  {
+    heading: "James Hardie fiber cement",
+    body: "Want to boost your home's value and curb appeal? New siding installation has a high return on investment, especially when you choose long-lasting, fiber cement siding — like James Hardie. It doesn't cup in a Valley summer, it doesn't fade the way painted wood does, and nothing eats it.",
+    image: rowHardie,
+    alt: "A Rancho Palos Verdes home clad in white James Hardie lap siding with dark shingle roofing.",
+    meta: [
+      { label: "Designation", value: "James Hardie Elite Contractor" },
+      { label: "Profiles", value: "Lap, shake shingle, board & batten" },
+    ],
+  },
+  {
+    heading: "Replacing wood and stucco",
+    body: "Most of our siding work is a replacement, not a new build. We take off what's failing, deal with whatever we find behind it — dry rot is the usual answer — and rebuild the trim, soffit and fascia so the new siding meets something solid. On a 107-year-old Craftsman in Los Angeles that meant structural reinforcement and insulation before a single board went up.",
+    image: rowCraftsman,
+    alt: "A 107-year-old Los Angeles Craftsman home after its original wood siding was replaced with James Hardie ColorPlus lap siding.",
+    meta: [
+      { label: "Also replaced", value: "Soffit, fascia, trim" },
+      { label: "Typical find", value: "Dry rot at the base course" },
+    ],
+  },
+  {
+    heading: "Fire-damaged and fire-resistant work",
+    body: "Fiber cement is non-combustible, which is why it comes up constantly in Southern California now. We handle fire-damaged siding replacement, and on rebuilds we'll specify enclosed soffits and fire-resistant vents alongside the siding itself — the vents are usually where the trouble starts.",
+    image: rowFire,
+    alt: "A San Diego home mid-project during fire-resistant siding installation and window replacement.",
+    meta: [
+      { label: "Material", value: "Non-combustible fiber cement" },
+      { label: "Also fitted", value: "Enclosed soffits, fire-resistant vents" },
+    ],
+  },
+];
+
+const galleryItems = [
+  {
+    image: gNewbuild,
+    alt: "A modern two-storey Los Angeles new build finished in James Hardie Arctic White lap siding.",
+    caption: "New build · Los Angeles, CA",
+  },
+  {
+    image: gMtBaldy,
+    alt: "A Mt. Baldy home after fiber cement siding installation and window replacement.",
+    caption: "Fiber cement & windows · Mt. Baldy, CA",
+  },
+  {
+    image: gThousandOaks,
+    alt: "A Thousand Oaks home after damaged stucco was replaced with James Hardie siding.",
+    caption: "Stucco to siding · Thousand Oaks, CA",
+  },
+  {
+    image: gRpv,
+    alt: "A detail of James Hardie lap siding and trim on a Rancho Palos Verdes home.",
+    caption: "Lap siding detail · Rancho Palos Verdes, CA",
+  },
+];
+---
+
+<BaseLayout
+  title="Siding replacement & installation | James Hardie Elite Contractor"
+  description="James Hardie fiber cement siding replacement and installation across Greater Los Angeles and San Diego. James Hardie Elite Contractor. CSLB #952272. Free quote — (877) 792-9082."
+  path="/siding"
+  navLinks={NAV_LINKS}
+>
+  <PageHero
+    eyebrow="Siding replacement & installation"
+    heading="The part of your house everyone else sees."
+    body="We're a James Hardie Elite Contractor. Fiber cement siding, replaced or installed new, across six Southern California counties."
+    photo={heroPhoto}
+    photoAlt="A two-storey Los Angeles home clad in new pale James Hardie lap siding, photographed from the side yard."
+    crumbs={[{ label: "Home", href: "/" }]}
+  />
+
+  <AboutAlternating
+    id="detail"
+    eyebrow="What we install"
+    heading="Three quarters of what we do is siding."
+    rows={rows}
+    spacing="default"
+  />
+
+  <Divider tone="sunken" />
+
+  {
+    pairs.length > 0 && (
+      <BeforeAfter
+        id="work"
+        eyebrow="The same house, twice"
+        heading="Stucco off. James Hardie on."
+        body="A Los Angeles project photographed before we started and after we finished."
+        items={pairs}
+        tone="sunken"
+        spacing="default"
+      />
+    )
+  }
+
+  <Gallery
+    locale={locale}
+    eyebrow="More siding work"
+    heading="Four more, across the region."
+    items={galleryItems}
+    layout="uniform"
+    tone="sunken"
+    spacing="tight"
+  />
+
+  <CTABand
+    heading="Find out what your siding actually needs."
+    body="Free consultation. We'll walk the outside of the house with you and tell you what's failing now, what has a couple of years left, and what's only cosmetic."
+    ctaLabel={callLabel}
+    ctaHref={CALL_HREF}
+    secondaryLabel="Check our licence"
+    secondaryHref={LICENCE.lookupUrl}
+    note="CA Lic. #952272 · James Hardie Elite Contractor · Financing available"
+    align="split"
+    tone="brand"
+    class="on-brand--deep"
+    spacing="tight"
+  />
+</BaseLayout>

@@ -1,1 +1,12 @@
-{ "lang": "en", "name": "Stucco", "summary": "Remediation and fresh application.", "detail": "Cracked or failing stucco is either repaired or taken off entirely and replaced with siding — several of their own featured projects are the second of those.", "order": 3 }
+{
+  "lang": "en",
+  "name": "Stucco",
+  "short": "Stucco",
+  "summary": "Remediation where it can be saved, full replacement where it can't. We'll tell you which at the consultation.",
+  "detail": "Stucco remediation and fresh application. Where the substrate underneath has gone, patching it is money thrown away, and we'll tell you that at the consultation rather than after the invoice.",
+  "note": "Remediation & new application",
+  "href": "/paint-texture-coating",
+  "photo": "../../assets/photos/thousand-oaks-03.jpg",
+  "alt": "A Thousand Oaks home mid-project, with damaged stucco stripped back before new siding goes on.",
+  "order": 3
+}

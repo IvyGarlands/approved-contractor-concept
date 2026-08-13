@@ -5,5 +5,10 @@
   "summary": "The whole envelope in one job: window replacement, new siding and a new roof.",
   "photo": "../../assets/photos/encino-01.jpg",
   "alt": "An Encino house after a full exterior remodel, with new siding, replacement windows and a new roof.",
-  "order": 6
+  "order": 6,
+  "trade": [
+    "siding",
+    "windows",
+    "roofing"
+  ]
 }

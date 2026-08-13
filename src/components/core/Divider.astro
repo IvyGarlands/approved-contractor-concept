@@ -1,0 +1,45 @@
+---
+/**
+ * Divider — the decorative rule between sections.
+ *
+ * Courses of lap siding, drawn as a repeating gradient (tokens.css §8b,
+ * base.css `.lap-divider`). It earns the ornament slot because it is not a
+ * metaphor for the business — it is a drawing of the product they install, and
+ * the subject of every photograph on the site.
+ *
+ * Purely decorative: aria-hidden, and it carries nothing that is not already in
+ * the text on either side of it. Re-inks itself on brand and dark grounds.
+ */
+interface Props {
+  /** Sits on the section it precedes, so it inherits that ground's colours. */
+  tone?: "default" | "sunken" | "dark" | "brand";
+  class?: string;
+}
+
+const { tone = "default", class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    "divider",
+    tone === "sunken" && "surface--sunken",
+    tone === "dark" && "on-dark",
+    tone === "brand" && "on-brand",
+    className,
+  ]}
+  aria-hidden="true"
+>
+  <span class="lap-divider"></span>
+</div>
+
+<style>
+  .divider {
+    display: flex;
+    justify-content: center;
+    padding-inline: var(--gutter);
+  }
+
+  .divider .lap-divider {
+    max-inline-size: var(--container-l);
+  }
+</style>

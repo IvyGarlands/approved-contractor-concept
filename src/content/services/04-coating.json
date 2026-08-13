@@ -1,1 +1,12 @@
-{ "lang": "en", "name": "Painting & texture coating", "summary": "Exterior paint, and heat-reflective texture coating.", "detail": "The coating is Cool Life, which they describe as guaranteed against peeling, chipping, flaking and cracking, with a lifetime warranty on the texture coating.", "order": 4 }
+{
+  "lang": "en",
+  "name": "Paint & texture coating",
+  "short": "Paint & coating",
+  "summary": "Heat-reflective Cool Life coating and exterior paint. A finish that won't chip, crack, flake or peel.",
+  "detail": "Our texture coating is Cool Life, a heat-reflective elastomeric coating carrying a lifetime warranty on the texture coating and guaranteed against peeling, chipping, flaking and cracking.",
+  "note": "Cool Life — lifetime warranty on texture coating",
+  "href": "/paint-texture-coating",
+  "photo": "../../assets/photos/la-jolla-after.jpg",
+  "alt": "An oceanfront La Jolla home after new siding, windows and exterior texture coating.",
+  "order": 4
+}

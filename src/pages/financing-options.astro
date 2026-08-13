@@ -1,0 +1,147 @@
+---
+/**
+ * /financing-options — "Restore your home now, pay later."
+ *
+ * REGULATED-CLAIM NOTE. Consumer finance advertising is FTC territory. Every
+ * figure here is theirs, quoted: the partner, the "12 months no interest with
+ * payments" promotion, the "for qualified homeowners" qualifier and the credit
+ * check disclosure. No APR, no loan amount and no term table appears, because
+ * they publish none. The credit-check line is carried deliberately — dropping
+ * it while keeping the offer would make our version less honest than theirs.
+ *
+ * DATED: read 2026-08-12. Promotional finance moves constantly.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/sections/PageHero.astro";
+import ProcessSteps from "../components/sections/ProcessSteps.astro";
+import PromiseSplit from "../components/sections/PromiseSplit.astro";
+import FAQ from "../components/sections/FAQ.astro";
+import CTABand from "../components/sections/CTABand.astro";
+import Divider from "../components/core/Divider.astro";
+
+import heroPhoto from "../assets/photos/thousand-oaks-08.jpg";
+import promisePhoto from "../assets/photos/la-stucco-to-hardie-after.jpg";
+
+import { SITE, LICENCE } from "../config/site";
+import { localized } from "../lib/content";
+import { useTranslations, localeFromUrl } from "../i18n/ui";
+import { NAV_LINKS, CALL_HREF } from "../lib/page";
+
+const locale = localeFromUrl(Astro.url);
+const t = useTranslations(locale);
+const callLabel = `${t("cta.call")} ${SITE.phone}`;
+
+const faqs = await localized("faq", locale);
+const financeFaqs = faqs.filter((f) =>
+  /financ|coating warranty/i.test(f.data.question)
+);
+
+/* Their own three-step application flow, shaped into the `process` collection's
+   contract so it renders through the same component as the job process. */
+const steps = [
+  {
+    id: "f1",
+    data: {
+      lang: "en" as const,
+      step: 1,
+      title: "Choose your plan",
+      body: "Tell us the project at your free consultation and we'll show you what the monthly looks like before you commit to anything.",
+    },
+  },
+  {
+    id: "f2",
+    data: {
+      lang: "en" as const,
+      step: 2,
+      title: "Apply through Service Finance",
+      body: "A quick and straightforward application through our partner, Service Finance Company, LLC. Applying may involve a credit check.",
+    },
+  },
+  {
+    id: "f3",
+    data: {
+      lang: "en" as const,
+      step: 3,
+      title: "Get approved and start",
+      body: "Once you're approved we schedule the work. Financing is available for most exterior remodeling projects, including siding, windows, stucco coating, roofing, and more.",
+    },
+  },
+];
+
+const points = [
+  "12 months no interest with payments, for qualified homeowners.",
+  "Flexible payment plans that fit your budget.",
+  "Available on most exterior projects — siding, windows, stucco coating and roofing.",
+  "Free consultations either way. Financing is an option, never a condition.",
+];
+---
+
+<BaseLayout
+  title="Financing options — restore your home now, pay later"
+  description="12 months no interest with payments for qualified homeowners, through Service Finance Company, LLC. Available on siding, windows, stucco coating and roofing."
+  path="/financing-options"
+  navLinks={NAV_LINKS}
+>
+  <PageHero
+    eyebrow="Financing options"
+    heading="Restore your home now, pay later."
+    body="If left untreated, damaged siding and windows can lead to further home damage including dry rot, black mold, and other undesirable side effects. The best time to replace your windows and siding is today."
+    photo={heroPhoto}
+    photoAlt="A Thousand Oaks home after its damaged stucco was replaced with new siding."
+    crumbs={[{ label: "Home", href: "/" }]}
+  />
+
+  <PromiseSplit
+    id="terms"
+    eyebrow="What's on offer"
+    heading="12 months no interest, for qualified homeowners."
+    body="We offer financing options to help you fix your home now and pay for it later, through our partner Service Finance Company, LLC."
+    promises={points}
+    photo={promisePhoto}
+    photoAlt="A Los Angeles home after stucco was replaced with James Hardie lap siding."
+    spacing="default"
+    ctaLabel="Ask about financing"
+    ctaHref="/contact"
+  />
+
+  <Divider tone="sunken" />
+
+  <ProcessSteps
+    id="how"
+    eyebrow="How it works"
+    heading="Three steps, and the first one is free."
+    steps={steps as never}
+    layout="row"
+    tone="sunken"
+    spacing="default"
+    ctaLabel={callLabel}
+    ctaHref={CALL_HREF}
+  />
+
+  {
+    financeFaqs.length > 0 && (
+      <FAQ
+        id="faq"
+        locale={locale}
+        eyebrow="Before you apply"
+        heading="Questions about paying for it."
+        items={financeFaqs}
+        spacing="default"
+      />
+    )
+  }
+
+  <CTABand
+    heading="Find out what the monthly looks like."
+    body="The consultation is free and there's no obligation after it. We'll price the work first and talk about how you pay for it second."
+    ctaLabel={callLabel}
+    ctaHref={CALL_HREF}
+    secondaryLabel="Check our licence"
+    secondaryHref={LICENCE.lookupUrl}
+    note="Promotional terms read 12 August 2026 · Confirm the current offer when you call · CA Lic. #952272"
+    align="split"
+    tone="brand"
+    class="on-brand--deep"
+    spacing="tight"
+  />
+</BaseLayout>

@@ -5,5 +5,9 @@
   "summary": "Stucco remediation followed by James Hardie siding across the front elevation.",
   "photo": "../../assets/photos/thousand-oaks-08.jpg",
   "alt": "A single-storey Thousand Oaks house with new horizontal siding replacing its previous stucco finish.",
-  "order": 3
+  "order": 3,
+  "trade": [
+    "siding",
+    "stucco"
+  ]
 }

@@ -1,1 +1,12 @@
-{ "lang": "en", "name": "Shutters", "summary": "Fitted with a window replacement.", "detail": "The smallest line of work they advertise, and the only one that is decorative rather than protective.", "order": 6 }
+{
+  "lang": "en",
+  "name": "Shutters",
+  "short": "Shutters",
+  "summary": "Fitted alongside a window replacement rather than as a job on their own.",
+  "detail": "We fit shutters as part of window work rather than as a job on their own.",
+  "note": "Fitted with window replacement",
+  "href": "/window-replacement",
+  "photo": "../../assets/photos/mt-baldy-03.jpg",
+  "alt": "A Mt. Baldy home with new fiber cement siding and replacement windows.",
+  "order": 6
+}

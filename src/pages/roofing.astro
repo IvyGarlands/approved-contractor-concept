@@ -1,0 +1,104 @@
+---
+/**
+ * /roofing — the smallest of the six trades, and the page says so.
+ *
+ * Their own site gives roofing a thin page and it is genuinely a smaller part
+ * of the business. Padding it out with invented detail would be the obvious
+ * move and the wrong one: an honest short page that explains WHY roofing is
+ * usually part of a bigger job is more persuasive than a fabricated long one.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/sections/PageHero.astro";
+import AboutAlternating from "../components/sections/AboutAlternating.astro";
+import ServiceShowcase from "../components/sections/ServiceShowcase.astro";
+import CTABand from "../components/sections/CTABand.astro";
+import Divider from "../components/core/Divider.astro";
+
+import heroPhoto from "../assets/photos/encino-01.jpg";
+import rowWhole from "../assets/photos/la-craftsman-01.jpg";
+import rowJunction from "../assets/photos/rpv-05.jpg";
+
+import { SITE, LICENCE } from "../config/site";
+import { localized } from "../lib/content";
+import { useTranslations, localeFromUrl } from "../i18n/ui";
+import { NAV_LINKS, CALL_HREF } from "../lib/page";
+
+const locale = localeFromUrl(Astro.url);
+const t = useTranslations(locale);
+const callLabel = `${t("cta.call")} ${SITE.phone}`;
+
+const services = await localized("services", locale);
+const others = services.filter((s) => s.data.name !== "Roofing");
+
+const rows = [
+  {
+    heading: "Usually part of a bigger job",
+    body: "Roofing is the smallest of the six trades we advertise, and we'd rather be straight about that than pretend otherwise. Most of our roofing work happens because the siding, fascia and roofline are all being dealt with at once — on an Encino house that meant windows, siding and a new roof in a single project.",
+    image: rowWhole,
+    alt: "A Los Angeles Craftsman home after re-siding, showing the roofline and rebuilt fascia.",
+    meta: [
+      { label: "Supplier", value: "Owens Corning" },
+      { label: "Typical scope", value: "Roof with siding and fascia" },
+    ],
+  },
+  {
+    heading: "The junctions are where leaks start",
+    body: "A new roof over old fascia is where the next leak comes from. Doing the roof, the soffit and the siding together means the flashing, the drip edge and the top course of siding are all detailed as one system rather than three trades handing off to each other.",
+    image: rowJunction,
+    alt: "A detail of the roofline, fascia and lap siding meeting on a Rancho Palos Verdes home.",
+    meta: [
+      { label: "Detailed together", value: "Flashing, drip edge, top course" },
+      { label: "Also replaced", value: "Soffit and fascia" },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Roofing replacement & installation"
+  description="Roof replacement and installation across Greater Los Angeles and San Diego, usually as part of a whole-exterior project. CSLB #952272, current and active."
+  path="/roofing"
+  navLinks={NAV_LINKS}
+>
+  <PageHero
+    eyebrow="Roofing replacement & installation"
+    heading="Roof leaking? It's rarely just the roof."
+    body="We replace and install roofs — most often alongside siding and fascia, so the whole roofline meets properly."
+    photo={heroPhoto}
+    photoAlt="An Encino home after a full exterior remodel with new siding, replacement windows and a new roof."
+    crumbs={[{ label: "Home", href: "/" }]}
+  />
+
+  <AboutAlternating
+    id="detail"
+    eyebrow="How we approach it"
+    heading="Two honest things about our roofing work."
+    rows={rows}
+    spacing="default"
+  />
+
+  <Divider tone="sunken" />
+
+  <ServiceShowcase
+    id="other-services"
+    eyebrow="The rest of the exterior"
+    heading="What we usually do at the same time."
+    items={others}
+    tone="sunken"
+    spacing="default"
+  />
+
+  <CTABand
+    heading="Get someone up there to look."
+    body="Free consultation. We'll tell you whether it's the roof, the flashing, the fascia, or something further down the wall."
+    ctaLabel={callLabel}
+    ctaHref={CALL_HREF}
+    secondaryLabel="Check our licence"
+    secondaryHref={LICENCE.lookupUrl}
+    note="CA Lic. #952272 · Class B General Building · Financing available"
+    align="split"
+    tone="brand"
+    class="on-brand--deep"
+    spacing="tight"
+  />
+</BaseLayout>

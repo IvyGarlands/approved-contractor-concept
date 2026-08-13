@@ -1,0 +1,107 @@
+---
+/**
+ * /gallery — our work. Their site splits this across a Gallery page and 12
+ * Featured Project pages; this build merges them into one page a person will
+ * actually get to the bottom of.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/sections/PageHero.astro";
+import BeforeAfter from "../components/sections/BeforeAfter.astro";
+import Gallery from "../components/sections/Gallery.astro";
+import TestimonialGrid from "../components/sections/TestimonialGrid.astro";
+import CTABand from "../components/sections/CTABand.astro";
+import Divider from "../components/core/Divider.astro";
+
+import heroPhoto from "../assets/photos/la-stucco-to-hardie-after.jpg";
+
+import { SITE, LICENCE } from "../config/site";
+import { localized } from "../lib/content";
+import { useTranslations, localeFromUrl } from "../i18n/ui";
+import { NAV_LINKS, CALL_HREF } from "../lib/page";
+
+const locale = localeFromUrl(Astro.url);
+const t = useTranslations(locale);
+const callLabel = `${t("cta.call")} ${SITE.phone}`;
+
+const projects = await localized("projects", locale);
+const pairs = projects.filter((p) => p.data.beforePhoto);
+const singles = projects.filter((p) => !p.data.beforePhoto);
+
+const galleryItems = singles.map((p) => ({
+  image: p.data.photo!,
+  alt: p.data.alt!,
+  caption: p.data.location ? `${p.data.title} · ${p.data.location}` : p.data.title,
+}));
+
+const reviews = await localized("testimonials", locale);
+const shortReviews = reviews.filter((r) => !r.data.featured).slice(0, 3);
+---
+
+<BaseLayout
+  title="Our work — siding, windows, stucco & roofing projects"
+  description="Before-and-after exterior remodeling projects across Los Angeles, San Diego, Thousand Oaks, Encino, La Jolla and Rancho Palos Verdes. CSLB #952272."
+  path="/gallery"
+  navLinks={NAV_LINKS}
+>
+  <PageHero
+    eyebrow="Our work"
+    heading="The same houses, before and after."
+    body="Real projects across six counties, photographed on site. No renderings, no stock houses."
+    photo={heroPhoto}
+    photoAlt="A two-storey Los Angeles home after its stucco was replaced with pale James Hardie lap siding."
+    crumbs={[{ label: "Home", href: "/" }]}
+  />
+
+  {
+    pairs.length > 0 && (
+      <BeforeAfter
+        id="work"
+        eyebrow="Before and after"
+        heading="Two projects, photographed both ways."
+        body="Everything below was shot on our own jobs, by our own crews, on the days the work happened."
+        items={pairs}
+        spacing="default"
+      />
+    )
+  }
+
+  <Divider tone="sunken" />
+
+  <Gallery
+    locale={locale}
+    eyebrow="Recent projects"
+    heading="Five more, across six counties."
+    body="Los Angeles, Thousand Oaks, Rancho Palos Verdes, La Jolla and Encino."
+    items={galleryItems}
+    layout="uniform"
+    tone="sunken"
+    spacing="default"
+  />
+
+  {
+    shortReviews.length > 0 && (
+      <TestimonialGrid
+        locale={locale}
+        eyebrow="From the same customers"
+        heading="What they said afterwards."
+        items={shortReviews}
+        columns={3}
+        spacing="default"
+      />
+    )
+  }
+
+  <CTABand
+    heading="Want yours to look like this?"
+    body="Free consultation. We'll walk the outside of the house with you and give you the price from the start."
+    ctaLabel={callLabel}
+    ctaHref={CALL_HREF}
+    secondaryLabel="Check our licence"
+    secondaryHref={LICENCE.lookupUrl}
+    note="CA Lic. #952272 · 3,000+ homeowners served · Financing available"
+    align="split"
+    tone="brand"
+    class="on-brand--deep"
+    spacing="tight"
+  />
+</BaseLayout>

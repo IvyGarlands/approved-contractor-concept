@@ -7,5 +7,9 @@
   "beforeAlt": "The rear of a two-storey Los Angeles house before the work: grey-beige stucco walls, dark shutters, a screened porch and a mature tree in the lawn.",
   "photo": "../../assets/photos/la-stucco-to-hardie-after.jpg",
   "alt": "The same rear elevation after the work: pale James Hardie lap siding across both storeys, white trim around the windows and porch columns, the same shutters and tree.",
-  "order": 1
+  "order": 1,
+  "trade": [
+    "siding",
+    "stucco"
+  ]
 }

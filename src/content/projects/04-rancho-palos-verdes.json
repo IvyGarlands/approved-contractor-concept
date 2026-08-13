@@ -5,5 +5,9 @@
   "summary": "Siding, soffit and fascia replaced, then the whole exterior painted.",
   "photo": "../../assets/photos/rancho-palos-verdes-after.jpg",
   "alt": "A modern Rancho Palos Verdes house finished in dark James Hardie lap siding with pale trim.",
-  "order": 4
+  "order": 4,
+  "trade": [
+    "siding",
+    "coating"
+  ]
 }

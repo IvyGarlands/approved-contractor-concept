@@ -1,0 +1,160 @@
+---
+/**
+ * /about — who we are, where we work, and the licence.
+ *
+ * Their About page carries a genuinely good mission statement and the only
+ * place on their entire site where a human being is named. Both survive here
+ * verbatim. Everything they publish about scale — "3,000+ homeowners", "over
+ * 10 years" — ships exactly as they state it, hedges included, and the review
+ * figure that appears alongside it on their site does NOT (input/facts.txt §7).
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/sections/PageHero.astro";
+import PromiseSplit from "../components/sections/PromiseSplit.astro";
+import ProviderBios from "../components/sections/ProviderBios.astro";
+import TheRecord from "../components/sections/TheRecord.astro";
+import CredentialLedger from "../components/sections/CredentialLedger.astro";
+import AreasServed from "../components/sections/AreasServed.astro";
+import CTABand from "../components/sections/CTABand.astro";
+import PhotoBand from "../components/sections/PhotoBand.astro";
+import Divider from "../components/core/Divider.astro";
+
+import heroPhoto from "../assets/photos/rpv-05.jpg";
+
+/* Five real jobs, edge to edge, to keep the product in front of someone on a
+   page that is otherwise records and lists. See PhotoBand for why alt is "". */
+import bandA from "../assets/photos/rpv-03.jpg";
+import bandB from "../assets/photos/la-stucco-to-hardie-after.jpg";
+import bandC from "../assets/photos/thousand-oaks-08.jpg";
+import bandD from "../assets/photos/la-newbuild-01.jpg";
+import bandE from "../assets/photos/encino-01.jpg";
+import missionPhoto from "../assets/photos/sandiego-fire-during.jpg";
+
+import { SITE, LICENCE } from "../config/site";
+import { localized } from "../lib/content";
+import { useTranslations, localeFromUrl } from "../i18n/ui";
+import {
+  NAV_LINKS,
+  CALL_HREF,
+  RECORD_FIELDS,
+  DIFFERENTIATORS,
+  COUNTIES,
+  CITIES,
+} from "../lib/page";
+
+const locale = localeFromUrl(Astro.url);
+const t = useTranslations(locale);
+const callLabel = `${t("cta.call")} ${SITE.phone}`;
+
+const people = await localized("people", locale);
+const credentials = await localized("credentials", locale);
+
+/* Their "Treating Every Customer Like They're #1" copy, flattened into the
+   single-line shape PromiseSplit takes. Titles kept as the lead-in so the
+   client's own headings survive. */
+const pillars = DIFFERENTIATORS.map((d) => `${d.title} — ${d.body}`);
+
+const bandPhotos = [
+  { src: bandA, label: "Rancho Palos Verdes, CA" },
+  { src: bandB, label: "Los Angeles, CA" },
+  { src: bandC, label: "Thousand Oaks, CA" },
+  { src: bandD, label: "Los Angeles, CA" },
+  { src: bandE, label: "Encino, CA" },
+];
+---
+
+<BaseLayout
+  title="About us — a local exterior contractor since 2010"
+  description="Approved Contractor, Inc. of Canoga Park. Licensed in California since 2010, James Hardie Elite Contractor, and 3,000+ homeowners served across six counties."
+  path="/about"
+  navLinks={NAV_LINKS}
+>
+  <PageHero
+    eyebrow="About Approved Contractor, Inc."
+    heading="We treat your home like it's our own."
+    body="A local, licensed exterior contractor working out of Canoga Park since 2010 — siding, windows, stucco, coating and roofing across six Southern California counties."
+    photo={heroPhoto}
+    photoAlt="A detail of James Hardie lap siding and trim on a Rancho Palos Verdes home."
+    crumbs={[{ label: "Home", href: "/" }]}
+  />
+
+  <PromiseSplit
+    id="mission"
+    eyebrow="Why we're different"
+    heading="Treating every customer like they're #1."
+    body="We're on a mission to help Southern California homeowners improve the energy efficiency of their homes by installing new siding, vinyl windows, and texture coating. As homeowners ourselves, we understand how apprehensive you can feel when hiring a contractor — that's why we've created a reliable process that's helped over 3,000 homeowners have a home exterior that lasts."
+    promises={pillars}
+    photo={missionPhoto}
+    photoAlt="A San Diego home mid-project during fire-resistant siding installation and window replacement."
+    spacing="default"
+  />
+
+  <Divider tone="sunken" />
+
+  {
+    people.length > 0 && (
+      <ProviderBios
+        id="owner"
+        eyebrow="Who's responsible"
+        heading="There's a name on our licence."
+        body="In a trade where the fear is that whoever took the deposit won't answer the phone, the state requires a specific person to stand behind the work."
+        people={people}
+        layout="feature"
+        tone="sunken"
+        spacing="default"
+      />
+    )
+  }
+
+  <TheRecord
+    id="record"
+    eyebrow="The public record"
+    heading="We're called Approved Contractor. Here's the approval."
+    body="This is our licence as the State of California holds it, not as we describe it. Don't take our word for it — the lookup takes about thirty seconds."
+    authority={LICENCE.authority}
+    documentTitle={LICENCE.documentTitle}
+    fields={RECORD_FIELDS}
+    retrieval={`Retrieved from cslb.ca.gov on ${LICENCE.retrieved}. Bond and policy dates move — check the live record.`}
+    verifyHref={LICENCE.lookupUrl}
+    verifyLabel="Look up licence 952272 yourself →"
+  />
+
+  <PhotoBand photos={bandPhotos} caption="Recent work across six counties" />
+
+  <AreasServed
+    id="areas"
+    eyebrow="Areas we serve"
+    heading="Six counties, two locations."
+    body="We serve Southern California with two locations, in Los Angeles and San Diego."
+    counties={COUNTIES}
+    cities={CITIES}
+    note="This list is exactly the one we publish — no radius we can't support and no 'surrounding areas'. If your town isn't on it, call and ask; the honest answer is either yes or no."
+    tone="sunken"
+    spacing="default"
+  />
+
+  <CredentialLedger
+    id="credentials"
+    eyebrow="Everyone else who has checked"
+    heading="Ten approvals, and who granted each one."
+    body="A row of logos proves nothing — anyone can paste a logo. These are the actual designations, the bodies that issue them, and where you can look them up."
+    items={credentials}
+    featureLabel="James Hardie Elite Contractor"
+    footnote="Manufacturer and award marks are the property of the organisations that issue them and are named here in text rather than reproduced. Where a designation could not be confirmed from a public source, the entry says so."
+    spacing="default"
+  />
+
+  <CTABand
+    heading="Come and meet us at the house."
+    body="Free consultation. We won't just show up on your doorstep — we confirm all of our appointments."
+    ctaLabel={callLabel}
+    ctaHref={CALL_HREF}
+    secondaryLabel="Check our licence"
+    secondaryHref={LICENCE.lookupUrl}
+    note="9015 Eton Avenue, Unit D, Canoga Park, CA 91304 · CA Lic. #952272"
+    align="split"
+    tone="brand"
+    class="on-brand--deep"
+    spacing="tight"
+  />
+</BaseLayout>

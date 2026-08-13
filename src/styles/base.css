@@ -959,7 +959,42 @@ a:hover {
 .mx-auto { margin-inline: auto; }
 
 .surface { background-color: var(--color-surface); }
-.surface--sunken { background-color: var(--color-surface-sunken); }
+.surface--sunken {
+  background-color: var(--color-surface-sunken);
+  /* Sits ON the flat token, never instead of it — see tokens.css §10. */
+  background-image: var(--grad-paper);
+}
+
+/* ---- the lap divider (tokens.css §8b) ---------------------------------
+   Courses of lap siding, drawn as a repeating gradient. This is the product
+   the company installs and the subject of every photograph on the site, which
+   is why it earns the ornament slot: it is a drawing of the thing, not a
+   metaphor for it.
+
+   Purely decorative — aria-hidden at every call site, and it carries no
+   meaning that is not also in the text on either side of it. */
+.lap-divider {
+  display: block;
+  block-size: var(--divider-height);
+  inline-size: 100%;
+  background-image: var(--divider-lap);
+  /* Fades out at both ends so it reads as a detail rather than a border. */
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 12%,
+    #000 88%,
+    transparent 100%
+  );
+}
+
+/* On a brand or dark field the shadow line and the highlight swap roles —
+   boards catch light from above on paper and lose it on a dark ground. */
+.on-brand .lap-divider,
+.on-dark .lap-divider {
+  --lap-line: rgb(0 0 0 / 0.22);
+  --lap-highlight: rgb(255 255 255 / 0.22);
+}
 
 .ink-muted { color: var(--color-ink-muted); }
 .ink-brand { color: var(--color-brand); }

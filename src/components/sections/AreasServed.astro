@@ -1,0 +1,149 @@
+---
+/**
+ * AreasServed — the six counties and thirty cities, verbatim from their own
+ * "Areas We Serve" page.
+ *
+ * Set as a dense two-part list rather than thirty link cards or a map. Two
+ * reasons: a homeowner is scanning for ONE name — theirs — and a wall of
+ * equally-weighted city links is the slowest possible way to find it; and a
+ * live map embed costs about 1.5MB and half the performance score
+ * (decisions log, 2026-08-09).
+ *
+ * Nothing is added to the list. No radius we can't support, no "and surrounding
+ * areas", no tidying into "Southern California" — if a city isn't on their page
+ * it isn't on ours (input/facts.txt §8).
+ */
+import Section from "./Section.astro";
+import SectionHeader from "./SectionHeader.astro";
+import type { SectionProps } from "./Section.astro";
+
+interface Props extends SectionProps {
+  eyebrow?: string;
+  heading: string;
+  body?: string;
+  counties: string[];
+  cities: string[];
+  note?: string;
+}
+
+const {
+  eyebrow,
+  heading,
+  body,
+  counties,
+  cities,
+  note,
+  id = "areas",
+  tone,
+  spacing,
+  ...rest
+} = Astro.props;
+---
+
+<Section
+  id={id}
+  tone={tone}
+  spacing={spacing}
+  width="l"
+  labelledBy={`${id}-heading`}
+  {...rest}
+>
+  <SectionHeader
+    eyebrow={eyebrow}
+    heading={heading}
+    body={body}
+    headingId={`${id}-heading`}
+  />
+
+  <div class="areas" data-reveal-stagger>
+    <div class="areas__block" data-reveal="fade">
+      <h3 class="areas__label record">Counties</h3>
+      <ul class="areas__counties" role="list">
+        {counties.map((c) => <li class="areas__county">{c}</li>)}
+      </ul>
+    </div>
+
+    <div class="areas__block" data-reveal="fade">
+      <h3 class="areas__label record">Cities</h3>
+      <ul class="areas__cities" role="list">
+        {cities.map((c) => <li class="areas__city">{c}</li>)}
+      </ul>
+    </div>
+  </div>
+
+  {note && <p class="areas__note">{note}</p>}
+</Section>
+
+<style>
+  .areas {
+    display: grid;
+    gap: var(--space-l);
+    margin-block-start: var(--space-l);
+  }
+
+  @media (min-width: 52em) {
+    .areas {
+      grid-template-columns: minmax(0, 0.62fr) minmax(0, 1fr);
+      gap: var(--space-2xl);
+    }
+  }
+
+  .areas__label {
+    margin: 0 0 var(--space-xs);
+    padding-block-end: var(--space-3xs);
+    border-block-end: var(--border-hair) solid var(--color-line-strong);
+    font-family: var(--face-body);
+    font-size: var(--step--1);
+    font-weight: var(--weight-strong);
+    color: var(--color-accent);
+    text-indent: 0;
+  }
+
+  /* Counties carry the weight — they are the answer to "do you come out here?"
+     for anyone who does not live in a named city. */
+  .areas__counties {
+    display: grid;
+    gap: var(--space-3xs);
+    margin: 0;
+    padding: 0;
+  }
+
+  .areas__county {
+    font-family: var(--face-display);
+    font-size: var(--step-2);
+    font-weight: var(--weight-display);
+    line-height: 1.2;
+    color: var(--color-ink-strong);
+  }
+
+  /* Cities are a lookup, not a hierarchy: set small, wrapped, alphabetical, so
+     scanning for one name is fast. */
+  .areas__cities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .areas__city {
+    font-size: var(--step-0);
+    line-height: var(--leading-snug);
+    color: var(--color-ink);
+  }
+
+  .areas__city:not(:last-child)::after {
+    content: "·";
+    margin-inline: 0.5em;
+    color: var(--color-brand);
+  }
+
+  .areas__note {
+    margin-block-start: var(--space-l);
+    max-inline-size: var(--measure);
+    font-size: var(--step--1);
+    line-height: var(--leading-body);
+    color: var(--color-ink-muted);
+    text-wrap: pretty;
+  }
+</style>

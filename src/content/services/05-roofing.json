@@ -1,1 +1,12 @@
-{ "lang": "en", "name": "Roofing", "summary": "Replacement and installation.", "detail": "Usually taken on as part of a whole-exterior job rather than on its own.", "order": 5 }
+{
+  "lang": "en",
+  "name": "Roofing",
+  "short": "Roofing",
+  "summary": "Replacement and installation — usually alongside siding and fascia, so the whole roofline meets properly.",
+  "detail": "Roofing is the smallest of the six trades we advertise and it is rarely the whole job. Where it matters most is at the junctions — a new roof over old fascia is where the next leak comes from.",
+  "note": "Owens Corning",
+  "href": "/roofing",
+  "photo": "../../assets/photos/encino-01.jpg",
+  "alt": "An Encino home after a full exterior remodel with new siding, replacement windows and a new roof.",
+  "order": 5
+}

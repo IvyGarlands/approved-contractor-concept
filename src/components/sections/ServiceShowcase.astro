@@ -1,0 +1,195 @@
+---
+/**
+ * ServiceShowcase — what we do, led by photographs of us doing it.
+ *
+ * REPLACES ServicesGrid on the homepage. The grid was text cards with icons,
+ * which is the right shape for a service where there is nothing to look at.
+ * This company sells a visual transformation to people who are looking at a
+ * house they do not like, so every card carries a real photograph of that
+ * trade finished. The picture is the argument; the words are the caption.
+ *
+ * Copy is the client's own wherever it exists (their homepage service tiles),
+ * rewritten only from third person into first — "we" rather than "they".
+ *
+ * DENSITY. Three across on desktop, two on tablet, one on a phone, with the
+ * cards deliberately short: image, name, one line, one proof point. A homeowner
+ * should be able to take in the entire scope of the business in one glance
+ * without reading a word of body copy.
+ */
+import { Image } from "astro:assets";
+import Section from "./Section.astro";
+import SectionHeader from "./SectionHeader.astro";
+import type { CollectionEntry } from "astro:content";
+import type { SectionProps } from "./Section.astro";
+
+interface Props extends SectionProps {
+  eyebrow?: string;
+  heading: string;
+  body?: string;
+  items: CollectionEntry<"services">[];
+}
+
+const {
+  eyebrow,
+  heading,
+  body,
+  items,
+  id = "services",
+  tone,
+  spacing,
+  ...rest
+} = Astro.props;
+
+const sorted = [...items].sort((a, b) => a.data.order - b.data.order);
+---
+
+<Section
+  id={id}
+  tone={tone}
+  spacing={spacing}
+  width="xl"
+  labelledBy={`${id}-heading`}
+  {...rest}
+>
+  <SectionHeader
+    eyebrow={eyebrow}
+    heading={heading}
+    body={body}
+    headingId={`${id}-heading`}
+  />
+
+  <ul class="svc" role="list" data-reveal-stagger>
+    {
+      sorted.map((s) => {
+        const Tag = s.data.href ? "a" : "div";
+        return (
+          <li class="svc__item" data-reveal="fade">
+            <Tag
+              class:list={["svc__card", s.data.href && "svc__card--link"]}
+              href={s.data.href}
+            >
+              {s.data.photo && (
+                <div class="svc__media">
+                  <Image
+                    src={s.data.photo}
+                    alt={s.data.alt ?? ""}
+                    widths={[320, 480, 720]}
+                    sizes="(min-width: 64em) 30vw, (min-width: 44em) 46vw, 92vw"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+              <div class="svc__body">
+                <h3 class="svc__name">{s.data.name}</h3>
+                <p class="svc__summary">{s.data.summary}</p>
+                {s.data.note && <p class="svc__note record">{s.data.note}</p>}
+              </div>
+            </Tag>
+          </li>
+        );
+      })
+    }
+  </ul>
+</Section>
+
+<style>
+  .svc {
+    display: grid;
+    gap: var(--space-m);
+    margin: var(--space-l) 0 0;
+    padding: 0;
+    grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
+  }
+
+  .svc__item {
+    display: flex;
+  }
+
+  .svc__card {
+    display: flex;
+    flex-direction: column;
+    inline-size: 100%;
+    overflow: hidden;
+    background-color: var(--color-surface);
+    border: var(--border-hair) solid var(--color-line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-s);
+    text-decoration: none;
+    color: inherit;
+    transition:
+      transform var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .svc__card--link:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-m);
+    border-color: var(--color-brand);
+  }
+
+  .svc__card--link:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+
+  .svc__media {
+    overflow: hidden;
+    background-color: var(--n-100);
+  }
+
+  .svc__media :global(img) {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    filter: var(--image-filter);
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  .svc__card--link:hover .svc__media :global(img) {
+    transform: scale(var(--image-hover-scale));
+  }
+
+  .svc__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+    /* Grows to fill, so cards in a row end level even when one summary wraps
+       to a second line — no ragged bottoms, no filler. */
+    flex: 1;
+    padding: var(--space-s) var(--space-s) var(--space-m);
+  }
+
+  .svc__name {
+    margin: 0;
+    font-size: var(--step-2);
+    line-height: var(--leading-heading);
+  }
+
+  .svc__summary {
+    margin: 0;
+    font-size: var(--step-0);
+    line-height: var(--leading-snug);
+    color: var(--color-ink);
+    text-wrap: pretty;
+  }
+
+  /* Pinned to the bottom of the card so the proof line forms its own row
+     across the grid regardless of how the summaries wrap. */
+  .svc__note {
+    margin: auto 0 0;
+    padding-block-start: var(--space-xs);
+    font-size: 0.6875rem;
+    color: var(--color-accent);
+    text-indent: 0;
+  }
+
+  .svc__card--link .svc__name::after {
+    content: " →";
+    color: var(--color-brand);
+    font-family: var(--face-body);
+    font-weight: var(--weight-body);
+  }
+</style>

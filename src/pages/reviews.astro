@@ -1,0 +1,124 @@
+---
+/**
+ * /reviews — every verbatim review we could source, and an explanation of why
+ * there is no star average on it.
+ *
+ * That explanation is the most important thing on this page. Their own site
+ * advertises "800+ reviews" and shows two; five sources give five different
+ * numbers, one of them provably contaminated (input/facts.txt CONFLICT #4, #5).
+ * Publishing the reasoning instead of a number is both the honest answer and,
+ * on a page whose whole argument is "check us", the more persuasive one.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/sections/PageHero.astro";
+import TestimonialPullQuote from "../components/sections/TestimonialPullQuote.astro";
+import TestimonialGrid from "../components/sections/TestimonialGrid.astro";
+import CredentialLedger from "../components/sections/CredentialLedger.astro";
+import CTABand from "../components/sections/CTABand.astro";
+import PhotoBand from "../components/sections/PhotoBand.astro";
+import Divider from "../components/core/Divider.astro";
+
+import heroPhoto from "../assets/photos/la-craftsman-01.jpg";
+
+/* Five real jobs, edge to edge, to keep the product in front of someone on a
+   page that is otherwise records and lists. See PhotoBand for why alt is "". */
+import bandA from "../assets/photos/rpv-03.jpg";
+import bandB from "../assets/photos/la-stucco-to-hardie-after.jpg";
+import bandC from "../assets/photos/thousand-oaks-08.jpg";
+import bandD from "../assets/photos/la-newbuild-01.jpg";
+import bandE from "../assets/photos/encino-01.jpg";
+
+import { SITE, LICENCE } from "../config/site";
+import { localized } from "../lib/content";
+import { useTranslations, localeFromUrl } from "../i18n/ui";
+import { NAV_LINKS, CALL_HREF } from "../lib/page";
+
+const locale = localeFromUrl(Astro.url);
+const t = useTranslations(locale);
+const callLabel = `${t("cta.call")} ${SITE.phone}`;
+
+const reviews = await localized("testimonials", locale);
+const featured = reviews.find((r) => r.data.featured);
+const rest = reviews.filter((r) => !r.data.featured);
+
+const credentials = await localized("credentials", locale);
+const guild = credentials.filter((c) => c.data.label === "GuildQuality member");
+
+const bandPhotos = [
+  { src: bandA, label: "Rancho Palos Verdes, CA" },
+  { src: bandB, label: "Los Angeles, CA" },
+  { src: bandC, label: "Thousand Oaks, CA" },
+  { src: bandD, label: "Los Angeles, CA" },
+  { src: bandE, label: "Encino, CA" },
+];
+---
+
+<BaseLayout
+  title="Reviews from our customers"
+  description="Verbatim reviews from GuildQuality surveys and our own site, from customers across Los Angeles, San Diego, Malibu, Reseda, Burbank and San Gabriel."
+  path="/reviews"
+  navLinks={NAV_LINKS}
+>
+  <PageHero
+    eyebrow="Reviews"
+    heading="Reviews from our clients around Los Angeles & San Diego."
+    body="Every quote on this page is verbatim, with the customer's own wording and their own typos left alone."
+    photo={heroPhoto}
+    photoAlt="A 107-year-old Los Angeles Craftsman home after its siding was replaced."
+    crumbs={[{ label: "Home", href: "/" }]}
+  />
+
+  {
+    featured && (
+      <TestimonialPullQuote
+        id="review-featured"
+        locale={locale}
+        eyebrow="A customer, at length"
+        testimonial={featured}
+        spacing="default"
+      />
+    )
+  }
+
+  <Divider tone="sunken" />
+
+  {
+    rest.length > 0 && (
+      <TestimonialGrid
+        locale={locale}
+        eyebrow="Verified surveys"
+        heading="Eight more, in their own words."
+        body="Most of these come from GuildQuality, which surveys our customers directly rather than accepting open submissions — and publishes the unhappy responses alongside the happy ones."
+        items={rest}
+        columns={3}
+        tone="sunken"
+        spacing="default"
+      />
+    )
+  }
+
+  <PhotoBand photos={bandPhotos} caption="Recent work across Los Angeles, Ventura and San Diego counties" />
+
+  <CredentialLedger
+    id="why-no-rating"
+    eyebrow="Why there's no star rating on this page"
+    heading="Because we can't show you one we can prove."
+    body="Our own site says 800+ reviews. GuildQuality has us at 4.6 from 85 surveys. Houzz says 4.7 from 77. Yelp lists 125. A fourth aggregator claims 5.0 from 258 and attributes at least one review to us that belongs to a different company entirely. We can't reconcile those into a single honest number, so we're not going to print one — on a page that asks you to go and check us, an unverifiable average would be the one claim on it that fails its own test. Here's the survey platform instead. Go and read it."
+    items={guild}
+    spacing="default"
+  />
+
+  <CTABand
+    heading="Add yours to the list."
+    body="Free consultation, and no obligation after it. Tell us what's bothering you about the outside of the house."
+    ctaLabel={callLabel}
+    ctaHref={CALL_HREF}
+    secondaryLabel="Check our licence"
+    secondaryHref={LICENCE.lookupUrl}
+    note="CA Lic. #952272 · Class B · Current and active"
+    align="split"
+    tone="brand"
+    class="on-brand--deep"
+    spacing="tight"
+  />
+</BaseLayout>
