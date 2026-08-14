@@ -78,17 +78,26 @@ export default defineConfig({
     inlineStylesheets: "always",
   },
 
+  /**
+   * Dev-only cross-origin allowance for proxied previews.
+   *
+   * Astro's dev server runs a Sec-Fetch middleware that returns 403
+   * "Cross-origin request blocked" for cross-site subresource requests unless
+   * the request's Origin host matches `security.allowedDomains`. The v0 preview
+   * (and similar proxy/tunnel previews) serve the app through a rotating
+   * cross-site origin, which trips this check. An entry with no `hostname`
+   * matches any origin, unblocking the preview.
+   *
+   * This is scoped to `astro dev` only. `output` is "static", so
+   * `allowedDomains` has no effect on the production build — but gating it
+   * keeps engine policy explicit and prevents it from ever loosening a real
+   * server deployment.
+   */
+  security: process.argv.includes("dev") ? { allowedDomains: [{}] } : {},
+
   vite: {
     build: {
       cssMinify: "lightningcss",
-    },
-    // The v0 preview serves the dev server through a proxied origin. Vite's
-    // dev server blocks unknown hosts ("Cross-origin request blocked") by
-    // default, so allow all hosts and enable CORS in dev.
-    server: {
-      host: true,
-      cors: true,
-      allowedHosts: true,
     },
   },
 });
