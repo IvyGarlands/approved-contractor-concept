@@ -79,24 +79,63 @@ export default defineConfig({
   },
 
   /**
-   * Dev-only cross-origin allowance for proxied previews.
+   * Dev-only cross-origin allowance for proxied previews (defense-in-depth).
    *
    * Astro's dev server runs a Sec-Fetch middleware that returns 403
-   * "Cross-origin request blocked" for cross-site subresource requests unless
-   * the request's Origin host matches `security.allowedDomains`. The v0 preview
-   * (and similar proxy/tunnel previews) serve the app through a rotating
-   * cross-site origin, which trips this check. An entry with no `hostname`
-   * matches any origin, unblocking the preview.
+   * "Cross-origin request blocked" for cross-site subresource requests. It
+   * only consults `security.allowedDomains` when the request carries an
+   * `Origin` header — an entry with no `hostname` matches any origin. This
+   * covers origin-bearing requests; the Vite plugin below covers the rest.
    *
    * `output` is "static", so `security` is inert for `astro build` — there is
-   * no production server to loosen. It is therefore set unconditionally rather
-   * than gated on argv, so a supervisor/preview restart can never silently
-   * re-block the dev server. If this engine ever moves to `output: "server"`,
-   * scope this back to dev only.
+   * no production server to loosen. If this engine ever moves to
+   * `output: "server"`, remove this and the dev plugin below.
    */
   security: { allowedDomains: [{}] },
 
   vite: {
+    plugins: [
+      /**
+       * Neutralize Astro's dev Sec-Fetch guard for proxied previews.
+       *
+       * The v0 preview serves the dev server through a rotating cross-site
+       * origin. Astro's `secFetchMiddleware` blocks any cross-site *subresource*
+       * (CSS/JS/images/fetch) and — crucially — falls through to a hard 403
+       * "Cross-origin request blocked" whenever such a request has NO `Origin`
+       * header, which `allowedDomains` cannot rescue. That is what surfaced in
+       * the preview.
+       *
+       * Astro registers its guard with `middlewares.stack.unshift(...)`, i.e. at
+       * the very front. To run ahead of it we return a post-hook from
+       * `configureServer` (fires after Astro's `configureServer` body has
+       * installed its guard) and `unshift` our own normalizer, which rewrites a
+       * cross-site `Sec-Fetch-Site` to `same-origin` so the guard always calls
+       * `next()`. Dev-only: Vite plugins do not run during `astro build`.
+       */
+      {
+        name: "v0-preview-allow-cross-origin",
+        apply: "serve",
+        configureServer(server) {
+          return () => {
+            server.middlewares.stack.unshift({
+              route: "",
+              handle: (req, _res, next) => {
+                const site = req.headers["sec-fetch-site"];
+                if (
+                  site &&
+                  site !== "same-origin" &&
+                  site !== "same-site" &&
+                  site !== "none"
+                ) {
+                  req.headers["sec-fetch-site"] = "same-origin";
+                }
+                next();
+              },
+            });
+          };
+        },
+      },
+    ],
     build: {
       cssMinify: "lightningcss",
     },
