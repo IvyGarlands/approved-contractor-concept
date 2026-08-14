@@ -1,0 +1,681 @@
+/* GENERATED FILE — DO NOT EDIT.
+   Copied from src/styles/tokens.css by scripts/sync-deck.mjs on every build,
+   so the deck at /deck/ can never drift from the site it is presenting.
+   Change the source file instead. */
+
+/* ==========================================================================
+   TOKENS.CSS — THE ONLY FILE THAT DEFINES BRAND PERSONALITY
+   ==========================================================================
+
+   PROJECT: Setiba Medical Spa, Westlake Village CA — concept redesign
+   FILED AS: "Two Names"  (differentiation log 008)
+
+   THE IDEA
+   --------
+   Every med spa within ten miles is named after a promise. This one is named
+   after two of the owner's daughters — their own About page says so, verbatim
+   — so the page is a name being spelled, and the argument is that you leave
+   still owning yours.
+
+   Consequences that show up in this file, not just in the copy:
+     - the six letters of SETIBA are the section index, so display type is
+       CAPITALS everywhere (Cinzel has no true lowercase, which enforces it)
+     - display tracking is POSITIVE, because their own wordmark is letterspaced
+     - radius is BINARY: 0 or 999px, nothing between, because the supporting
+       mark is built from two circles and the lens where they overlap
+     - the palette is SPLIT-TEMPERATURE: cool marine ink on warm shell paper
+
+   WHERE THE COLOUR CAME FROM
+   --------------------------
+   Sampled from their own files, not chosen. See input/brand.md §1.
+     #2f87ad  their wordmark and the face in their logo   (20,344px — dominant)
+     #5dbbdd  their butterfly wing and "MEDICAL SPA"      ( 7,991px)
+     #80c9df  their lower wing                            ( 2,320px)
+     #e4d0b5  the wall of their own room, out of the founder's portrait
+   The only value invented here is #0e3346, and it is their own #2f87ad taken
+   down its own hue to give a three-step ramp the dark end it never had.
+
+   CONTRACT
+   --------
+   1. This is the ONLY file a reskin touches. If you have to edit a component
+      to change how a site LOOKS, the token system has a gap — fix the gap.
+   2. Components consume SEMANTIC tokens only (--color-ink, --step-2, --space-l).
+      They must never reference a PRIMITIVE (--b-700, --n-050).
+   3. Every surface/ink pair below is annotated with its measured WCAG contrast
+      ratio. If you change a primitive, re-measure. `npm run check:contrast`.
+   4. Anything a component needs that is not here does not exist. Add it here.
+
+   FILE MAP
+   --------
+   §1  Primitives — palette ramps
+   §2  Primitives — typeface stacks
+   §3  Semantic — color: surfaces, ink, brand, line, state
+   §4  Semantic — typography: families, fluid scale, weight, leading, tracking
+   §5  Semantic — space scale + section rhythm
+   §6  Semantic — layout: containers, gutters, measure
+   §7  Semantic — radius, border, shadow, z-index
+   §8  Semantic — motion: duration, easing, distance, stagger
+   §8b Semantic — rule ticks (INHERITED, DELIBERATELY UNUSED — see note)
+   §8c Semantic — the lens (this brand's supporting mark)
+   §8d Semantic — gradients
+   §9  Semantic — image & texture treatment
+   §10 Context blocks — .on-dark / .on-brand inversion
+   §11 prefers-reduced-motion / prefers-contrast overrides
+   ========================================================================== */
+
+/* ==========================================================================
+   §1  PRIMITIVES — PALETTE
+   --------------------------------------------------------------------------
+   TWO TEMPERATURES ON PURPOSE, and this is the first build in the log to do it:
+
+     --n-*   WARM. Shell paper, sand, warm greys. Surfaces, rules, muted ink.
+             The top of this ramp is the wall of their own treatment room.
+     --b-*   COOL. Their three sampled blues, plus a marine bottom end.
+             Body ink, headings, brand, the mark.
+     --a-*   WARM. Their room's sand at ink strength. Under 5% coverage.
+
+   Their live site puts those blues on cold white, which flattens them into
+   clinic-blue. On warm shell the same hues read as water. Nothing was
+   hue-shifted to achieve that; the ground moved instead.
+   ========================================================================== */
+:root {
+  /* Neutral — shell paper to a warm deep brown. WARM. */
+  --n-000: #fffcf6;
+  --n-050: #f7f1e7;   /* THE PAPER — their room's wall, lightened to a document */
+  --n-100: #efe7d9;
+  --n-200: #e0d6c4;
+  --n-300: #c2b49c;
+  --n-400: #8c7b63;   /* 3.69:1 on paper — safe for meaningful borders */
+  --n-500: #7a684f;
+  --n-600: #6a5c4c;   /* 5.78:1 on paper — muted ink */
+  --n-700: #4a3f31;
+  --n-800: #2e271e;
+  --n-900: #1b1710;
+
+  /* Brand — THEIR blues, sampled, plus the dark end they never had. COOL. */
+  --b-050: #ebf6fa;
+  --b-100: #cde9f4;
+  --b-300: #80c9df;   /* SAMPLED from their logo — the lower wing */
+  --b-500: #5dbbdd;   /* SAMPLED from their logo — the wing and "MEDICAL SPA" */
+  --b-600: #2f87ad;   /* SAMPLED from their logo — THE wordmark blue. 3.60:1 on
+                         paper: display sizes, rules and marks only, never body */
+  --b-700: #226c8d;   /* 5.20:1 on paper — links and brand text at body size */
+  --b-800: #14495f;   /* 8.81:1 on paper — body ink */
+  --b-900: #0e3346;   /* 11.82:1 on paper — headings, and the dark ground */
+
+  /* Accent — the sand of their own wall, taken to ink strength. WARM, <5%. */
+  --a-100: #f0e0c9;   /* SAMPLED — the lit part of the wall */
+  --a-300: #e4d0b5;   /* SAMPLED — the wall itself */
+  --a-500: #b4915f;
+  --a-700: #7e5f2e;   /* 5.26:1 on paper — AA at body size */
+  --a-900: #40300f;
+
+  /* Feedback — pulled toward the palette so they never fight it. */
+  --ok-500: #2c6151;
+  --warn-500: #8a5a12;
+  --err-500: #973229;
+}
+
+/* ==========================================================================
+   §2  PRIMITIVES — TYPEFACE STACKS
+   --------------------------------------------------------------------------
+   CINZEL is an inscriptional face in the Trajan lineage — Roman capitals cut
+   in stone. It is what their 2020 logotype is reaching for and cannot hold,
+   because that logotype is a 600px raster that goes soft above about 300px.
+   It has NO TRUE LOWERCASE, which is not a limitation here but the mechanism:
+   every heading, eyebrow and label on this page is capitals because the
+   typeface makes it so, exactly the way they set their own name.
+
+   WORK SANS carries reading copy. Their own sans is geometric (Raleway 300,
+   Montserrat 500, both Astra theme defaults rather than identity), and the cue
+   honoured is the treatment — light, capitals, very wide tracking — not the
+   skeleton. Reason recorded in input/brand.md: "light geometric sans" is
+   already spent in the differentiation log and a third demo in one month
+   should not share a body voice.
+
+   NO MONO and NO SCRIPT anywhere on this page. --face-mono is declared so the
+   token contract stays complete and is referenced by NOTHING; reaching for a
+   mono and a hairline is the studio tic the differentiation log flags.
+   ========================================================================== */
+:root {
+  --face-display: "Cinzel Variable", "Cinzel", "Trajan Pro", Constantia, Georgia, serif;
+  --face-body: "Work Sans Variable", "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  /* Declared for contract completeness. Deliberately unused — see above. */
+  --face-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* ==========================================================================
+   §3  SEMANTIC — COLOR
+   --------------------------------------------------------------------------
+   Ratios below are measured against --color-canvas (#f7f1e7) unless noted,
+   and re-measured by `npm run check:contrast` on every build.
+   ========================================================================== */
+:root {
+  --color-canvas: var(--n-050);            /* the shell paper */
+  --color-surface: var(--n-000);
+  --color-surface-sunken: var(--n-100);
+  --color-surface-inverse: var(--b-900);   /* marine, not black */
+
+  --color-ink: var(--b-800);               /*  8.81:1 on canvas — AAA */
+  --color-ink-strong: var(--b-900);        /* 11.82:1 on canvas — AAA */
+  --color-ink-muted: var(--n-600);         /*  5.78:1 on canvas — AA. WARM on
+                                              purpose: a sand caption under
+                                              marine body is the whole palette
+                                              argument in one pairing */
+  --color-ink-inverse: var(--n-050);       /* 11.82:1 on inverse — AAA */
+  --color-ink-inverse-muted: var(--a-300); /*  8.91:1 on inverse — AAA */
+
+  --color-brand: var(--b-700);             /*  5.20:1 on canvas — AA */
+  --color-brand-strong: var(--b-800);
+  --color-brand-contrast: var(--n-000);    /*  5.84:1 on brand fill — AA */
+
+  /* THEIR EXACT WORDMARK BLUE, unmodified. 3.60:1 on paper, which clears the
+     3:1 thresholds for large text (>=24px) and non-text UI, and nothing else.
+     Used by the wordmark, the letter index, the lens and the section rules.
+     It must never carry body copy — that is what --color-brand is for. */
+  --color-brand-display: var(--b-600);     /*  3.60:1 — large text / marks only */
+
+  --color-accent: var(--a-700);            /*  5.26:1 on canvas — AA */
+  --color-accent-contrast: var(--n-000);   /*  5.79:1 on accent fill — AA */
+
+  /* --color-line is DECORATIVE ONLY. WCAG 1.4.11 exempts purely decorative
+     dividers; structure lives in the markup. Any border that carries meaning —
+     inputs, buttons, focusable edges, selected states — MUST use
+     --color-line-strong, which clears 3:1. */
+  --color-line: var(--n-200);
+  --color-line-strong: var(--n-400);       /*  3.69:1 on canvas — AA non-text */
+  --color-focus: var(--b-700);             /*  5.20:1 on canvas — AA non-text */
+
+  --color-ok: var(--ok-500);
+  --color-warn: var(--warn-500);
+  --color-err: var(--err-500);
+
+  --color-overlay-scrim: 14 51 70;         /* RGB channels of --b-900 */
+}
+
+/* ==========================================================================
+   §4  SEMANTIC — TYPOGRAPHY
+   --------------------------------------------------------------------------
+   THE SCALE IS HINGED, not smooth. Steps -1 through 3 run at roughly 1.16 —
+   almost flat, because everything in that band is a document: an index of
+   forty-three treatments, five bios, eleven reviews, a set of hours. Steps 4
+   through 7 break away hard, because everything in THAT band is the name.
+
+   A page whose organising principle is a six-letter word needs exactly two
+   registers — the word, and the reading — and no gradient between them.
+
+   Body anchors at 17→19px. This is a medical page read by people deciding
+   about a procedure, on a phone, often over forty.
+
+   STEP        TYPICAL USE
+   --step--1   captions, source lines, legal
+   --step-0    body copy — the anchor
+   --step-1    lead paragraph, index items, pull quotes
+   --step-2    small headings
+   --step-3    section headings
+   --step-4    the letter marks in the rail
+   --step-5    band headings
+   --step-6    display
+   --step-7    the name (once per page, maximum)
+   ========================================================================== */
+:root {
+  --step--1: clamp(0.75rem, 0.735rem + 0.07vw, 0.8125rem);
+  --step-0:  clamp(0.9375rem, 0.92rem + 0.09vw, 1.0rem);
+  --step-1:  clamp(1.0625rem, 1.03rem + 0.16vw, 1.1875rem);
+  --step-2:  clamp(1.1875rem, 1.13rem + 0.27vw, 1.375rem);
+  --step-3:  clamp(1.35rem, 1.26rem + 0.42vw, 1.65rem);
+  /* --- the hinge --- */
+  --step-4:  clamp(1.55rem, 1.4rem + 0.71vw, 2.05rem);
+  --step-5:  clamp(1.85rem, 1.6rem + 1.19vw, 2.7rem);
+  --step-6:  clamp(2.3rem, 1.8rem + 2.38vw, 4rem);
+  --step-7:  clamp(3rem, 2rem + 4.76vw, 6.4rem);
+
+  /* Weights — Cinzel runs 400–900, Work Sans 100–900. Display stays LIGHT:
+     inscriptional capitals gain nothing from weight and lose their cut. */
+  --weight-body: 400;
+  --weight-medium: 500;
+  --weight-strong: 600;
+  --weight-display: 400;
+  --weight-display-strong: 600;
+
+  --leading-display: 1;
+  --leading-heading: 1.18;
+  --leading-snug: 1.4;
+  --leading-body: 1.6;
+  --leading-loose: 1.75;
+
+  /* TRACKING IS POSITIVE ON DISPLAY, and that is the single loudest carry-over
+     from their existing identity. Every previous build in the log tightens its
+     display type; their wordmark is letterspaced and so is this one. Cinzel is
+     drawn for it — Roman capitals were cut with space between them. */
+  --tracking-display: 0.055em;
+  --tracking-name: 0.14em;    /* the six letters, at masthead scale */
+  --tracking-heading: 0.04em;
+  --tracking-body: 0em;
+  --tracking-label: 0.14em;   /* eyebrows and small caps labels */
+  --tracking-wide: 0.26em;    /* "MEDICAL SPA" — their own lockup's tracking */
+}
+
+/* ==========================================================================
+   §5  SEMANTIC — SPACE
+   --------------------------------------------------------------------------
+   --section-y is the #1 lever on "does this feel expensive". Generous here,
+   because the page is six bands and nothing else: it can afford the air, and a
+   letter-indexed page needs each band to arrive alone.
+   ========================================================================== */
+:root {
+  --space-3xs: clamp(0.25rem, 0.24rem + 0.05vw, 0.3125rem);
+  --space-2xs: clamp(0.5rem, 0.48rem + 0.10vw, 0.625rem);
+  --space-xs:  clamp(0.75rem, 0.72rem + 0.15vw, 0.9375rem);
+  --space-s:   clamp(1rem, 0.96rem + 0.20vw, 1.25rem);
+  --space-m:   clamp(1.5rem, 1.44rem + 0.30vw, 1.875rem);
+  --space-l:   clamp(2rem, 1.92rem + 0.40vw, 2.5rem);
+  --space-xl:  clamp(3rem, 2.88rem + 0.60vw, 3.75rem);
+  --space-2xl: clamp(4rem, 3.84rem + 0.80vw, 5rem);
+  --space-3xl: clamp(6rem, 5.76rem + 1.20vw, 7.5rem);
+  --space-4xl: clamp(8rem, 7.68rem + 1.60vw, 10rem);
+
+  --section-y: clamp(2.5rem, 2rem + 2.5vw, 4.25rem);
+  --section-y-tight: clamp(1.75rem, 1.5rem + 1.25vw, 2.625rem);
+  --section-y-loose: clamp(3rem, 2.43rem + 2.86vw, 5rem);
+
+  --stack-gap: var(--space-m);
+}
+
+/* ==========================================================================
+   §6  SEMANTIC — LAYOUT
+   --------------------------------------------------------------------------
+   --rail-w is this project's addition: the fixed left index that spells
+   S·E·T·I·B·A down the edge of the page. It is reserved as page padding at
+   the widths where it shows, so the rail never overlaps a line of text.
+   ========================================================================== */
+:root {
+  --container-xs: 34rem;
+  --container-s: 46rem;
+  --container-m: 56rem;
+  --container-l: 64rem;
+  --container-xl: 74rem;
+  --container: var(--container-l);
+
+  --gutter: clamp(1.25rem, 0.96rem + 1.43vw, 3rem);
+  --measure: 58ch;
+  --measure-narrow: 42ch;
+
+  --header-h: 3.75rem;
+  --header-h-scrolled: 3.25rem;
+
+  --rail-w: 3.25rem;
+
+  /**
+   * The mobile sticky call bar's reserved height, in ONE place.
+   *
+   * Two components need this number and they live in different files: the
+   * layout reserves it as page padding so the bar never covers the end of the
+   * footer, and the concept badge lifts itself clear of it so the disclosure
+   * never sits on top of the primary CTA. It was hardcoded as 4.5rem in both,
+   * which held until 320px, where the button label wrapped to two lines, the
+   * bar grew, and the badge landed on it. Two hardcoded copies of a measurement
+   * is one bug waiting for a narrow phone.
+   */
+  --sticky-call-h: 4.5rem;
+}
+
+/* ==========================================================================
+   §7  SEMANTIC — RADIUS / BORDER / SHADOW / Z-INDEX
+   --------------------------------------------------------------------------
+   RADIUS IS BINARY HERE: 0 or 999px. Nothing in between, ever.
+
+   That is not a style tic, it is the mark. The supporting mark is two circles
+   and the lens where they overlap — two names becoming one — so this identity
+   owns the perfect circle and the straight edge and has no business with the
+   4px rounded rectangle that sits between them. Radius tokens that would
+   normally step (s/m/l) all resolve to 0; anything genuinely round takes
+   --radius-pill.
+
+   Shadows are almost absent. Depth on this page comes from the paper/surface
+   step and from rules, not from lift.
+   ========================================================================== */
+:root {
+  --radius-none: 0;
+  --radius-s: 0;
+  --radius-m: 0;
+  --radius-l: 0;
+  --radius-pill: 999px;
+  --radius-image: 0;
+  --radius-control: 0;
+  --radius-card: 0;
+
+  --border-hair: 1px;
+  --border-thick: 2px;
+  --border-rule: 3px;
+
+  --shadow-s: 0 1px 2px rgb(var(--color-overlay-scrim) / 0.05);
+  --shadow-m: 0 2px 8px rgb(var(--color-overlay-scrim) / 0.06),
+              0 14px 32px rgb(var(--color-overlay-scrim) / 0.06);
+  --shadow-l: 0 4px 14px rgb(var(--color-overlay-scrim) / 0.07),
+              0 30px 70px rgb(var(--color-overlay-scrim) / 0.10);
+
+  --z-base: 0;
+  --z-raised: 10;
+  --z-rail: 90;
+  --z-sticky: 100;
+  --z-header: 200;
+  --z-mobilenav: 300;
+  --z-lightbox: 400;
+  --z-badge: 500;
+}
+
+/* ==========================================================================
+   §8  SEMANTIC — MOTION
+   ========================================================================== */
+:root {
+  --duration-instant: 120ms;
+  --duration-fast: 180ms;
+  --duration-base: 260ms;
+  --duration-slow: 420ms;
+  --duration-reveal: 760ms;
+  --duration-hero: 900ms;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-soft: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-linear: linear;
+
+  --motion-distance: 20px;
+  --motion-distance-s: 10px;
+  --motion-stagger: 0.09s;
+  --motion-parallax: 0.10;
+  --motion-hero-delay: 0.15s;
+
+  /* ---- SIGNATURE TIER -------------------------------------------------
+     ONE moment per page (CLAUDE.md §4a). Here it is "the name fills in":
+     six outlined letters of SETIBA flooding with marine ink, left to right,
+     in the closing band. --sig-fill-* drives it and nothing else on the page
+     is allowed to touch them.
+
+     No parallax is used on this build at all. The moment is a fill, and a
+     page that also slid its layers would have two moments, which is none. */
+  --sig-duration: 1100ms;
+  --sig-duration-long: 1600ms;
+  --sig-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --sig-ease-drama: cubic-bezier(0.65, 0, 0.15, 1);
+  --sig-parallax: 0;
+  --sig-parallax-max: 0;
+  --sig-stagger-char: 0.13s;      /* six letters, generously apart */
+  --sig-mask-duration: 900ms;
+  --sig-mask-ease: cubic-bezier(0.77, 0, 0.18, 1);
+  --sig-magnet-radius: 90px;
+  --sig-magnet-strength: 0;
+  --sig-tilt: 0deg;
+  --sig-marquee-duration: 88s;
+
+  --sig-fill-duration: 820ms;
+  --sig-fill-ease: cubic-bezier(0.33, 0.9, 0.28, 1);
+}
+
+/* ==========================================================================
+   §8b  SEMANTIC — RULE TICKS  — INHERITED, DELIBERATELY UNUSED
+   --------------------------------------------------------------------------
+   These tokens were generalised into the engine out of build 002, which was
+   THIS BUSINESS, and which built its whole identity out of a calibrated
+   hairline with tick marks. 002 is superseded by this build.
+
+   They are kept declared so `ServiceIndex` and anything else inherited from
+   the engine still resolves, and they are referenced by NOTHING this project
+   ships. Rebuilding the same client was the obvious opportunity to reach for a
+   measuring instrument a second time, and the differentiation log's first
+   studio-level tic exists precisely to stop that. Set to transparent so a
+   stray usage shows up as missing rather than as a design decision.
+   ========================================================================== */
+:root {
+  --tick-gap: 12px;
+  --tick-w: 1px;
+  --tick-h: 9px;
+  --tick-h-major: 18px;
+  --tick-color: transparent;
+  --tick-color-major: transparent;
+}
+
+/* ==========================================================================
+   §8c  SEMANTIC — THE LENS  (this brand's supporting mark)
+   --------------------------------------------------------------------------
+   Their existing mark is a woman's profile that doubles as a butterfly, drawn
+   as 2020 stock vector with two-stop gradients. The IDEA is theirs and it is
+   good: one shape that is a face from one side and a wing from the other, and
+   two wings for a name made of two names.
+
+   Redrawn as construction rather than illustration — two circles, and the lens
+   where they overlap. Same two-part logic, same wing silhouette, none of the
+   gradient. It is the section divider, the list bullet, and the favicon.
+
+   Constructed rather than botanical on purpose: the nearest med spa in the
+   differentiation log owns petals and water arcs, and it is six miles away.
+   ========================================================================== */
+:root {
+  --lens-size: 0.62em;
+  --lens-overlap: 0.42;                 /* fraction of a circle's diameter */
+  --lens-stroke: 1.25px;
+  --lens-color: var(--color-brand-display);
+  --lens-fill: none;
+}
+
+/* ==========================================================================
+   §8d  SEMANTIC — GRADIENTS
+   --------------------------------------------------------------------------
+   REVERSING AN EARLIER DECISION, on purpose and with a reason.
+   input/brand.md originally listed "the gradients are gone" as a deliberate
+   correction, on the grounds that soft two-stop gradients are the strongest
+   date-stamp on their 2020 identity. That was half right: what dates their
+   mark is a MUDDY gradient inside a small clip-art shape, not gradient itself.
+   Their logo is genuinely built out of graded blue, and killing it entirely
+   threw away a real brand cue to make a point about taste.
+
+   So gradient comes back, on the two terms that make it read as intent:
+
+     1. It only ever runs BETWEEN COLOURS THEY ALREADY OWN — #2f87ad to
+        #5dbbdd to #80c9df, or marine into marine. Never a hue they do not
+        have, never a rainbow, never a gradient into a neutral.
+     2. It runs across FIELDS — bands, panels, rules, the mark — never inside
+        a letterform and never behind body copy, where it costs contrast.
+
+   Every gradient here is decorative. Text always sits on the flat token
+   colour underneath, so `check:contrast` still governs every readable pair.
+   ========================================================================== */
+:root {
+  /* Their three blues, in order, as a field. The workhorse. */
+  --grad-brand: linear-gradient(135deg, var(--b-700) 0%, var(--b-600) 46%, var(--b-500) 100%);
+  --grad-brand-soft: linear-gradient(135deg, var(--b-050) 0%, var(--b-100) 100%);
+
+  /* Marine into marine — the dark bands. Depth without a second hue. */
+  --grad-marine: linear-gradient(168deg, var(--b-900) 0%, var(--b-800) 62%, #0b2a3a 100%);
+
+  /* The paper, very slightly graded so a full-bleed band is not a flat slab.
+     Both stops are neutrals from §1; the delta is under 4% luminance. */
+  --grad-shell: linear-gradient(180deg, var(--n-000) 0%, var(--n-050) 55%, var(--n-100) 100%);
+  --grad-sand: linear-gradient(135deg, var(--a-100) 0%, var(--a-300) 100%);
+
+  /* A soft radial bloom, used behind the masthead and under section letters.
+     Sits at low alpha so it reads as light rather than as a shape. */
+  --grad-bloom: radial-gradient(
+    60% 70% at 50% 0%,
+    rgb(93 187 221 / 0.30) 0%,
+    rgb(93 187 221 / 0.10) 42%,
+    rgb(93 187 221 / 0) 72%
+  );
+  --grad-bloom-dark: radial-gradient(
+    70% 80% at 50% 0%,
+    rgb(93 187 221 / 0.22) 0%,
+    rgb(93 187 221 / 0) 70%
+  );
+
+  /* A graded hairline: fades out at both ends so a full-bleed rule never
+     collides with the page edge. The house divider. */
+  --grad-rule: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-line-strong) 18%,
+    var(--color-brand-display) 50%,
+    var(--color-line-strong) 82%,
+    transparent 100%
+  );
+}
+
+/* ==========================================================================
+   §9  SEMANTIC — IMAGE & TEXTURE TREATMENT
+   --------------------------------------------------------------------------
+   The only photography on this page is five portraits the business published
+   of its own people. They arrive as three different sets shot on three
+   different days against three different walls, so the filter's job is to pull
+   them into one page rather than to create a mood: a slight desaturation, a
+   touch of warmth in the lift, and a hard 4:5 crop on every one.
+   ========================================================================== */
+:root {
+  --image-filter: saturate(0.86) contrast(1.03);
+  --image-filter-hero: saturate(0.82) contrast(1.06);
+  --image-hover-scale: 1.03;
+
+  --scrim-strength: 0.66;
+  --scrim-bottom: linear-gradient(
+    to top,
+    rgb(var(--color-overlay-scrim) / var(--scrim-strength)) 0%,
+    rgb(var(--color-overlay-scrim) / calc(var(--scrim-strength) * 0.55)) 38%,
+    rgb(var(--color-overlay-scrim) / 0) 72%
+  );
+  --scrim-full: linear-gradient(
+    to top,
+    rgb(var(--color-overlay-scrim) / calc(var(--scrim-strength) + 0.1)) 0%,
+    rgb(var(--color-overlay-scrim) / calc(var(--scrim-strength) * 0.5)) 100%
+  );
+  --scrim-side: linear-gradient(
+    to right,
+    rgb(var(--color-overlay-scrim) / var(--scrim-strength)) 0%,
+    rgb(var(--color-overlay-scrim) / 0) 65%
+  );
+
+  --grain-opacity: 0.03;
+  --grain-blend: multiply;
+
+  --ratio-hero: 16 / 9;
+  --ratio-hero-tall: 4 / 5;
+  --ratio-landscape: 3 / 2;
+  --ratio-portrait: 4 / 5;
+  --ratio-square: 1 / 1;
+  --ratio-wide: 21 / 9;
+}
+
+/* ==========================================================================
+   §10  CONTEXT BLOCKS
+   --------------------------------------------------------------------------
+   The dark context is MARINE, not black — --b-900 is their own brand hue taken
+   down its own axis. The muted ink and the focus ring on dark are the WARM
+   sand sampled from their wall, so the split temperature survives the
+   inversion instead of collapsing into a monochrome blue.
+   ========================================================================== */
+.on-dark {
+  --color-canvas: var(--color-surface-inverse);   /* --b-900 */
+  --color-surface: var(--b-800);
+  --color-surface-sunken: var(--b-800);
+  --color-ink: var(--color-ink-inverse);          /* 11.82:1 on canvas — AAA */
+  --color-ink-strong: var(--n-000);               /* 12.98:1 — AAA */
+  --color-ink-muted: var(--color-ink-inverse-muted); /* 8.91:1 — AAA */
+  --color-brand: var(--b-300);                    /*  7.23:1 on canvas — AAA */
+  --color-brand-strong: var(--b-100);
+  --color-brand-contrast: var(--b-900);           /*  7.23:1 on b-300 fill */
+  --color-brand-display: var(--b-500);            /*  5.72:1 — large/marks */
+  --color-accent: var(--a-300);                   /*  8.91:1 on canvas — AAA */
+  --color-accent-contrast: var(--b-900);          /*  8.91:1 on accent fill */
+  --color-line: rgb(255 255 255 / 0.15);          /* decorative only */
+  --color-line-strong: rgb(255 255 255 / 0.48);   /* AA non-text on marine */
+  --color-focus: var(--a-300);                    /*  8.91:1 — AA non-text */
+  --lens-color: var(--b-300);
+  --grad-rule: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.22) 18%,
+    var(--b-500) 50%,
+    rgb(255 255 255 / 0.22) 82%,
+    transparent 100%
+  );
+  color: var(--color-ink);
+  background-color: var(--color-canvas);
+}
+
+.on-brand {
+  /* Cards RECEDE on a brand band — they do not lift. A surface lighter than
+     its canvas costs every ink on it 1–2 points of contrast. Depth here comes
+     from --color-line, not from a lighter fill. */
+  --color-canvas: var(--b-800);
+  --color-surface: var(--b-900);
+  --color-surface-sunken: var(--b-900);
+  --color-ink: var(--n-050);                      /*  8.81:1 on canvas — AAA */
+  --color-ink-strong: var(--n-000);               /*  9.71:1 — AAA */
+  --color-ink-muted: var(--a-300);                /*  6.64:1 — AA */
+  --color-brand: var(--b-300);                    /*  5.39:1 — AA */
+  --color-brand-strong: var(--b-100);
+  --color-brand-contrast: var(--b-900);
+  --color-brand-display: var(--b-300);
+  --color-accent: var(--a-300);                   /*  6.64:1 — AA */
+  --color-accent-contrast: var(--b-900);
+  --color-line: rgb(255 255 255 / 0.18);          /* decorative only */
+  --color-line-strong: rgb(255 255 255 / 0.52);
+  --color-focus: var(--a-100);                    /*  7.65:1 — AA non-text */
+  --lens-color: var(--b-300);
+  --grad-rule: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.24) 18%,
+    var(--b-300) 50%,
+    rgb(255 255 255 / 0.24) 82%,
+    transparent 100%
+  );
+  color: var(--color-ink);
+  background-color: var(--color-canvas);
+}
+
+/* ==========================================================================
+   §11  USER PREFERENCE OVERRIDES
+   --------------------------------------------------------------------------
+   Reduced motion is handled at the token level so it applies everywhere at
+   once — CSS transitions, GSAP (which reads these), and scroll behaviour.
+   The signature tier collapses with everything else: the six letters of the
+   closing band are simply already filled, which is the composition the moment
+   is animating TO, so nothing is lost but the animation.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0.01ms;
+    --duration-fast: 0.01ms;
+    --duration-base: 0.01ms;
+    --duration-slow: 0.01ms;
+    --duration-reveal: 0.01ms;
+    --duration-hero: 0.01ms;
+    --motion-distance: 0px;
+    --motion-distance-s: 0px;
+    --motion-stagger: 0s;
+    --motion-parallax: 0;
+    --motion-hero-delay: 0s;
+    --image-hover-scale: 1;
+
+    --sig-duration: 0.01ms;
+    --sig-duration-long: 0.01ms;
+    --sig-parallax: 0;
+    --sig-parallax-max: 0;
+    --sig-stagger-char: 0s;
+    --sig-mask-duration: 0.01ms;
+    --sig-magnet-strength: 0;
+    --sig-tilt: 0deg;
+    --sig-marquee-duration: 0s;
+    --sig-fill-duration: 0.01ms;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --color-ink-muted: var(--n-700);
+    --color-brand-display: var(--b-700);
+    --color-line: var(--n-400);
+    --color-line-strong: var(--n-600);
+    --lens-stroke: 1.75px;
+    --scrim-strength: 0.8;
+  }
+}

@@ -1,0 +1,569 @@
+/* ==========================================================================
+   DECK.CSS — three slides, styled from the site's own tokens.css
+   --------------------------------------------------------------------------
+   Every colour and face below resolves from tokens.css, which is a verbatim
+   copy of the site's. Nothing here introduces a value the site does not have,
+   so the deck cannot drift away from the thing it is presenting.
+
+   CONTRAST. Every pairing used is one the site's own gate already checks:
+     --n-050 on --b-900 ....... 11.82:1
+     --n-000 on --b-900 ....... 12.98:1
+     --a-300 on --b-900 ........ 8.91:1   (the struck price)
+     --b-300 on --b-900 ........ 7.23:1
+     --b-500 on --b-900 ........ 5.72:1   (the strike line, non-text)
+     --b-900 on --n-050 ....... 11.82:1
+     --n-600 on --n-050 ........ 5.78:1
+   Verified numerically by outreach/deck/check-contrast.mjs.
+
+   16:9 at every size. Slides are sized in `vw` off a 16:9 stage so they scale
+   to a phone screen without a media query per element.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Cinzel Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 900;
+  src: url("cinzel.woff2") format("woff2-variations");
+}
+
+@font-face {
+  font-family: "Work Sans Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("work-sans.woff2") format("woff2-variations");
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--n-100);
+}
+
+body {
+  font-family: var(--face-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- the 16:9 stage ---------------------------------------------------- */
+.slide {
+  /* 1 unit = 1% of the slide's HEIGHT. The slide is 56.25vw tall (16:9), so
+     one percent of that is 0.5625vw. Getting this wrong by a factor of two is
+     exactly what it sounds like: every slide overflowed its own frame. */
+  --u: 0.5625vw;
+  position: relative;
+  inline-size: 100vw;
+  block-size: 56.25vw; /* 16:9 */
+  padding: calc(var(--u) * 5) calc(var(--u) * 5.5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--b-900);
+  color: var(--n-050);
+  page-break-after: always;
+  break-after: page;
+}
+
+.slide:last-child {
+  page-break-after: auto;
+  break-after: auto;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: calc(var(--u) * 1.55);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--a-300); /* 8.91:1 on marine */
+}
+
+.eyebrow--dark {
+  color: var(--b-700); /* 5.20:1 on shell paper */
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--face-display);
+  font-weight: var(--weight-display);
+  letter-spacing: var(--tracking-heading);
+  margin: 0;
+}
+
+/* The lens: the site's supporting mark, two circles and their overlap. */
+.rule {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1.6);
+  inline-size: 100%;
+  margin-block: calc(var(--u) * 4);
+}
+
+.rule span {
+  flex: 1;
+  block-size: 1px;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    var(--b-500) 30%,
+    var(--b-500) 70%,
+    transparent
+  );
+}
+
+.lens {
+  inline-size: calc(var(--u) * 3);
+  block-size: calc(var(--u) * 3);
+  flex: none;
+  overflow: visible;
+}
+
+.lens circle {
+  fill: none;
+  stroke: var(--b-500);
+  stroke-width: 1.8;
+}
+
+/* ========================= SLIDE 1 ========================= */
+.slide--one {
+  background-image: var(--grad-marine);
+}
+
+.s1 {
+  display: grid;
+  grid-template-columns: 1fr 1.14fr;
+  gap: calc(var(--u) * 5.5);
+  align-items: center;
+  block-size: 100%;
+}
+
+.s1__text {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Their name, in their letters, in their blue. */
+.s1__name {
+  margin-block: calc(var(--u) * 2.8) 0;
+  font-size: calc(var(--u) * 11.2);
+  line-height: 1;
+  color: var(--b-300); /* 7.23:1 on marine */
+}
+
+.s1__name > span {
+  display: flex;
+  justify-content: space-between;
+  inline-size: 100%;
+}
+
+.s1__sub {
+  margin: calc(var(--u) * 1.6) 0 0;
+  font-size: calc(var(--u) * 1.85);
+  font-weight: 300;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--b-500);
+}
+
+.s1__lede {
+  margin: calc(var(--u) * 4.2) 0 0;
+  font-size: calc(var(--u) * 2.45);
+  line-height: var(--leading-snug);
+  color: var(--n-000);
+}
+
+.s1__idea {
+  margin: 0;
+  font-family: var(--face-display);
+  font-size: calc(var(--u) * 2.4);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+  color: var(--n-050);
+}
+
+.s1__shot {
+  margin: 0;
+  align-self: center;
+}
+
+.s1__shot img {
+  inline-size: 100%;
+  block-size: auto;
+  display: block;
+  border: 1px solid rgb(128 201 223 / 0.45);
+  box-shadow: 0 calc(var(--u) * 2) calc(var(--u) * 5) rgb(0 0 0 / 0.35);
+}
+
+.s1__shot figcaption {
+  margin-block-start: calc(var(--u) * 1.8);
+  font-size: calc(var(--u) * 1.6);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--a-300);
+  text-align: center;
+}
+
+/* ========================= SLIDE 2 ========================= */
+.slide--two {
+  background-color: var(--n-050);
+  color: var(--b-900);
+}
+
+.s2__head h2 {
+  margin-block-start: calc(var(--u) * 1.2);
+  font-size: calc(var(--u) * 4.8);
+  color: var(--b-900);
+}
+
+.s2__list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(var(--u) * 2.6);
+  margin: calc(var(--u) * 3) 0 0;
+  padding: 0;
+  flex: 1;
+  /* Cards hug their copy and the row centres in what is left. Stretching them
+     to fill produced 460px of empty card under three short paragraphs, which
+     is the same "blank space" problem the site itself was pulled up on. */
+  align-items: start;
+  align-content: center;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 1.4);
+  padding: calc(var(--u) * 4.4) calc(var(--u) * 3.4);
+  background-color: var(--n-000);
+  border-block-start: calc(var(--u) * 0.42) solid transparent;
+  border-image: var(--grad-brand) 1;
+}
+
+.card__n {
+  margin: 0;
+  font-family: var(--face-display);
+  font-size: calc(var(--u) * 2.7);
+  line-height: 1;
+  color: var(--b-600);
+}
+
+.card h3 {
+  font-size: calc(var(--u) * 2.5);
+  line-height: var(--leading-heading);
+  color: var(--b-900);
+}
+
+.card p {
+  margin: 0;
+  font-size: calc(var(--u) * 1.85);
+  line-height: var(--leading-snug);
+  color: var(--n-600); /* 5.78:1 on paper */
+}
+
+.quiet {
+  color: var(--b-700);
+  font-style: italic;
+}
+
+.s2__foot {
+  margin: calc(var(--u) * 3) 0 0;
+  font-size: calc(var(--u) * 1.62);
+  color: var(--n-600);
+}
+
+/* ========================= SLIDE 3 ========================= */
+.slide--three {
+  background-image: var(--grad-marine);
+}
+
+.s3__head h2 {
+  margin-block-start: calc(var(--u) * 1.1);
+  font-size: calc(var(--u) * 3.9);
+  color: var(--n-000);
+}
+
+.s3__grid {
+  display: grid;
+  grid-template-columns: 1.12fr 0.82fr 1.25fr 0.95fr;
+  gap: calc(var(--u) * 2);
+  margin-block-start: calc(var(--u) * 3);
+  flex: 1;
+  min-block-size: 0;
+}
+
+.opt {
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--u) * 2.2);
+  background-color: rgb(255 255 255 / 0.06);
+  border: 1px solid rgb(128 201 223 / 0.3);
+}
+
+/* The one being recommended. Marked by weight, not by a sale badge. */
+.opt--lead {
+  background-color: rgb(255 255 255 / 0.1);
+  border-color: var(--b-500);
+}
+
+.opt__label {
+  margin: 0;
+  font-size: calc(var(--u) * 1.5);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--a-300);
+}
+
+.opt__price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 1.2);
+  margin: calc(var(--u) * 1.2) 0 calc(var(--u) * 1.6);
+  font-family: var(--face-display);
+  line-height: 1;
+}
+
+/* THE STRUCK PRICE.
+   Full-strength sand at 8.91:1 on the marine ground, NOT a faded grey — a
+   price rendered faint reads as a rendering fault, not a saving. The strike
+   itself is a 3px rule in the brand's mid blue, which at 5.72:1 on this
+   ground is unmistakable at a glance and at phone size. */
+.opt__was {
+  font-size: calc(var(--u) * 3.1);
+  color: var(--a-300);
+  text-decoration: line-through;
+  text-decoration-color: var(--b-500);
+  text-decoration-thickness: calc(var(--u) * 0.34);
+  text-underline-offset: 0;
+}
+
+.opt__now {
+  font-size: calc(var(--u) * 5.2);
+  color: var(--n-000);
+}
+
+.opt--lead .opt__now {
+  color: var(--b-300);
+}
+
+.opt__per {
+  font-family: var(--face-body);
+  font-size: calc(var(--u) * 1.6);
+  color: var(--a-300);
+}
+
+.opt__alt {
+  margin: calc(var(--u) * -0.8) 0 calc(var(--u) * 1.4);
+  font-size: calc(var(--u) * 1.42);
+  line-height: var(--leading-snug);
+  color: var(--b-300);
+}
+
+.opt__sub {
+  margin: 0 0 calc(var(--u) * 0.6);
+  font-size: calc(var(--u) * 1.36);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--b-300);
+}
+
+.opt__sub--out {
+  margin-block-start: calc(var(--u) * 1.5);
+  color: var(--a-300);
+}
+
+.opt__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: calc(var(--u) * 0.72);
+  font-size: calc(var(--u) * 1.48);
+  line-height: var(--leading-snug);
+  color: var(--n-050);
+}
+
+.opt__list--tight {
+  gap: calc(var(--u) * 0.5);
+  font-size: calc(var(--u) * 1.36);
+}
+
+.opt__list li {
+  padding-inline-start: calc(var(--u) * 1.5);
+  position: relative;
+}
+
+.opt__list li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0.55em;
+  inline-size: calc(var(--u) * 0.62);
+  block-size: calc(var(--u) * 0.62);
+  border-radius: 999px;
+  background-color: var(--b-500);
+}
+
+.opt__list--out li::before {
+  background-color: transparent;
+  border: 1px solid var(--a-300);
+}
+
+.opt__note {
+  margin: auto 0 0;
+  padding-block-start: calc(var(--u) * 1.5);
+  font-size: calc(var(--u) * 1.36);
+  line-height: var(--leading-snug);
+  color: var(--a-300);
+}
+
+.opt__note--tall {
+  margin-block-start: 0;
+}
+
+.s3__why {
+  margin: calc(var(--u) * 2.6) 0 0;
+  font-family: var(--face-display);
+  font-size: calc(var(--u) * 1.95);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+  color: var(--n-000);
+  max-inline-size: 78ch;
+}
+
+.s3__foot {
+  display: flex;
+  justify-content: space-between;
+  margin-block-start: calc(var(--u) * 1.8);
+  padding-block-start: calc(var(--u) * 1.2);
+  border-block-start: 1px solid rgb(128 201 223 / 0.3);
+  font-size: calc(var(--u) * 1.4);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--a-300);
+}
+
+/* ---- phone -------------------------------------------------------------
+   Below 46em the slides stop being 16:9 on screen and stack into readable
+   blocks. The PDF is always 16:9; this is for reading the HTML on a phone,
+   which is where most first looks happen. */
+@media (max-width: 46em) {
+  .slide {
+    /* CLAMPED. A raw vw unit is right on a 390px phone and absurd on a 730px
+       tablet: at the top of this breakpoint 3.1vw resolved to 22.6px and slide
+       three rendered 6,918px tall. Clamping holds the type at a readable size
+       across the whole stacked range. */
+    --u: clamp(7.5px, 2.4vw, 11px);
+    block-size: auto;
+    min-block-size: 100svh;
+    padding: calc(var(--u) * 5) calc(var(--u) * 4);
+  }
+
+  .s1,
+  .s2__list,
+  .s3__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .s1 {
+    gap: calc(var(--u) * 3.5);
+  }
+
+  .s1__name {
+    font-size: calc(var(--u) * 7.4);
+  }
+
+  .s3__why {
+    font-size: calc(var(--u) * 2.4);
+  }
+
+  .s3__foot {
+    flex-direction: column;
+    gap: calc(var(--u) * 0.8);
+  }
+}
+
+/* ---- print / PDF -------------------------------------------------------
+   Exactly three 16:9 pages, no browser chrome, colours preserved. */
+@page {
+  size: 1600px 900px;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    background: none;
+  }
+
+  .slide {
+    --u: 9px; /* 1% of 900px */
+    inline-size: 1600px;
+    block-size: 900px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* ---- web-only furniture -------------------------------------------------
+   The deck is served at /deck/ as well as being rendered to a PDF. This is
+   the only element that exists on the web version and not in the PDF. */
+.deck-dl {
+  position: fixed;
+  inset-block-end: 1.25rem;
+  inset-inline-end: 1.25rem;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2.75rem;
+  padding-inline: 1.1rem;
+  background-color: var(--b-900);
+  border: 1px solid var(--b-500);
+  color: var(--n-000); /* 12.98:1 on marine */
+  font-family: var(--face-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 4px 18px rgb(0 0 0 / 0.35);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.deck-dl:hover {
+  background-color: var(--b-700);
+}
+
+.deck-dl:focus-visible {
+  outline: 3px solid var(--b-300);
+  outline-offset: 3px;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
