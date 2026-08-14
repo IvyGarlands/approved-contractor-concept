@@ -1,0 +1,570 @@
+---
+/**
+ * /deck — the three-slide outreach deck, live on the site itself.
+ *
+ * WHY THIS PAGE EXISTS. The deck was originally built as a standalone,
+ * fully self-contained HTML file (fonts and the screenshot base64-embedded)
+ * so it could be attached to an email with zero dependencies. This page is
+ * the second, better home for it: a real URL on the actual deployed site,
+ * so it can be LINKED instead of attached — the deliverability notes in
+ * outreach/notes.md specifically recommend not attaching the PDF to a cold
+ * first email, and a link here is the natural alternative for a follow-up.
+ *
+ * WHY IT DOESN'T USE BaseLayout. Every other page on this site is a fluid,
+ * responsive marketing page with a nav, a footer, a sticky call bar and the
+ * concept badge. A slide deck is a different kind of object — three fixed
+ * 16:9 frames meant to read identically on screen and on paper. Forcing it
+ * through the same chrome as a homepage would fight that. So this page
+ * writes its own <html>, but still imports the SAME tokens.css, the SAME
+ * two fonts, and the SAME SEOHead component everything else uses — nothing
+ * here is a second copy of the brand, it is the first copy, reused.
+ *
+ * WHY NO CONCEPT BADGE. The badge exists to stop a page that SIMULATES
+ * their real website from being mistaken for it (CLAUDE.md §11). This page
+ * doesn't simulate anything — slide 1 states in its own copy, in the open,
+ * that it's "a concept redesign for Approved Contractor, Inc., built
+ * specifically for them, unprompted." That is the same disclosure the badge
+ * makes, just written as a sentence instead of a floating pill, which fits
+ * a pitch deck better than a live-site mockup. It's still not indexable —
+ * see the SEOHead call below, and the site-wide robots.txt Disallow: /
+ * already covers this path too.
+ *
+ * CONTENT PARITY. The copy and layout here are the same three slides
+ * already verified against WCAG AA and print-tested as a PDF in
+ * outreach/deck/index.html. That file remains the canonical source for the
+ * PDF attachment sent in a warm follow-up; this page is the linkable web
+ * version of the same three slides. If one changes, change both.
+ */
+import "@fontsource-variable/source-serif-4/wght.css";
+import "@fontsource-variable/outfit/wght.css";
+import "../styles/tokens.css";
+
+import { getImage } from "astro:assets";
+import SEOHead from "../components/core/SEOHead.astro";
+import StampMark from "../components/core/StampMark.astro";
+import deckHeroSrc from "../assets/deck/deck-hero.jpg";
+import { SITE } from "../config/site";
+
+// A plain optimized <img>, not <Image>/<Picture> — this page is a fixed
+// 1280px print-style layout, not the fluid responsive system the rest of
+// the site uses, so the automatic responsive-layout CSS those components
+// inject would fight the slide's fixed sizing rather than help it.
+const deckHero = await getImage({
+  src: deckHeroSrc,
+  width: 1200,
+  format: "webp",
+  quality: 82,
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <SEOHead
+      title="The concept, in three slides"
+      description={`A three-slide look at the concept redesign built for ${SITE.legalName}: what it is, why it matters, and what it costs.`}
+      path="/deck"
+    />
+    <style>
+      /* ==================================================================
+         Everything below reads var(--n-*), var(--b-*), var(--face-*), etc.
+         DIRECTLY from tokens.css, imported above. No values are re-declared
+         here — this is what "styled from the project's own tokens.css" means
+         literally, not by resemblance.
+         ================================================================== */
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: #d8d3d0;
+        font-family: var(--face-body);
+        color: var(--n-800);
+      }
+
+      .deck-back {
+        position: fixed;
+        top: 14px;
+        left: 14px;
+        z-index: 10;
+        display: inline-flex;
+        align-items: center;
+        min-height: 2.75rem;
+        padding: 0 14px;
+        border-radius: 999px;
+        background: var(--n-900);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: 0 4px 14px rgb(0 0 0 / 0.22);
+      }
+      .deck-back:hover { background: var(--b-600); }
+      .deck-back:focus-visible {
+        outline: 3px solid var(--b-600);
+        outline-offset: 2px;
+      }
+
+      .slide {
+        position: relative;
+        width: 1280px;
+        height: 720px;
+        margin: 24px auto;
+        overflow: hidden;
+        background: var(--n-000);
+        box-shadow: 0 10px 40px rgb(0 0 0 / 0.18);
+        page-break-after: always;
+        break-after: page;
+      }
+      .slide:last-of-type { page-break-after: auto; break-after: auto; }
+
+      /* Screen-only: clears the fixed "back to site" pill above slide 1.
+         MUST stay scoped to screen — .slide:first-of-type has higher
+         specificity than the plain .slide selector in the print reset
+         below, so an unscoped margin-top here would win over `margin: 0`
+         in print and push the whole deck 72px past the 720px @page height,
+         silently producing a 4th, mostly-blank page. Caught by rendering
+         the actual PDF and counting pages: 4 instead of 3. */
+      @media screen {
+        .slide:first-of-type { margin-top: 72px; }
+      }
+
+      @media screen and (max-width: 1320px) {
+        .slide { width: 100vw; }
+      }
+
+      @page { size: 1280px 720px; margin: 0; }
+      @media print {
+        html, body { background: #fff; }
+        .slide { margin: 0; box-shadow: none; }
+        .no-print { display: none !important; }
+      }
+
+      .eyebrow {
+        font-family: var(--face-body);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      /* ---- Slide 1 — What this is --------------------------------------- */
+      .s1 { display: flex; flex-direction: column; }
+      .s1__band {
+        background-image: var(--grad-brand);
+        background-color: var(--b-600);
+        padding: 18px 56px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .s1__band-note {
+        text-align: right;
+        font-size: 13px;
+        line-height: 1.4;
+        color: var(--b-100);
+        max-width: 260px;
+      }
+      .s1__band-note strong { color: #fff; font-weight: 600; }
+
+      .s1__body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 13px;
+        padding: 14px 56px 12px;
+        text-align: center;
+      }
+      .s1__headline {
+        font-family: var(--face-display);
+        font-weight: 700;
+        font-size: 30px;
+        line-height: 1.18;
+        letter-spacing: -0.01em;
+        color: var(--n-900);
+        max-width: 900px;
+        margin: 0;
+      }
+      .s1__headline em {
+        font-style: normal;
+        color: var(--b-600);
+      }
+      .s1__shot {
+        width: 740px;
+        max-width: 80%;
+        margin: 0;
+        border-radius: var(--radius-card);
+        overflow: hidden;
+        box-shadow: var(--shadow-l);
+        border: 1px solid var(--n-200);
+      }
+      .s1__shot img { display: block; width: 100%; height: auto; }
+      .s1__idea {
+        max-width: 780px;
+        font-size: 15.5px;
+        line-height: 1.55;
+        color: var(--n-600);
+        margin: 0;
+      }
+      .s1__idea strong { color: var(--n-900); font-weight: 600; }
+
+      /* ---- Slide 2 — Why it matters -------------------------------------- */
+      .s2 { display: flex; flex-direction: column; height: 100%; padding: 48px 64px 40px; }
+      .s2__eyebrow { color: var(--b-600); margin-bottom: 10px; }
+      .s2__heading {
+        font-family: var(--face-display);
+        font-weight: 700;
+        font-size: 32px;
+        line-height: 1.16;
+        letter-spacing: -0.012em;
+        color: var(--n-900);
+        max-width: 780px;
+        margin: 0 0 8px;
+      }
+      .s2__sub { font-size: 15px; color: var(--n-600); max-width: 640px; margin: 0 0 30px; }
+      .s2__points {
+        flex: 1;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+      }
+      @media screen and (max-width: 900px) {
+        .s2__points { grid-template-columns: 1fr; }
+      }
+      .s2__point {
+        background: var(--color-surface);
+        border: 1px solid var(--n-200);
+        border-radius: var(--radius-card);
+        padding: 26px 24px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .s2__num {
+        font-family: var(--face-display);
+        font-weight: 900;
+        font-size: 15px;
+        color: var(--b-600);
+        letter-spacing: 0.02em;
+      }
+      .s2__point h3 {
+        font-family: var(--face-display);
+        font-weight: 700;
+        font-size: 19px;
+        line-height: 1.28;
+        color: var(--n-900);
+        margin: 0;
+      }
+      .s2__point p { font-size: 14.5px; line-height: 1.55; color: var(--n-800); margin: 0; }
+      .s2__point .src {
+        margin-top: auto;
+        padding-top: 10px;
+        font-size: 12px;
+        font-style: italic;
+        color: var(--a-700);
+      }
+
+      /* ---- Slide 3 — What it costs ---------------------------------------- */
+      .s3 { display: flex; flex-direction: column; height: 100%; padding: 40px 64px 26px; }
+      .s3__eyebrow { color: var(--b-600); margin-bottom: 8px; }
+      .s3__heading {
+        font-family: var(--face-display);
+        font-weight: 700;
+        font-size: 28px;
+        line-height: 1.15;
+        color: var(--n-900);
+        margin: 0 0 18px;
+      }
+      .s3__primary {
+        background-image: var(--grad-brand);
+        background-color: var(--b-600);
+        border-radius: var(--radius-card);
+        color: #fff;
+        padding: 20px 28px;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 24px;
+        align-items: center;
+        margin-bottom: 14px;
+      }
+      @media screen and (max-width: 900px) {
+        .s3__primary { grid-template-columns: 1fr; }
+      }
+      .s3__price { display: flex; align-items: baseline; gap: 14px; white-space: nowrap; }
+      .s3__price-old {
+        font-family: var(--face-body);
+        font-size: 22px;
+        font-weight: 500;
+        color: var(--b-100);
+        text-decoration: line-through;
+        text-decoration-thickness: 2.5px;
+        text-decoration-color: #fff;
+      }
+      .s3__price-new {
+        font-family: var(--face-display);
+        font-weight: 900;
+        font-size: 52px;
+        line-height: 1;
+        color: #fff;
+      }
+      .s3__primary-copy h3 {
+        margin: 0 0 6px;
+        font-family: var(--face-display);
+        font-weight: 700;
+        font-size: 18px;
+      }
+      .s3__primary-list {
+        margin: 0 0 8px;
+        padding: 0;
+        list-style: none;
+        font-size: 13px;
+        line-height: 1.7;
+        color: #fff;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 0;
+      }
+      .s3__primary-list li { white-space: nowrap; }
+      .s3__primary-list li:not(:last-child)::after {
+        content: "·";
+        margin: 0 10px;
+        color: var(--b-100);
+      }
+      .s3__reason { margin: 0; font-size: 13px; font-style: italic; color: var(--b-100); }
+
+      .s3__row {
+        display: grid;
+        grid-template-columns: 1fr 1.3fr;
+        gap: 14px;
+        margin-bottom: 12px;
+        flex: 1;
+        min-height: 0;
+      }
+      @media screen and (max-width: 900px) {
+        .s3__row { grid-template-columns: 1fr; }
+      }
+      .s3__card {
+        background: var(--color-surface);
+        border: 1px solid var(--n-200);
+        border-radius: var(--radius-card);
+        padding: 16px 20px;
+        display: flex;
+        flex-direction: column;
+      }
+      .s3__card h4 {
+        margin: 0 0 4px;
+        font-family: var(--face-display);
+        font-weight: 700;
+        font-size: 15px;
+        color: var(--n-900);
+      }
+      .s3__card .tag {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--b-600);
+        margin-bottom: 6px;
+      }
+      .s3__card .price {
+        font-family: var(--face-display);
+        font-weight: 900;
+        font-size: 22px;
+        color: var(--n-900);
+        margin: 0 0 6px;
+      }
+      .s3__card p { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--n-800); }
+      .s3__card .fine { margin-top: 8px; font-size: 11px; line-height: 1.5; color: var(--n-600); }
+      .s3__card .fine b { color: var(--n-800); font-weight: 600; }
+
+      .s3__care-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 8px; }
+      .s3__care-grid div { font-size: 11.5px; line-height: 1.5; color: var(--n-800); }
+      .s3__care-grid .lbl {
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--n-600);
+        margin-bottom: 2px;
+      }
+
+      .s3__foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        background: var(--n-050);
+        border: 1px solid var(--n-200);
+        border-radius: var(--radius-card);
+        padding: 12px 20px;
+      }
+      .s3__foot-marketing { font-size: 12px; line-height: 1.5; color: var(--n-800); max-width: 62%; margin: 0; }
+      .s3__foot-marketing b { color: var(--n-900); }
+      .s3__foot-why {
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+        color: var(--n-600);
+        max-width: 34%;
+        text-align: right;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="no-print deck-back" href="/">← Back to the concept site</a>
+
+    <!-- ================= SLIDE 1 — What this is ================= -->
+    <section class="slide s1">
+      <div class="s1__band on-brand">
+        <StampMark size="lg" />
+        <div class="s1__band-note">
+          A concept redesign for <strong>{SITE.legalName}</strong>, built
+          specifically for them, unprompted.
+        </div>
+      </div>
+
+      <div class="s1__body">
+        <h1 class="s1__headline">
+          Same business. Same license. <em>A site that actually shows it.</em>
+        </h1>
+
+        <figure class="s1__shot">
+          <img
+            src={deckHero.src}
+            width={deckHero.attributes.width}
+            height={deckHero.attributes.height}
+            alt="The concept homepage for Approved Contractor, Inc., built around their own scarlet stamp mark and their real California contractor license."
+          />
+        </figure>
+
+        <p class="s1__idea">
+          <strong>The idea is simple:</strong> the company is called Approved
+          Contractor. The whole site is built around that one word, backed
+          up. Their real license, current and checkable, is right at the top
+          instead of buried in a footer, set in their own red and their own
+          stamp mark instead of a stock template.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 2 — Why it matters ================= -->
+    <section class="slide s2">
+      <p class="eyebrow s2__eyebrow">Why it matters</p>
+      <h2 class="s2__heading">What a working site actually does for a business like this.</h2>
+      <p class="s2__sub">Not features. What a homeowner actually experiences in the first ten seconds.</p>
+
+      <div class="s2__points">
+        <div class="s2__point">
+          <span class="s2__num">01</span>
+          <h3>Someone can check you're real.</h3>
+          <p>
+            A homeowner comparing three quotes can verify the license is
+            active without taking anyone's word for it. It's on the page,
+            dated, with a link straight to the state lookup.
+          </p>
+          <span class="src">Verified against the CSLB register, license #952272</span>
+        </div>
+        <div class="s2__point">
+          <span class="s2__num">02</span>
+          <h3>Your own reviews do the talking.</h3>
+          <p>
+            Customers already thank Jared by name, unprompted, in their
+            reviews. That's what a new visitor reads first now, not a stock
+            photo of someone else's living room.
+          </p>
+          <span class="src">From reviews already published, quoted verbatim</span>
+        </div>
+        <div class="s2__point">
+          <span class="s2__num">03</span>
+          <h3>The call button works on a phone.</h3>
+          <p>
+            Most people find a contractor while searching on their phone.
+            The button they'd tap to call should not be sitting behind a
+            chat popup the second the page loads.
+          </p>
+          <span class="src">Seen on the current site today, mobile view</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 3 — What it costs ================= -->
+    <section class="slide s3">
+      <p class="eyebrow s3__eyebrow">What it costs</p>
+      <h2 class="s3__heading">Three ways to take this further, and one honest reason for the price.</h2>
+
+      <div class="s3__primary on-brand">
+        <div class="s3__price">
+          <span class="s3__price-old">$2,450</span>
+          <span class="s3__price-new">$700</span>
+        </div>
+        <div class="s3__primary-copy">
+          <h3>1 · Take it as is</h3>
+          <ul class="s3__primary-list">
+            <li>Your content and photos swapped in</li>
+            <li>Minor changes to fit your business</li>
+            <li>SEO set up properly</li>
+            <li>Live on your own domain</li>
+            <li>Everything handed over, you own all of it</li>
+          </ul>
+          <p class="s3__reason">
+            Why it's less: the site's already built. I'm not starting from
+            a blank page, so I'm not pricing it like one.
+          </p>
+        </div>
+      </div>
+
+      <div class="s3__row">
+        <div class="s3__card">
+          <span class="tag">2 · Custom</span>
+          <p class="price">From $1,500</p>
+          <h4>Take it further</h4>
+          <p>More pages, deeper customization, built around how you actually run things day to day.</p>
+        </div>
+        <div class="s3__card">
+          <span class="tag">3 · Ongoing</span>
+          <p class="price">
+            $99<span style="font-size:13px;font-weight:500;color:var(--n-600)">/mo</span>
+            &nbsp;or&nbsp;<span style="color:var(--n-900)">$69/mo</span> billed annually
+          </p>
+          <h4>Let me look after it</h4>
+          <div class="s3__care-grid">
+            <div>
+              <div class="lbl">Included, within reason</div>
+              Hosting and technical upkeep, keeping SEO healthy, text and
+              copy edits, swapping photos, updating hours, prices, menus or
+              services, and seasonal changes.
+            </div>
+            <div>
+              <div class="lbl">Quoted separately, à la carte</div>
+              New pages or sections, branding or logo work, photography, new
+              long-form content, new features, and anything that's a new
+              project rather than an update.
+            </div>
+          </div>
+          <p class="fine">
+            <b>"Within reason" is used plainly, not as an escape hatch:</b>
+            it means small updates and maintenance. Anything bigger is
+            quoted before any work starts, so there's never a surprise
+            invoice. That boundary is also what keeps the monthly this low.
+          </p>
+        </div>
+      </div>
+
+      <div class="s3__foot">
+        <p class="s3__foot-marketing">
+          <b>4 · Marketing support</b> — scope to be discussed. On top of
+          the build, hands-on help from a brand-first marketing executive:
+          13+ years at CMO level building brands that have generated
+          billions of earned impressions and communities of millions.
+        </p>
+        <p class="s3__foot-why">
+          Nobody hired me for any of this. I did it because I like the
+          work, and I'd rather start a relationship than win a bidding war.
+        </p>
+      </div>
+    </section>
+  </body>
+</html>
