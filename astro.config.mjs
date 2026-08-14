@@ -88,12 +88,13 @@ export default defineConfig({
    * cross-site origin, which trips this check. An entry with no `hostname`
    * matches any origin, unblocking the preview.
    *
-   * This is scoped to `astro dev` only. `output` is "static", so
-   * `allowedDomains` has no effect on the production build — but gating it
-   * keeps engine policy explicit and prevents it from ever loosening a real
-   * server deployment.
+   * `output` is "static", so `security` is inert for `astro build` — there is
+   * no production server to loosen. It is therefore set unconditionally rather
+   * than gated on argv, so a supervisor/preview restart can never silently
+   * re-block the dev server. If this engine ever moves to `output: "server"`,
+   * scope this back to dev only.
    */
-  security: process.argv.includes("dev") ? { allowedDomains: [{}] } : {},
+  security: { allowedDomains: [{}] },
 
   vite: {
     build: {
