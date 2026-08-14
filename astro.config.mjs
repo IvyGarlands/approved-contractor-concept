@@ -82,5 +82,13 @@ export default defineConfig({
     build: {
       cssMinify: "lightningcss",
     },
+    // The v0 preview serves the dev server through a proxied origin. Vite's
+    // dev server blocks unknown hosts ("Cross-origin request blocked") by
+    // default, so allow all hosts and enable CORS in dev.
+    server: {
+      host: true,
+      cors: true,
+      allowedHosts: true,
+    },
   },
 });
